@@ -1,0 +1,131 @@
+name: "US-China Trade War"
+description: "Escalating tariff war with economic impacts"
+complexity: "medium"
+expected_duration: 8
+tags: ["trade-war", "tariffs", "multi-country", "retaliation"]
+
+initial_state:
+  t: 0
+  base_ccy: "USD"
+  countries:
+    USA:
+      name: "USA"
+      macro:
+        gdp: 23000000
+        inflation: 0.025
+        unemployment: 0.037
+        policy_rate: 0.05
+        debt_gdp: 0.95
+      external:
+        fx_rate: 1.0
+        current_account_gdp: -0.025
+      trade:
+        exports_gdp: 0.12
+        imports_gdp: 0.15
+        tariff_mfn_avg: 0.032
+    CHN:
+      name: "CHN"
+      macro:
+        gdp: 17700000
+        inflation: 0.021
+        unemployment: 0.039
+        policy_rate: 0.035
+        debt_gdp: 0.67
+      external:
+        fx_rate: 6.8
+        current_account_gdp: 0.015
+      trade:
+        exports_gdp: 0.18
+        imports_gdp: 0.16
+        tariff_mfn_avg: 0.076
+  trade_matrix:
+    USA:
+      CHN: 120000
+    CHN:
+      USA: 450000
+  rules:
+    regimes:
+      monetary:
+        taylor_rule_enabled: true
+      trade:
+        trade_elasticity: 1.2
+
+triggers:
+  - name: "Phase 1 Tariffs"
+    description: "US imposes 25% tariffs on Chinese goods"
+    condition:
+      when: "t >= 2"
+      once: true
+    action:
+      patches:
+        - path: "countries.USA.trade.tariff_mfn_avg"
+          op: "set"
+          value: 0.25
+
+  - name: "Chinese Retaliation"
+    description: "China retaliates with own tariffs"
+    condition:
+      when: "t >= 4"
+      once: true
+    action:
+      patches:
+        - path: "countries.CHN.trade.tariff_mfn_avg"
+          op: "set"
+          value: 0.20
+
+  - name: "Trade Volume Adjustment"
+    description: "Reduce bilateral trade volumes"
+    condition:
+      when: "t >= 5"
+      once: true
+    action:
+      network_rewrites:
+        - layer: "trade"
+          edits:
+            - ["USA", "CHN", 60000]  # Reduce US imports from China
+            - ["CHN", "USA", 200000]  # Reduce Chinese exports to US
+
+validation:
+  economic_relationships:
+    - name: "tariff_escalation"
+      description: "Tariffs should escalate in sequence"
+      check: "tariffs_increase_over_time"
+    - name: "trade_volume_impact"
+      description: "Higher tariffs should reduce trade volumes"
+      check: "trade_responds_to_tariffs"
+    - name: "retaliation_pattern"
+      description: "Countries should retaliate to tariff increases"
+      check: "retaliatory_tariffs_follow_initial_tariffs"
+  
+  expected_outcomes:
+    - field: "countries.USA.trade.tariff_mfn_avg"
+      description: "US tariffs should reach 25%"
+      should: "equal"
+      value: 0.25
+      after_timestep: 2
+    - field: "countries.CHN.trade.tariff_mfn_avg"
+      description: "Chinese tariffs should reach 20%"
+      should: "equal"
+      value: 0.20
+      after_timestep: 4
+    - field: "trade_matrix.USA.CHN"
+      description: "US-China trade should decrease significantly"
+      should: "decrease"
+      by_percent: 50
+      after_timestep: 5
+
+test_parameters:
+  timesteps: 8
+  validation_frequency: 1
+  trade_elasticity: 1.2
+  
+notes: |
+  This scenario tests the trade war dynamics between the US and China.
+  It includes escalating tariffs, retaliatory measures, and the resulting
+  impact on bilateral trade volumes.
+  
+  Key economic mechanisms tested:
+  1. Tariff escalation sequence
+  2. Retaliatory tariff responses  
+  3. Trade volume elasticity to tariff changes
+  4. Macroeconomic spillover effects

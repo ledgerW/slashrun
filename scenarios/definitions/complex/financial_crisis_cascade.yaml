@@ -1,0 +1,209 @@
+name: "Global Financial Crisis"
+description: "Banking crisis, credit crunch, policy coordination"
+complexity: "complex"
+expected_duration: 10
+tags: ["financial-crisis", "banking", "credit-crunch", "policy-coordination"]
+
+initial_state:
+  t: 0
+  base_ccy: "USD"
+  countries:
+    USA:
+      name: "USA"
+      macro:
+        gdp: 23000000
+        inflation: 0.025
+        unemployment: 0.037
+        policy_rate: 0.05
+        debt_gdp: 0.95
+      finance:
+        sovereign_yield: 0.025
+        credit_spread: 0.015
+        bank_tier1_ratio: 0.13
+      external:
+        fx_rate: 1.0
+    GBR:
+      name: "GBR"
+      macro:
+        gdp: 3100000
+        inflation: 0.022
+        unemployment: 0.035
+        policy_rate: 0.045
+        debt_gdp: 0.85
+      finance:
+        sovereign_yield: 0.032
+        credit_spread: 0.018
+        bank_tier1_ratio: 0.12
+      external:
+        fx_rate: 0.75
+    EUR:
+      name: "EUR"
+      macro:
+        gdp: 15000000
+        inflation: 0.019
+        unemployment: 0.068
+        policy_rate: 0.0
+        debt_gdp: 0.88
+      finance:
+        sovereign_yield: 0.015
+        credit_spread: 0.022
+        bank_tier1_ratio: 0.14
+  interbank_matrix:
+    USA:
+      GBR: 500000
+      EUR: 800000
+    GBR:
+      USA: 450000
+      EUR: 350000
+    EUR:
+      USA: 700000
+      GBR: 400000
+  rules:
+    regimes:
+      monetary:
+        taylor_rule_enabled: true
+        zirp_threshold: 0.005
+      fiscal:
+        automatic_stabilizers: true
+      finance:
+        crisis_threshold: 0.08
+        bailout_probability: 0.7
+
+triggers:
+  - name: "Banking Sector Stress"
+    description: "Major bank failures trigger credit crunch"
+    condition:
+      when: "t >= 2"
+      once: true
+    action:
+      patches:
+        - path: "countries.USA.finance.bank_tier1_ratio"
+          op: "mul"
+          value: 0.7
+        - path: "countries.USA.finance.credit_spread"
+          op: "mul"
+          value: 3.0
+
+  - name: "Contagion to UK"
+    description: "Crisis spreads through interbank linkages"
+    condition:
+      when: "t >= 3"
+      once: true
+    action:
+      patches:
+        - path: "countries.GBR.finance.credit_spread"
+          op: "mul"
+          value: 2.5
+        - path: "countries.GBR.external.fx_rate"
+          op: "mul"
+          value: 1.15  # GBP weakens
+      network_rewrites:
+        - layer: "interbank"
+          edits:
+            - ["USA", "GBR", 250000]  # Reduced interbank lending
+            - ["GBR", "USA", 200000]
+
+  - name: "Emergency Rate Cuts"
+    description: "Central banks cut rates to zero"
+    condition:
+      when: "t >= 4"
+      once: true
+    action:
+      patches:
+        - path: "countries.USA.macro.policy_rate"
+          op: "set"
+          value: 0.0
+        - path: "countries.GBR.macro.policy_rate"
+          op: "set"
+          value: 0.0
+
+  - name: "Fiscal Stimulus Package"
+    description: "Coordinated fiscal expansion"
+    condition:
+      when: "t >= 5"
+      once: true
+    action:
+      patches:
+        - path: "countries.USA.macro.debt_gdp"
+          op: "add"
+          value: 0.10  # 10pp of GDP fiscal expansion
+        - path: "countries.GBR.macro.debt_gdp"
+          op: "add"
+          value: 0.08
+
+  - name: "Recovery Signs"
+    description: "Credit markets begin to normalize"
+    condition:
+      when: "t >= 8"
+      once: true
+    action:
+      patches:
+        - path: "countries.USA.finance.credit_spread"
+          op: "mul"
+          value: 0.6  # Spreads compress
+        - path: "countries.GBR.finance.credit_spread"
+          op: "mul"
+          value: 0.7
+
+validation:
+  economic_relationships:
+    - name: "banking_stress_transmission"
+      description: "Banking stress should increase credit spreads"
+      check: "credit_spreads_widen_with_bank_stress"
+    - name: "interbank_contagion"
+      description: "Crisis should spread through interbank linkages"
+      check: "financial_contagion_through_interbank_markets"
+    - name: "policy_response_coordination"
+      description: "Central banks should coordinate emergency responses"
+      check: "coordinated_monetary_policy_response"
+    - name: "fiscal_expansion"
+      description: "Governments should expand fiscal policy"
+      check: "fiscal_expansion_during_crisis"
+    - name: "credit_recovery"
+      description: "Credit markets should eventually normalize"
+      check: "credit_spreads_compress_in_recovery"
+  
+  expected_outcomes:
+    - field: "countries.USA.finance.credit_spread"
+      description: "US credit spreads should widen significantly"
+      should: "increase"
+      by_factor: 2.5
+      after_timestep: 2
+    - field: "countries.GBR.finance.credit_spread"
+      description: "UK credit spreads should also widen (contagion)"
+      should: "increase"
+      by_factor: 2.0
+      after_timestep: 3
+    - field: "countries.USA.macro.policy_rate"
+      description: "US policy rate should be cut to zero"
+      should: "equal"
+      value: 0.0
+      after_timestep: 4
+    - field: "countries.USA.macro.debt_gdp"
+      description: "US debt should increase due to fiscal expansion"
+      should: "increase"
+      by: 0.09
+      after_timestep: 5
+    - field: "interbank_matrix.USA.GBR"
+      description: "Interbank lending should be reduced"
+      should: "decrease"
+      to_value: 250000
+      after_timestep: 3
+
+test_parameters:
+  timesteps: 10
+  validation_frequency: 1
+  crisis_threshold: 0.08
+  
+notes: |
+  This complex scenario tests systemic financial crisis mechanisms:
+  1. Banking sector stress and capital adequacy deterioration
+  2. Credit market freezing and spread widening
+  3. Interbank market contagion and lending reduction
+  4. Coordinated central bank emergency responses (ZIRP)
+  5. Fiscal policy expansion and debt accumulation
+  6. Gradual recovery and credit market normalization
+  
+  It validates the simulation's ability to model financial crises,
+  policy coordination, and the complex feedback loops between
+  financial markets, monetary policy, and fiscal policy.

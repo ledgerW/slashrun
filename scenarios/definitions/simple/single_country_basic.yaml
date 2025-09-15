@@ -1,0 +1,53 @@
+name: "Single Country Basic"
+description: "Basic simulation with one country over multiple timesteps"
+complexity: "simple"
+expected_duration: 5
+tags: ["single-country", "basic", "taylor-rule"]
+
+initial_state:
+  t: 0
+  base_ccy: "USD"
+  countries:
+    USA:
+      name: "USA"
+      macro:
+        gdp: 23000000
+        inflation: 0.025
+        unemployment: 0.037
+        policy_rate: 0.05
+        debt_gdp: 0.95
+        inflation_target: 0.02
+  rules:
+    regimes:
+      monetary:
+        taylor_rule_enabled: true
+    rng_seed: 42
+
+triggers: []
+
+validation:
+  economic_relationships:
+    - name: "taylor_rule_response"
+      description: "Policy rate should respond to inflation gap"
+      check: "policy_rate_adjusts_for_inflation"
+    - name: "inflation_evolution"
+      description: "Inflation should change due to Taylor rule"
+      check: "inflation_changes_over_time"
+  
+  expected_outcomes:
+    - field: "countries.USA.macro.inflation"
+      description: "Inflation should evolve from initial value"
+      should: "change"
+      tolerance: 0.001
+    - field: "countries.USA.macro.policy_rate"
+      description: "Policy rate should adjust based on inflation gap"
+      should: "respond_to_inflation_gap"
+
+test_parameters:
+  timesteps: 5
+  validation_frequency: 1
+  
+notes: |
+  This scenario tests the basic functionality of the simulation engine with a single country.
+  It verifies that the Taylor rule monetary policy regime works correctly and that 
+  economic variables evolve realistically over time.

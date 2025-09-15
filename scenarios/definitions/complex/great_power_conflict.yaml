@@ -1,0 +1,283 @@
+name: "Great Power Conflict"
+description: "Multi-dimensional crisis: conflict, sanctions, energy, inflation"
+complexity: "complex"
+expected_duration: 12
+tags: ["geopolitical", "sanctions", "energy", "conflict", "inflation"]
+
+initial_state:
+  t: 0
+  base_ccy: "USD"
+  countries:
+    USA:
+      name: "USA"
+      macro:
+        gdp: 23000000
+        inflation: 0.025
+        unemployment: 0.037
+        policy_rate: 0.05
+        debt_gdp: 0.95
+      external:
+        fx_rate: 1.0
+        current_account_gdp: -0.025
+      trade:
+        exports_gdp: 0.12
+        imports_gdp: 0.15
+        tariff_mfn_avg: 0.032
+      energy:
+        energy_price_index: 100.0
+        energy_stock_to_use: 0.8
+      security:
+        milex_gdp: 0.035
+        conflict_intensity: 0.0
+    CHN:
+      name: "CHN"
+      macro:
+        gdp: 17700000
+        inflation: 0.021
+        unemployment: 0.039
+        policy_rate: 0.035
+        debt_gdp: 0.67
+      external:
+        fx_rate: 6.8
+        current_account_gdp: 0.015
+      trade:
+        exports_gdp: 0.18
+        imports_gdp: 0.16
+        tariff_mfn_avg: 0.076
+      security:
+        milex_gdp: 0.019
+        conflict_intensity: 0.0
+    RUS:
+      name: "RUS"
+      macro:
+        gdp: 1800000
+        inflation: 0.058
+        unemployment: 0.048
+        policy_rate: 0.065
+        debt_gdp: 0.17
+      external:
+        fx_rate: 75.0
+        current_account_gdp: 0.065
+      energy:
+        energy_price_index: 100.0
+        energy_stock_to_use: 2.5  # Major energy exporter
+      security:
+        milex_gdp: 0.042
+        conflict_intensity: 0.0
+    DEU:
+      name: "DEU"
+      macro:
+        gdp: 4200000
+        inflation: 0.018
+        unemployment: 0.032
+        policy_rate: 0.0
+      energy:
+        energy_price_index: 100.0
+        energy_stock_to_use: 0.15  # Energy dependent
+  trade_matrix:
+    USA:
+      CHN: 120000
+      DEU: 85000
+      RUS: 15000
+    CHN:
+      USA: 450000
+      DEU: 95000
+      RUS: 55000
+    RUS:
+      USA: 12000
+      CHN: 48000
+      DEU: 35000
+    DEU:
+      USA: 180000
+      CHN: 95000
+      RUS: 25000
+  sanctions:
+    USA:
+      RUS: 0.0
+    DEU:
+      RUS: 0.0
+  alliance_graph:
+    USA:
+      DEU: 0.8
+    DEU:
+      USA: 0.8
+  commodity_prices:
+    oil: 80.0
+    gas: 6.0
+    wheat: 250.0
+  rules:
+    regimes:
+      monetary:
+        taylor_rule_enabled: true
+      fiscal:
+        war_spending_multiplier: 2.0
+      security:
+        conflict_escalation_rate: 0.15
+      trade:
+        sanctions_elasticity: 0.8
+
+triggers:
+  - name: "Regional Conflict Erupts"
+    description: "Major military conflict begins"
+    condition:
+      when: "t >= 2"
+      once: true
+    action:
+      patches:
+        - path: "countries.RUS.security.conflict_intensity"
+          op: "set"
+          value: 0.7
+        - path: "countries.USA.security.milex_gdp"
+          op: "mul"
+          value: 1.3
+      events:
+        - kind: "conflict"
+          payload:
+            intensity: 0.7
+            actors: ["RUS"]
+            duration: 12
+
+  - name: "Comprehensive Sanctions"
+    description: "Western sanctions on Russian economy"
+    condition:
+      when: "t >= 3"
+      once: true
+    action:
+      patches:
+        - path: "sanctions.USA.RUS"
+          op: "set"
+          value: 0.8
+        - path: "sanctions.DEU.RUS"
+          op: "set"
+          value: 0.6
+      network_rewrites:
+        - layer: "trade"
+          edits:
+            - ["USA", "RUS", 2000]
+            - ["DEU", "RUS", 8000]
+            - ["RUS", "USA", 3000]
+            - ["RUS", "DEU", 10000]
+
+  - name: "Energy Weapon Response"
+    description: "Russia weaponizes energy exports"
+    condition:
+      when: "t >= 4"
+      once: true
+    action:
+      patches:
+        - path: "commodity_prices.oil"
+          op: "mul"
+          value: 1.5
+        - path: "commodity_prices.gas"
+          op: "mul"
+          value: 2.0
+        - path: "countries.DEU.energy.energy_price_index"
+          op: "mul"
+          value: 1.8
+
+  - name: "Global Inflation Shock"
+    description: "Commodity price surge drives inflation"
+    condition:
+      when: "t >= 5"
+      once: true
+    action:
+      patches:
+        - path: "countries.USA.macro.inflation"
+          op: "add"
+          value: 0.04
+        - path: "countries.DEU.macro.inflation"
+          op: "add"
+          value: 0.06
+        - path: "countries.CHN.macro.inflation"
+          op: "add"
+          value: 0.03
+
+  - name: "Central Bank Emergency Response"
+    description: "Coordinated monetary policy response"
+    condition:
+      when: "t >= 6"
+      once: true
+    action:
+      patches:
+        - path: "countries.USA.macro.policy_rate"
+          op: "add"
+          value: 0.025
+        - path: "countries.DEU.macro.policy_rate"
+          op: "add"
+          value: 0.015
+
+  - name: "Supply Chain Realignment"
+    description: "Countries diversify away from conflict zones"
+    condition:
+      when: "t >= 7"
+      once: true
+    action:
+      network_rewrites:
+        - layer: "trade"
+          edits:
+            - ["USA", "CHN", 140000]  # Increase US-China trade
+            - ["CHN", "USA", 500000]
+            - ["DEU", "CHN", 110000]  # Germany increases China trade
+
+validation:
+  economic_relationships:
+    - name: "conflict_escalation"
+      description: "Military conflict should escalate security spending"
+      check: "military_spending_increases_with_conflict"
+    - name: "sanctions_trade_impact"
+      description: "Sanctions should reduce bilateral trade"
+      check: "sanctions_reduce_trade_volumes"
+    - name: "energy_price_shock"
+      description: "Energy weaponization should spike prices"
+      check: "energy_prices_increase_with_supply_disruption"
+    - name: "inflation_transmission"
+      description: "Commodity price increases should drive inflation"
+      check: "commodity_inflation_transmits_to_core_inflation"
+    - name: "monetary_policy_response"
+      description: "Central banks should tighten to fight inflation"
+      check: "policy_rates_increase_with_inflation_shock"
+  
+  expected_outcomes:
+    - field: "countries.RUS.security.conflict_intensity"
+      description: "Russian conflict intensity should reach 0.7"
+      should: "equal"
+      value: 0.7
+      after_timestep: 2
+    - field: "sanctions.USA.RUS"
+      description: "US sanctions on Russia should reach 0.8"
+      should: "equal"
+      value: 0.8
+      after_timestep: 3
+    - field: "commodity_prices.oil"
+      description: "Oil prices should increase by at least 40%"
+      should: "increase"
+      by_percent: 40
+      after_timestep: 4
+    - field: "countries.USA.macro.inflation"
+      description: "US inflation should increase significantly"
+      should: "increase"
+      by: 0.035
+      after_timestep: 6
+    - field: "trade_matrix.USA.RUS"
+      description: "US-Russia trade should decrease dramatically"
+      should: "decrease"
+      by_percent: 80
+      after_timestep: 3
+
+test_parameters:
+  timesteps: 12
+  validation_frequency: 1
+  conflict_duration: 12
+  
+notes: |
+  This complex scenario tests multiple interconnected crisis mechanisms:
+  1. Geopolitical conflict with military escalation
+  2. Economic sanctions and trade disruption
+  3. Energy weaponization and commodity price shocks
+  4. Global inflation transmission
+  5. Coordinated policy responses
+  6. Supply chain realignment
+  
+  It represents a comprehensive test of the simulation's ability to handle
+  multiple simultaneous shocks and their complex interactions across
+  economic, political, and security domains.

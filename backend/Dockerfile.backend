@@ -1,0 +1,39 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install system dependencies including PostgreSQL client libraries and C++ headers
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    libpq-dev \
+    postgresql-client \
+    g++ \
+    gcc \
+    libc6-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv for fast Python package management
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+
+# Copy dependency files
+COPY pyproject.toml ./
+COPY uv.lock ./
+
+# Install dependencies
+RUN uv sync --frozen --no-cache
+
+# Copy backend application code
+COPY backend/ .
+
+# Create data directory for file storage
+RUN mkdir -p /app/data
+
+# Set environment variables to activate virtual environment
+ENV PYTHONPATH=/app
+
+# Expose port
+EXPOSE 8000
+
+# Default command (will be overridden in docker-compose)
+CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

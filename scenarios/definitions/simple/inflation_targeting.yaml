@@ -1,0 +1,69 @@
+name: "Inflation Target Test"
+description: "Test central bank inflation targeting behavior over time"
+complexity: "simple"
+expected_duration: 10
+tags: ["inflation-targeting", "taylor-rule", "convergence"]
+
+initial_state:
+  t: 0
+  base_ccy: "USD"
+  countries:
+    USA:
+      name: "USA"
+      macro:
+        gdp: 23000000
+        inflation: 0.08  # Start with high inflation
+        unemployment: 0.037
+        policy_rate: 0.02  # Start with low rate
+        debt_gdp: 0.95
+        inflation_target: 0.02
+  rules:
+    regimes:
+      monetary:
+        taylor_rule_enabled: true
+
+triggers: []
+
+validation:
+  economic_relationships:
+    - name: "inflation_targeting"
+      description: "Central bank should fight high inflation"
+      check: "policy_rate_increases_with_high_inflation"
+    - name: "inflation_convergence" 
+      description: "Inflation should move toward target over time"
+      check: "inflation_approaches_target"
+    - name: "policy_response"
+      description: "Policy rate should increase to combat inflation"
+      check: "policy_rate_responds_appropriately"
+  
+  expected_outcomes:
+    - field: "countries.USA.macro.inflation"
+      description: "Inflation should decrease from initial 8%"
+      should: "decrease"
+      from_value: 0.08
+      after_timesteps: 5
+    - field: "countries.USA.macro.policy_rate"
+      description: "Policy rate should increase from initial 2%"
+      should: "increase"
+      from_value: 0.02
+      after_timesteps: 5
+    - field: "countries.USA.macro.inflation"
+      description: "Final inflation gap should be smaller than initial"
+      should: "converge_to_target"
+      target: 0.02
+      improvement_required: true
+
+test_parameters:
+  timesteps: 10
+  validation_frequency: 1
+  convergence_tolerance: 0.01
+  
+notes: |
+  This scenario tests the inflation targeting mechanism of the Taylor rule.
+  It starts with high inflation (8%) and low policy rate (2%) to create a large
+  inflation gap that should trigger aggressive monetary tightening.
+  
+  The test verifies that:
+  1. The central bank raises rates in response to high inflation
+  2. Higher rates eventually reduce inflation
+  3. The inflation gap closes over time (convergence to 2% target)

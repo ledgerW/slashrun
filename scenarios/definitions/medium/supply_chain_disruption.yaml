@@ -1,0 +1,152 @@
+name: "Supply Chain Shock"
+description: "Manufacturing disruption with inflation spillovers"
+complexity: "medium"
+expected_duration: 7
+tags: ["supply-chain", "manufacturing", "inflation", "multi-country"]
+
+initial_state:
+  t: 0
+  base_ccy: "USD"
+  countries:
+    CHN:  # Manufacturing hub
+      name: "CHN"
+      macro:
+        gdp: 17700000
+        inflation: 0.021
+        unemployment: 0.039
+        policy_rate: 0.035
+      trade:
+        exports_gdp: 0.18
+        imports_gdp: 0.16
+    USA:  # Major importer
+      name: "USA"
+      macro:
+        gdp: 23000000
+        inflation: 0.025
+        unemployment: 0.037
+        policy_rate: 0.05
+      trade:
+        exports_gdp: 0.12
+        imports_gdp: 0.15
+    DEU:  # European manufacturing
+      name: "DEU"
+      macro:
+        gdp: 4200000
+        inflation: 0.018
+        unemployment: 0.032
+        policy_rate: 0.0
+      trade:
+        exports_gdp: 0.47
+        imports_gdp: 0.41
+  trade_matrix:
+    CHN:
+      USA: 450000
+      DEU: 120000
+    USA:
+      CHN: 120000
+      DEU: 85000
+    DEU:
+      CHN: 95000
+      USA: 180000
+  rules:
+    regimes:
+      monetary:
+        taylor_rule_enabled: true
+      trade:
+        supply_chain_sensitivity: 0.3
+
+triggers:
+  - name: "Chinese Factory Shutdowns"
+    description: "Major supply disruption in China"
+    condition:
+      when: "t >= 2"
+      once: true
+    action:
+      patches:
+        - path: "countries.CHN.trade.exports_gdp"
+          op: "mul"
+          value: 0.75  # 25% reduction in exports
+      network_rewrites:
+        - layer: "trade"
+          edits:
+            - ["CHN", "USA", 300000]  # Reduced exports to US
+            - ["CHN", "DEU", 80000]   # Reduced exports to Germany
+
+  - name: "German Manufacturing Impact"
+    description: "German industrial production affected"
+    condition:
+      when: "t >= 3"
+      once: true
+    action:
+      patches:
+        - path: "countries.DEU.macro.unemployment"
+          op: "add"
+          value: 0.01  # 1pp unemployment increase
+        - path: "countries.DEU.trade.exports_gdp"
+          op: "mul"
+          value: 0.95  # Small reduction in exports
+
+  - name: "Inflation Shock USA"
+    description: "Supply shortage drives US inflation"
+    condition:
+      when: "t >= 4"
+      once: true
+    action:
+      patches:
+        - path: "countries.USA.macro.inflation"
+          op: "add"
+          value: 0.03  # 3pp inflation increase
+
+validation:
+  economic_relationships:
+    - name: "supply_disruption_impact"
+      description: "Supply disruptions should reduce exports"
+      check: "exports_decrease_with_disruption"
+    - name: "inflation_transmission"
+      description: "Supply shocks should drive inflation"
+      check: "supply_shortage_increases_inflation"
+    - name: "manufacturing_linkages"
+      description: "Manufacturing countries should be affected"
+      check: "manufacturing_hubs_impacted_by_supply_chains"
+    - name: "unemployment_response"
+      description: "Production losses should increase unemployment"
+      check: "unemployment_rises_with_production_decline"
+  
+  expected_outcomes:
+    - field: "countries.CHN.trade.exports_gdp"
+      description: "Chinese exports should decline"
+      should: "decrease"
+      by_percent: 20
+      after_timestep: 2
+    - field: "trade_matrix.CHN.USA"
+      description: "China-US trade should be reduced"
+      should: "decrease"
+      to_value: 300000
+      after_timestep: 2
+    - field: "countries.USA.macro.inflation"
+      description: "US inflation should increase significantly"
+      should: "increase"
+      by: 0.025
+      after_timestep: 4
+    - field: "countries.DEU.macro.unemployment"
+      description: "German unemployment should rise"
+      should: "increase"
+      by: 0.008
+      after_timestep: 3
+
+test_parameters:
+  timesteps: 7
+  validation_frequency: 1
+  supply_chain_sensitivity: 0.3
+  
+notes: |
+  This scenario tests global supply chain disruption effects.
+  It models how manufacturing shutdowns in one country (China)
+  can cascade through global supply chains, affecting both
+  importing countries (USA, Germany) and their domestic economies.
+  
+  Key mechanisms tested:
+  1. Export capacity reduction from supply disruptions
+  2. Trade volume adjustments through network effects
+  3. Inflation transmission from supply shortages
+  4. Manufacturing sector spillovers (unemployment)

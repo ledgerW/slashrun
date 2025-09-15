@@ -1,0 +1,65 @@
+name: "Policy Shock Test"
+description: "Test monetary policy rate shock"
+complexity: "simple"
+expected_duration: 8
+tags: ["policy-shock", "monetary-policy", "trigger"]
+
+initial_state:
+  t: 0
+  base_ccy: "USD"
+  countries:
+    USA:
+      name: "USA"
+      macro:
+        gdp: 23000000
+        inflation: 0.025
+        unemployment: 0.037
+        policy_rate: 0.05
+        debt_gdp: 0.95
+  rules:
+    regimes:
+      monetary:
+        taylor_rule_enabled: true
+
+triggers:
+  - name: "Emergency Rate Cut"
+    description: "Cut policy rate to zero at t=3"
+    condition:
+      when: "t >= 3"
+      once: true
+    action:
+      patches:
+        - path: "countries.USA.macro.policy_rate"
+          op: "set"
+          value: 0.0
+
+validation:
+  economic_relationships:
+    - name: "trigger_execution"
+      description: "Emergency rate cut should fire at t=3"
+      check: "trigger_fires_on_schedule"
+    - name: "policy_rate_change"
+      description: "Policy rate should be set to zero"
+      check: "policy_rate_reaches_target"
+  
+  expected_outcomes:
+    - field: "countries.USA.macro.policy_rate"
+      description: "Policy rate should be zero after trigger"
+      should: "equal"
+      value: 0.0
+      after_timestep: 3
+    - field: "audit.triggers_fired"
+      description: "Emergency Rate Cut trigger should fire"
+      should: "contain"
+      value: "Emergency Rate Cut"
+      at_timestep: 3
+
+test_parameters:
+  timesteps: 5
+  validation_frequency: 1
+  pre_trigger_steps: 2
+  
+notes: |
+  This scenario tests the trigger system with a simple monetary policy shock.
+  It verifies that triggers fire at the correct time and that the policy changes
+  are correctly applied to the simulation state.

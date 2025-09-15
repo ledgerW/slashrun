@@ -1,0 +1,142 @@
+name: "Emerging Market Currency Crisis"
+description: "Currency crisis with regional contagion effects"
+complexity: "medium"
+expected_duration: 8
+tags: ["currency-crisis", "contagion", "emerging-markets", "fx"]
+
+initial_state:
+  t: 0
+  base_ccy: "USD"
+  countries:
+    TUR:  # Turkey - crisis epicenter
+      name: "TUR"
+      macro:
+        gdp: 760000
+        inflation: 0.15  # High inflation
+        policy_rate: 0.17
+        debt_gdp: 0.41
+      external:
+        fx_rate: 8.5
+        current_account_gdp: -0.032  # Large deficit
+        reserves_usd: 90000
+    BRA:  # Brazil - susceptible to contagion
+      name: "BRA"
+      macro:
+        gdp: 2100000
+        inflation: 0.045
+        policy_rate: 0.065
+        debt_gdp: 0.89
+      external:
+        fx_rate: 5.2
+        current_account_gdp: -0.013
+        reserves_usd: 360000
+    USA:  # Safe haven
+      name: "USA"
+      macro:
+        gdp: 23000000
+        inflation: 0.025
+        policy_rate: 0.05
+        debt_gdp: 0.95
+      external:
+        fx_rate: 1.0
+        current_account_gdp: -0.025
+  rules:
+    regimes:
+      monetary:
+        taylor_rule_enabled: true
+      fx:
+        crisis_threshold: 0.15  # FX depreciation threshold
+
+triggers:
+  - name: "Turkish Lira Crisis"
+    description: "Sharp devaluation of Turkish Lira"
+    condition:
+      when: "t >= 3"
+      once: true
+    action:
+      patches:
+        - path: "countries.TUR.external.fx_rate"
+          op: "mul"
+          value: 1.3  # 30% devaluation
+        - path: "countries.TUR.external.reserves_usd"
+          op: "mul"
+          value: 0.7  # Reserve depletion
+
+  - name: "Contagion to Brazil"
+    description: "Market fears spread to Brazil"
+    condition:
+      when: "t >= 5"
+      once: true
+    action:
+      patches:
+        - path: "countries.BRA.external.fx_rate"
+          op: "mul"
+          value: 1.15  # 15% devaluation
+        - path: "countries.BRA.macro.policy_rate"
+          op: "add"
+          value: 0.03  # Emergency rate hike
+
+  - name: "Flight to USD"
+    description: "Safe haven demand for USD"
+    condition:
+      when: "t >= 4"
+      once: true
+    action:
+      patches:
+        - path: "countries.USA.macro.policy_rate"
+          op: "add"
+          value: -0.005  # Slightly lower rate due to safe haven flows
+
+validation:
+  economic_relationships:
+    - name: "currency_devaluation"
+      description: "Crisis should cause significant currency weakness"
+      check: "fx_rate_increases_in_crisis"
+    - name: "contagion_effect"
+      description: "Crisis should spread to vulnerable economies"
+      check: "contagion_affects_linked_countries"
+    - name: "policy_response"
+      description: "Central banks should raise rates to defend currency"
+      check: "emergency_rate_hikes_occur"
+    - name: "reserve_depletion"
+      description: "FX reserves should decline during crisis"
+      check: "reserves_decrease_in_crisis"
+  
+  expected_outcomes:
+    - field: "countries.TUR.external.fx_rate"
+      description: "Turkish Lira should weaken significantly"
+      should: "increase"
+      by_percent: 25
+      after_timestep: 3
+    - field: "countries.BRA.external.fx_rate"
+      description: "Brazilian Real should also weaken (contagion)"
+      should: "increase"
+      by_percent: 10
+      after_timestep: 5
+    - field: "countries.TUR.external.reserves_usd"
+      description: "Turkish reserves should decline"
+      should: "decrease"
+      by_percent: 25
+      after_timestep: 3
+    - field: "countries.BRA.macro.policy_rate"
+      description: "Brazil should hike rates defensively"
+      should: "increase"
+      by: 0.025
+      after_timestep: 5
+
+test_parameters:
+  timesteps: 8
+  validation_frequency: 1
+  crisis_threshold: 0.15
+  
+notes: |
+  This scenario tests currency crisis dynamics and contagion effects.
+  It models how a crisis in one emerging market (Turkey) can spread
+  to other vulnerable economies (Brazil) through market sentiment
+  and capital flow reversals.
+  
+  Key mechanisms tested:
+  1. Currency devaluation and reserve depletion
+  2. Contagion through market sentiment
+  3. Emergency policy responses (rate hikes)
+  4. Safe haven flows to USD
