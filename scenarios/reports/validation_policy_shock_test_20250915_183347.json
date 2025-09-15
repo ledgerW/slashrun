@@ -1,0 +1,96 @@
+{
+  "scenario_name": "Policy Shock Test",
+  "success": true,
+  "validation_results": {
+    "economic_relationships": [
+      {
+        "check_name": "trigger_fires_on_schedule",
+        "description": "Emergency rate cut should fire at t=3",
+        "passed": true,
+        "details": {
+          "trigger_fired": true,
+          "fire_timestep": 3,
+          "expected_timestep": "varies by scenario"
+        },
+        "error_message": null
+      },
+      {
+        "check_name": "policy_rate_reaches_target",
+        "description": "Policy rate should be set to zero",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: policy_rate_reaches_target"
+      }
+    ],
+    "expected_outcomes": [
+      {
+        "field": "countries.USA.macro.policy_rate",
+        "description": "Policy rate should be zero after trigger",
+        "should": "equal",
+        "passed": true,
+        "initial_value": 0.05,
+        "final_value": 0.04451455500000001,
+        "field_trajectory": [
+          [
+            1,
+            0.05055000000000001
+          ],
+          [
+            2,
+            0.048795000000000005
+          ],
+          [
+            3,
+            0.0
+          ],
+          [
+            4,
+            0.045793950000000014
+          ],
+          [
+            5,
+            0.04451455500000001
+          ]
+        ]
+      },
+      {
+        "field": "audit.triggers_fired",
+        "description": "Emergency Rate Cut trigger should fire",
+        "should": "contain",
+        "passed": false,
+        "initial_value": null,
+        "final_value": [],
+        "field_trajectory": [
+          [
+            1,
+            []
+          ],
+          [
+            2,
+            []
+          ],
+          [
+            3,
+            [
+              "Emergency Rate Cut"
+            ]
+          ],
+          [
+            4,
+            []
+          ],
+          [
+            5,
+            []
+          ]
+        ]
+      }
+    ],
+    "overall_passed": false
+  },
+  "error_message": null,
+  "execution_summary": {
+    "timesteps_completed": 5,
+    "execution_time": 0.129469
+  }
+}

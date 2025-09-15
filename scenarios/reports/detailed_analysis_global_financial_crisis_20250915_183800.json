@@ -1,0 +1,600 @@
+{
+  "scenario_name": "Global Financial Crisis",
+  "execution_summary": {
+    "timesteps_completed": 10,
+    "execution_time_seconds": 0.531851,
+    "total_field_changes": 80,
+    "average_changes_per_step": 8.0,
+    "total_triggers_fired": 5,
+    "reducer_consistency": true,
+    "performance_metrics": {
+      "avg_step_time_ms": 53.1851,
+      "changes_per_second": 150.4180682183544
+    }
+  },
+  "state_evolution": {
+    "countries.USA.macro.inflation": {
+      "trajectory": [
+        {
+          "timestep": 1,
+          "value": 0.023700000000000002
+        },
+        {
+          "timestep": 2,
+          "value": 0.02253
+        },
+        {
+          "timestep": 3,
+          "value": 0.021477000000000003
+        },
+        {
+          "timestep": 4,
+          "value": 0.020529300000000004
+        },
+        {
+          "timestep": 5,
+          "value": 0.019676370000000002
+        },
+        {
+          "timestep": 6,
+          "value": 0.018908733
+        },
+        {
+          "timestep": 7,
+          "value": 0.018217859700000002
+        },
+        {
+          "timestep": 8,
+          "value": 0.01759607373
+        },
+        {
+          "timestep": 9,
+          "value": 0.017036466357000003
+        },
+        {
+          "timestep": 10,
+          "value": 0.016532819721300003
+        }
+      ],
+      "initial_value": 0.023700000000000002,
+      "final_value": 0.016532819721300003,
+      "change": -0.007167180278699999,
+      "volatility": 0.0007963533643,
+      "trend": "decreasing"
+    },
+    "countries.USA.macro.policy_rate": {
+      "trajectory": [
+        {
+          "timestep": 1,
+          "value": 0.05055000000000001
+        },
+        {
+          "timestep": 2,
+          "value": 0.048795000000000005
+        },
+        {
+          "timestep": 3,
+          "value": 0.04721550000000001
+        },
+        {
+          "timestep": 4,
+          "value": 0.0
+        },
+        {
+          "timestep": 5,
+          "value": 0.04451455500000001
+        },
+        {
+          "timestep": 6,
+          "value": 0.0433630995
+        },
+        {
+          "timestep": 7,
+          "value": 0.04232678955
+        },
+        {
+          "timestep": 8,
+          "value": 0.041394110595000005
+        },
+        {
+          "timestep": 9,
+          "value": 0.040554699535500005
+        },
+        {
+          "timestep": 10,
+          "value": 0.03979922958195001
+        }
+      ],
+      "initial_value": 0.05055000000000001,
+      "final_value": 0.03979922958195001,
+      "change": -0.010750770418050004,
+      "volatility": 0.011086653379783337,
+      "trend": "decreasing"
+    },
+    "countries.USA.macro.debt_gdp": {
+      "trajectory": [
+        {
+          "timestep": 1,
+          "value": 0.95
+        },
+        {
+          "timestep": 2,
+          "value": 0.95
+        },
+        {
+          "timestep": 3,
+          "value": 0.95
+        },
+        {
+          "timestep": 4,
+          "value": 0.95
+        },
+        {
+          "timestep": 5,
+          "value": 1.05
+        },
+        {
+          "timestep": 6,
+          "value": 1.05
+        },
+        {
+          "timestep": 7,
+          "value": 1.05
+        },
+        {
+          "timestep": 8,
+          "value": 1.05
+        },
+        {
+          "timestep": 9,
+          "value": 1.05
+        },
+        {
+          "timestep": 10,
+          "value": 1.05
+        }
+      ],
+      "initial_value": 0.95,
+      "final_value": 1.05,
+      "change": 0.10000000000000009,
+      "volatility": 0.01111111111111112,
+      "trend": "increasing"
+    }
+  },
+  "trigger_analysis": {
+    "triggers_fired": {
+      "Banking Sector Stress": {
+        "first_fired": 2,
+        "fire_count": 1,
+        "associated_changes": [
+          [
+            2,
+            {
+              "field_path": "countries.USA.finance.bank_tier1_ratio",
+              "old_value": 0.13,
+              "new_value": 0.091,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "trigger_action": "policy_patch",
+                "operation": "mul",
+                "patch_value": 0.7
+              }
+            }
+          ],
+          [
+            2,
+            {
+              "field_path": "countries.USA.finance.credit_spread",
+              "old_value": 0.015,
+              "new_value": 0.045,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "trigger_action": "policy_patch",
+                "operation": "mul",
+                "patch_value": 3.0
+              }
+            }
+          ]
+        ]
+      },
+      "Contagion to UK": {
+        "first_fired": 3,
+        "fire_count": 1,
+        "associated_changes": [
+          [
+            3,
+            {
+              "field_path": "countries.GBR.finance.credit_spread",
+              "old_value": 0.018,
+              "new_value": 0.045,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "trigger_action": "policy_patch",
+                "operation": "mul",
+                "patch_value": 2.5
+              }
+            }
+          ],
+          [
+            3,
+            {
+              "field_path": "countries.GBR.external.fx_rate",
+              "old_value": 0.7494229857168749,
+              "new_value": 0.8618364335744061,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "trigger_action": "policy_patch",
+                "operation": "mul",
+                "patch_value": 1.15
+              }
+            }
+          ]
+        ]
+      },
+      "Emergency Rate Cuts": {
+        "first_fired": 4,
+        "fire_count": 1,
+        "associated_changes": [
+          [
+            4,
+            {
+              "field_path": "countries.USA.macro.policy_rate",
+              "old_value": 0.04721550000000001,
+              "new_value": 0.0,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "trigger_action": "policy_patch",
+                "operation": "set",
+                "patch_value": 0.0
+              }
+            }
+          ],
+          [
+            4,
+            {
+              "field_path": "countries.GBR.macro.policy_rate",
+              "old_value": 0.043935,
+              "new_value": 0.0,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "trigger_action": "policy_patch",
+                "operation": "set",
+                "patch_value": 0.0
+              }
+            }
+          ],
+          [
+            4,
+            {
+              "field_path": "countries.USA.macro.policy_rate_taylor_rule_skipped",
+              "old_value": null,
+              "new_value": null,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "reason": "Policy rate modified by trigger, Taylor rule skipped",
+                "trigger_set_value": 0.0,
+                "triggers_fired": [
+                  "Emergency Rate Cuts"
+                ]
+              }
+            }
+          ],
+          [
+            4,
+            {
+              "field_path": "countries.GBR.macro.policy_rate_taylor_rule_skipped",
+              "old_value": null,
+              "new_value": null,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "reason": "Policy rate modified by trigger, Taylor rule skipped",
+                "trigger_set_value": 0.0,
+                "triggers_fired": [
+                  "Emergency Rate Cuts"
+                ]
+              }
+            }
+          ]
+        ]
+      },
+      "Fiscal Stimulus Package": {
+        "first_fired": 5,
+        "fire_count": 1,
+        "associated_changes": [
+          [
+            5,
+            {
+              "field_path": "countries.USA.macro.debt_gdp",
+              "old_value": 0.95,
+              "new_value": 1.05,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "trigger_action": "policy_patch",
+                "operation": "add",
+                "patch_value": 0.1
+              }
+            }
+          ],
+          [
+            5,
+            {
+              "field_path": "countries.GBR.macro.debt_gdp",
+              "old_value": 0.85,
+              "new_value": 0.9299999999999999,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "trigger_action": "policy_patch",
+                "operation": "add",
+                "patch_value": 0.08
+              }
+            }
+          ]
+        ]
+      },
+      "Recovery Signs": {
+        "first_fired": 8,
+        "fire_count": 1,
+        "associated_changes": [
+          [
+            8,
+            {
+              "field_path": "countries.USA.finance.credit_spread",
+              "old_value": 0.045,
+              "new_value": 0.027,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "trigger_action": "policy_patch",
+                "operation": "mul",
+                "patch_value": 0.6
+              }
+            }
+          ],
+          [
+            8,
+            {
+              "field_path": "countries.GBR.finance.credit_spread",
+              "old_value": 0.045,
+              "new_value": 0.0315,
+              "reducer_name": "simulation_step",
+              "reducer_params": {},
+              "calculation_details": {
+                "trigger_action": "policy_patch",
+                "operation": "mul",
+                "patch_value": 0.7
+              }
+            }
+          ]
+        ]
+      }
+    },
+    "firing_sequence": [
+      {
+        "timestep": 2,
+        "trigger": "Banking Sector Stress"
+      },
+      {
+        "timestep": 3,
+        "trigger": "Contagion to UK"
+      },
+      {
+        "timestep": 4,
+        "trigger": "Emergency Rate Cuts"
+      },
+      {
+        "timestep": 5,
+        "trigger": "Fiscal Stimulus Package"
+      },
+      {
+        "timestep": 8,
+        "trigger": "Recovery Signs"
+      }
+    ],
+    "trigger_effects": {}
+  },
+  "reducer_analysis": {
+    "output_gap_update": {
+      "execution_count": 10,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "inflation_update": {
+      "execution_count": 10,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "monetary_policy": {
+      "execution_count": 10,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "fiscal_update": {
+      "execution_count": 10,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "debt_update": {
+      "execution_count": 10,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "fx_update": {
+      "execution_count": 10,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "trade_update": {
+      "execution_count": 10,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "labor_supply_update": {
+      "execution_count": 10,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "security_update": {
+      "execution_count": 10,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "bop_settlement": {
+      "execution_count": 10,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    }
+  },
+  "economic_relationships": [
+    {
+      "relationship": "Taylor Rule",
+      "description": "Central bank policy rate response to inflation and output gaps",
+      "realism_score": 0.5,
+      "sample_size": 9,
+      "issues": [
+        "Timestep 1: Taylor rule error 0.0237",
+        "Timestep 2: Taylor rule error 0.0225",
+        "Timestep 3: Taylor rule error 0.0215",
+        "Timestep 5: Taylor rule error 0.0197",
+        "Timestep 6: Taylor rule error 0.0189",
+        "Timestep 7: Taylor rule error 0.0182",
+        "Timestep 8: Taylor rule error 0.0176",
+        "Timestep 9: Taylor rule error 0.0170",
+        "Timestep 10: Taylor rule error 0.0165"
+      ],
+      "details": {
+        "average_phi_pi": 0.5,
+        "average_phi_y": 0.5,
+        "rate_range": [
+          0.03979922958195001,
+          0.05055000000000001
+        ]
+      }
+    },
+    {
+      "relationship": "Phillips Curve",
+      "description": "Inflation response to output gaps and expectations",
+      "realism_score": 0.96,
+      "sample_size": 10,
+      "issues": [],
+      "details": {
+        "average_beta": 0.6,
+        "average_kappa": 0.1
+      }
+    },
+    {
+      "relationship": "Crisis Contagion",
+      "description": "Transmission of financial stress between countries",
+      "realism_score": 0.7,
+      "sample_size": 15,
+      "details": {
+        "contagion_events": 15,
+        "max_countries_affected": 3,
+        "primary_transmission_channels": [
+          "credit_spread",
+          "fx_rate",
+          "interbank_linkages"
+        ]
+      }
+    }
+  ],
+  "realism_assessment": {
+    "overall_realism_score": 0.9,
+    "individual_assessments": [
+      {
+        "assessment": "Variable Range Check",
+        "score": 1.0,
+        "issues": [],
+        "total_issues": 0
+      },
+      {
+        "assessment": "Causality Chain Analysis",
+        "score": 0.8,
+        "causal_chains_identified": 5,
+        "examples": [
+          {
+            "timestep": 2,
+            "triggers": [
+              "Banking Sector Stress"
+            ],
+            "immediate_effects": [
+              "countries.USA.finance.bank_tier1_ratio",
+              "countries.USA.finance.credit_spread"
+            ]
+          },
+          {
+            "timestep": 3,
+            "triggers": [
+              "Contagion to UK"
+            ],
+            "immediate_effects": [
+              "countries.GBR.finance.credit_spread",
+              "countries.GBR.external.fx_rate"
+            ]
+          },
+          {
+            "timestep": 4,
+            "triggers": [
+              "Emergency Rate Cuts"
+            ],
+            "immediate_effects": [
+              "countries.USA.macro.policy_rate",
+              "countries.GBR.macro.policy_rate"
+            ]
+          }
+        ]
+      },
+      {
+        "assessment": "Timing Realism",
+        "score": 0.9,
+        "rapid_changes": 12,
+        "total_changes": 78,
+        "rapid_change_ratio": 0.15384615384615385
+      }
+    ],
+    "grade": "A",
+    "summary": "Excellent economic realism with consistent relationships and realistic variable ranges."
+  },
+  "key_insights": [
+    "EconomicInsight(category='Monetary Policy', description='Central bank policy responses observed throughout scenario', evidence={'total_policy_changes': 32, 'rate_range': (0.0, 0.05055000000000001), 'taylor_rule_applications': 28}, realism_score=0.8, concerns=None)",
+    "EconomicInsight(category='Crisis Dynamics', description='Complex crisis evolution with multiple trigger events', evidence={'trigger_sequence': [(2, 'Banking Sector Stress'), (3, 'Contagion to UK'), (4, 'Emergency Rate Cuts'), (5, 'Fiscal Stimulus Package'), (8, 'Recovery Signs')], 'crisis_duration': 7, 'trigger_types': ['Banking Sector Stress', 'Emergency Rate Cuts', 'Fiscal Stimulus Package', 'Recovery Signs', 'Contagion to UK']}, realism_score=0.9, concerns=None)"
+  ],
+  "recommendations": [
+    "\u2705 Reducer sequence is consistent across all timesteps",
+    "\ud83d\udca1 Consider adding trade dynamics for more comprehensive economic modeling"
+  ],
+  "analysis_metadata": {
+    "generated_at": "2025-09-15T18:38:00.486457",
+    "analyzer_version": "1.0",
+    "source_file": "reports/audit_global_financial_crisis_20250915_183416.json"
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "scenario_name": "Inflation Target Test",
+  "success": true,
+  "validation_results": {
+    "economic_relationships": [
+      {
+        "check_name": "policy_rate_increases_with_high_inflation",
+        "description": "Central bank should fight high inflation",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: policy_rate_increases_with_high_inflation"
+      },
+      {
+        "check_name": "inflation_approaches_target",
+        "description": "Inflation should move toward target over time",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: inflation_approaches_target"
+      },
+      {
+        "check_name": "policy_rate_responds_appropriately",
+        "description": "Policy rate should increase to combat inflation",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: policy_rate_responds_appropriately"
+      }
+    ],
+    "expected_outcomes": [
+      {
+        "field": "countries.USA.macro.inflation",
+        "description": "Inflation should decrease from initial 8%",
+        "should": "decrease",
+        "passed": true,
+        "initial_value": 0.08,
+        "final_value": 0.0357101339268,
+        "field_trajectory": [
+          [
+            6,
+            0.048137988
+          ],
+          [
+            7,
+            0.0445241892
+          ],
+          [
+            8,
+            0.04127177028
+          ],
+          [
+            9,
+            0.038344593252
+          ],
+          [
+            10,
+            0.0357101339268
+          ]
+        ]
+      },
+      {
+        "field": "countries.USA.macro.policy_rate",
+        "description": "Policy rate should increase from initial 2%",
+        "should": "increase",
+        "passed": true,
+        "initial_value": 0.02,
+        "final_value": 0.0685652008902,
+        "field_trajectory": [
+          [
+            6,
+            0.087206982
+          ],
+          [
+            7,
+            0.0817862838
+          ],
+          [
+            8,
+            0.07690765542
+          ],
+          [
+            9,
+            0.07251688987800001
+          ],
+          [
+            10,
+            0.0685652008902
+          ]
+        ]
+      },
+      {
+        "field": "countries.USA.macro.inflation",
+        "description": "Final inflation gap should be smaller than initial",
+        "should": "converge_to_target",
+        "passed": false,
+        "initial_value": 0.08,
+        "final_value": 0.0357101339268,
+        "field_trajectory": [
+          [
+            6,
+            0.048137988
+          ],
+          [
+            7,
+            0.0445241892
+          ],
+          [
+            8,
+            0.04127177028
+          ],
+          [
+            9,
+            0.038344593252
+          ],
+          [
+            10,
+            0.0357101339268
+          ]
+        ]
+      }
+    ],
+    "overall_passed": false
+  },
+  "error_message": null,
+  "execution_summary": {
+    "timesteps_completed": 10,
+    "execution_time": 0.356259
+  }
+}

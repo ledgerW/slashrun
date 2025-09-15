@@ -1,0 +1,365 @@
+{
+  "scenario_name": "Global Financial Crisis",
+  "success": true,
+  "validation_results": {
+    "economic_relationships": [
+      {
+        "check_name": "credit_spreads_widen_with_bank_stress",
+        "description": "Credit spread widening",
+        "passed": true,
+        "details": {
+          "spread_series": [
+            [
+              1,
+              "USA",
+              0.015
+            ],
+            [
+              1,
+              "GBR",
+              0.018
+            ],
+            [
+              1,
+              "EUR",
+              0.022
+            ],
+            [
+              2,
+              "USA",
+              0.045
+            ],
+            [
+              2,
+              "GBR",
+              0.018
+            ],
+            [
+              2,
+              "EUR",
+              0.022
+            ],
+            [
+              3,
+              "USA",
+              0.045
+            ],
+            [
+              3,
+              "GBR",
+              0.045
+            ],
+            [
+              3,
+              "EUR",
+              0.022
+            ],
+            [
+              4,
+              "USA",
+              0.045
+            ],
+            [
+              4,
+              "GBR",
+              0.045
+            ],
+            [
+              4,
+              "EUR",
+              0.022
+            ],
+            [
+              5,
+              "USA",
+              0.045
+            ],
+            [
+              5,
+              "GBR",
+              0.045
+            ],
+            [
+              5,
+              "EUR",
+              0.022
+            ],
+            [
+              6,
+              "USA",
+              0.045
+            ],
+            [
+              6,
+              "GBR",
+              0.045
+            ],
+            [
+              6,
+              "EUR",
+              0.022
+            ],
+            [
+              7,
+              "USA",
+              0.045
+            ],
+            [
+              7,
+              "GBR",
+              0.045
+            ],
+            [
+              7,
+              "EUR",
+              0.022
+            ],
+            [
+              8,
+              "USA",
+              0.027
+            ],
+            [
+              8,
+              "GBR",
+              0.0315
+            ],
+            [
+              8,
+              "EUR",
+              0.022
+            ],
+            [
+              9,
+              "USA",
+              0.027
+            ],
+            [
+              9,
+              "GBR",
+              0.0315
+            ],
+            [
+              9,
+              "EUR",
+              0.022
+            ],
+            [
+              10,
+              "USA",
+              0.027
+            ],
+            [
+              10,
+              "GBR",
+              0.0315
+            ],
+            [
+              10,
+              "EUR",
+              0.022
+            ]
+          ],
+          "widening_found": true,
+          "max_spread": [
+            2,
+            "USA",
+            0.045
+          ],
+          "min_spread": [
+            1,
+            "USA",
+            0.015
+          ]
+        },
+        "error_message": null
+      },
+      {
+        "check_name": "financial_contagion_through_interbank_markets",
+        "description": "Crisis should spread through interbank linkages",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: financial_contagion_through_interbank_markets"
+      },
+      {
+        "check_name": "coordinated_monetary_policy_response",
+        "description": "Central banks should coordinate emergency responses",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: coordinated_monetary_policy_response"
+      },
+      {
+        "check_name": "fiscal_expansion_during_crisis",
+        "description": "Governments should expand fiscal policy",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: fiscal_expansion_during_crisis"
+      },
+      {
+        "check_name": "credit_spreads_compress_in_recovery",
+        "description": "Credit markets should eventually normalize",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: credit_spreads_compress_in_recovery"
+      }
+    ],
+    "expected_outcomes": [
+      {
+        "field": "countries.USA.finance.credit_spread",
+        "description": "US credit spreads should widen significantly",
+        "should": "increase",
+        "passed": true,
+        "initial_value": 0.015,
+        "final_value": 0.027,
+        "field_trajectory": [
+          [
+            6,
+            0.045
+          ],
+          [
+            7,
+            0.045
+          ],
+          [
+            8,
+            0.027
+          ],
+          [
+            9,
+            0.027
+          ],
+          [
+            10,
+            0.027
+          ]
+        ]
+      },
+      {
+        "field": "countries.GBR.finance.credit_spread",
+        "description": "UK credit spreads should also widen (contagion)",
+        "should": "increase",
+        "passed": true,
+        "initial_value": 0.018,
+        "final_value": 0.0315,
+        "field_trajectory": [
+          [
+            6,
+            0.045
+          ],
+          [
+            7,
+            0.045
+          ],
+          [
+            8,
+            0.0315
+          ],
+          [
+            9,
+            0.0315
+          ],
+          [
+            10,
+            0.0315
+          ]
+        ]
+      },
+      {
+        "field": "countries.USA.macro.policy_rate",
+        "description": "US policy rate should be cut to zero",
+        "should": "equal",
+        "passed": true,
+        "initial_value": 0.05,
+        "final_value": 0.03979922958195001,
+        "field_trajectory": [
+          [
+            6,
+            0.0433630995
+          ],
+          [
+            7,
+            0.04232678955
+          ],
+          [
+            8,
+            0.041394110595000005
+          ],
+          [
+            9,
+            0.040554699535500005
+          ],
+          [
+            10,
+            0.03979922958195001
+          ]
+        ]
+      },
+      {
+        "field": "countries.USA.macro.debt_gdp",
+        "description": "US debt should increase due to fiscal expansion",
+        "should": "increase",
+        "passed": true,
+        "initial_value": 0.95,
+        "final_value": 1.05,
+        "field_trajectory": [
+          [
+            6,
+            1.05
+          ],
+          [
+            7,
+            1.05
+          ],
+          [
+            8,
+            1.05
+          ],
+          [
+            9,
+            1.05
+          ],
+          [
+            10,
+            1.05
+          ]
+        ]
+      },
+      {
+        "field": "interbank_matrix.USA.GBR",
+        "description": "Interbank lending should be reduced",
+        "should": "decrease",
+        "passed": false,
+        "initial_value": 500000,
+        "final_value": 500000.0,
+        "field_trajectory": [
+          [
+            6,
+            500000.0
+          ],
+          [
+            7,
+            500000.0
+          ],
+          [
+            8,
+            500000.0
+          ],
+          [
+            9,
+            500000.0
+          ],
+          [
+            10,
+            500000.0
+          ]
+        ]
+      }
+    ],
+    "overall_passed": false
+  },
+  "error_message": null,
+  "execution_summary": {
+    "timesteps_completed": 10,
+    "execution_time": 0.531851
+  }
+}

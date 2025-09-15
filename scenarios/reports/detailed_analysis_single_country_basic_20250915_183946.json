@@ -1,0 +1,255 @@
+{
+  "scenario_name": "Single Country Basic",
+  "execution_summary": {
+    "timesteps_completed": 5,
+    "execution_time_seconds": 0.158443,
+    "total_field_changes": 10,
+    "average_changes_per_step": 2.0,
+    "total_triggers_fired": 0,
+    "reducer_consistency": true,
+    "performance_metrics": {
+      "avg_step_time_ms": 31.6886,
+      "changes_per_second": 63.114179862789776
+    }
+  },
+  "state_evolution": {
+    "countries.USA.macro.inflation": {
+      "trajectory": [
+        {
+          "timestep": 1,
+          "value": 0.023700000000000002
+        },
+        {
+          "timestep": 2,
+          "value": 0.02253
+        },
+        {
+          "timestep": 3,
+          "value": 0.021477000000000003
+        },
+        {
+          "timestep": 4,
+          "value": 0.020529300000000004
+        },
+        {
+          "timestep": 5,
+          "value": 0.019676370000000002
+        }
+      ],
+      "initial_value": 0.023700000000000002,
+      "final_value": 0.019676370000000002,
+      "change": -0.00402363,
+      "volatility": 0.0010059075,
+      "trend": "decreasing"
+    },
+    "countries.USA.macro.policy_rate": {
+      "trajectory": [
+        {
+          "timestep": 1,
+          "value": 0.05055000000000001
+        },
+        {
+          "timestep": 2,
+          "value": 0.048795000000000005
+        },
+        {
+          "timestep": 3,
+          "value": 0.04721550000000001
+        },
+        {
+          "timestep": 4,
+          "value": 0.045793950000000014
+        },
+        {
+          "timestep": 5,
+          "value": 0.04451455500000001
+        }
+      ],
+      "initial_value": 0.05055000000000001,
+      "final_value": 0.04451455500000001,
+      "change": -0.006035445,
+      "volatility": 0.00150886125,
+      "trend": "decreasing"
+    },
+    "countries.USA.macro.debt_gdp": {
+      "trajectory": [
+        {
+          "timestep": 1,
+          "value": 0.95
+        },
+        {
+          "timestep": 2,
+          "value": 0.95
+        },
+        {
+          "timestep": 3,
+          "value": 0.95
+        },
+        {
+          "timestep": 4,
+          "value": 0.95
+        },
+        {
+          "timestep": 5,
+          "value": 0.95
+        }
+      ],
+      "initial_value": 0.95,
+      "final_value": 0.95,
+      "change": 0.0,
+      "volatility": 0.0,
+      "trend": "stable"
+    }
+  },
+  "trigger_analysis": {
+    "triggers_fired": {},
+    "firing_sequence": [],
+    "trigger_effects": {}
+  },
+  "reducer_analysis": {
+    "output_gap_update": {
+      "execution_count": 5,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "inflation_update": {
+      "execution_count": 5,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "monetary_policy": {
+      "execution_count": 5,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "fiscal_update": {
+      "execution_count": 5,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "debt_update": {
+      "execution_count": 5,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "fx_update": {
+      "execution_count": 5,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "trade_update": {
+      "execution_count": 5,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "labor_supply_update": {
+      "execution_count": 5,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "security_update": {
+      "execution_count": 5,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    },
+    "bop_settlement": {
+      "execution_count": 5,
+      "field_changes": [],
+      "execution_times": [],
+      "avg_changes_per_execution": 0.0,
+      "unique_fields_affected": 0
+    }
+  },
+  "economic_relationships": [
+    {
+      "relationship": "Taylor Rule",
+      "description": "Central bank policy rate response to inflation and output gaps",
+      "realism_score": 0.5,
+      "sample_size": 5,
+      "issues": [
+        "Timestep 1: Taylor rule error 0.0237",
+        "Timestep 2: Taylor rule error 0.0225",
+        "Timestep 3: Taylor rule error 0.0215",
+        "Timestep 4: Taylor rule error 0.0205",
+        "Timestep 5: Taylor rule error 0.0197"
+      ],
+      "details": {
+        "average_phi_pi": 0.5,
+        "average_phi_y": 0.5,
+        "rate_range": [
+          0.04451455500000001,
+          0.05055000000000001
+        ]
+      }
+    },
+    {
+      "relationship": "Phillips Curve",
+      "description": "Inflation response to output gaps and expectations",
+      "realism_score": 0.9199999999999999,
+      "sample_size": 5,
+      "issues": [],
+      "details": {
+        "average_beta": 0.6,
+        "average_kappa": 0.1
+      }
+    }
+  ],
+  "realism_assessment": {
+    "overall_realism_score": 0.9,
+    "individual_assessments": [
+      {
+        "assessment": "Variable Range Check",
+        "score": 1.0,
+        "issues": [],
+        "total_issues": 0
+      },
+      {
+        "assessment": "Causality Chain Analysis",
+        "score": 0.8,
+        "causal_chains_identified": 0,
+        "examples": []
+      },
+      {
+        "assessment": "Timing Realism",
+        "score": 0.9,
+        "rapid_changes": 0,
+        "total_changes": 10,
+        "rapid_change_ratio": 0.0
+      }
+    ],
+    "grade": "A",
+    "summary": "Excellent economic realism with consistent relationships and realistic variable ranges."
+  },
+  "key_insights": [
+    "EconomicInsight(category='Monetary Policy', description='Central bank policy responses observed throughout scenario', evidence={'total_policy_changes': 5, 'rate_range': (0.04451455500000001, 0.05055000000000001), 'taylor_rule_applications': 5}, realism_score=0.8, concerns=None)"
+  ],
+  "recommendations": [
+    "\u2705 Reducer sequence is consistent across all timesteps",
+    "\ud83d\udca1 Consider adding trade dynamics for more comprehensive economic modeling",
+    "\ud83d\udca1 Consider adding exchange rate and external sector dynamics",
+    "\ud83d\udd0d Low number of field changes per step - verify all economic mechanisms are active"
+  ],
+  "analysis_metadata": {
+    "generated_at": "2025-09-15T18:39:46.039107",
+    "analyzer_version": "1.0",
+    "source_file": "reports/audit_single_country_basic_20250915_183347.json"
+  }
+}

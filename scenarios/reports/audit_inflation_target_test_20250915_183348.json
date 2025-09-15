@@ -1,0 +1,1599 @@
+{
+  "scenario_name": "Inflation Target Test",
+  "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+  "execution_time": 0.356259,
+  "timesteps_completed": 10,
+  "audit_trail": [
+    {
+      "id": "eaea0b29-fe5b-484c-a1e3-eb97a61e61d3",
+      "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+      "timestep": 1,
+      "state": {
+        "t": 1,
+        "base_ccy": "USD",
+        "countries": {
+          "USA": {
+            "name": "USA",
+            "macro": {
+              "gdp": 23000000.0,
+              "potential_gdp": null,
+              "inflation": 0.0732,
+              "unemployment": 0.037,
+              "output_gap": 0.0,
+              "primary_balance": null,
+              "debt_gdp": 0.95,
+              "neutral_rate": 0.025,
+              "policy_rate": 0.12480000000000001,
+              "inflation_target": 0.02,
+              "sfa": 0.0
+            },
+            "external": {
+              "fx_rate": null,
+              "reserves_usd": null,
+              "current_account_gdp": null,
+              "net_errors_omissions_gdp": 0.0
+            },
+            "finance": {
+              "sovereign_yield": null,
+              "credit_spread": null,
+              "bank_tier1_ratio": null,
+              "leverage_target": 10.0
+            },
+            "trade": {
+              "exports_gdp": null,
+              "imports_gdp": null,
+              "tariff_mfn_avg": null,
+              "ntm_index": null,
+              "terms_of_trade": 1.0
+            },
+            "energy": {
+              "energy_stock_to_use": null,
+              "food_price_index": null,
+              "energy_price_index": null
+            },
+            "security": {
+              "milex_gdp": null,
+              "personnel": null,
+              "conflict_intensity": null
+            },
+            "sentiment": {
+              "gdelt_tone": null,
+              "trends_salience": null,
+              "policy_pressure": null,
+              "approval": null
+            }
+          }
+        },
+        "trade_matrix": {},
+        "interbank_matrix": {},
+        "alliance_graph": {},
+        "sanctions": {},
+        "io_coefficients": {},
+        "commodity_prices": {},
+        "rules": {
+          "regimes": {
+            "monetary": {
+              "taylor_rule_enabled": true
+            },
+            "fx": {
+              "uip_rho_base": 0.0
+            },
+            "fiscal": {
+              "wealth_tax_rate": 0.0,
+              "elasticity_saving": -0.3
+            },
+            "trade": {
+              "tariff_multiplier": 1.0,
+              "ntm_shock": 0.0
+            },
+            "security": {
+              "mobilization_intensity": 0.0
+            },
+            "labor": {
+              "national_service_pct": 0.0
+            },
+            "sentiment": {
+              "propaganda_gain": 0.0
+            }
+          },
+          "rng_seed": 42,
+          "invariants": {
+            "bmp6": true,
+            "sfc_light": true
+          }
+        },
+        "events": {
+          "pending": [],
+          "processed": []
+        }
+      },
+      "audit": {
+        "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+        "timestep": 1,
+        "step_start_time": "2025-09-15T22:33:47.953469",
+        "step_end_time": "2025-09-15T22:33:47.953881",
+        "reducer_sequence": [
+          "output_gap_update",
+          "inflation_update",
+          "monetary_policy",
+          "fiscal_update",
+          "debt_update",
+          "fx_update",
+          "trade_update",
+          "labor_supply_update",
+          "security_update",
+          "bop_settlement"
+        ],
+        "field_changes": [
+          {
+            "field_path": "countries.USA.macro.inflation",
+            "old_value": 0.08,
+            "new_value": 0.0732,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "phillips_curve": "\u03c0_t = \u03b2*E[\u03c0_{t+1}] + \u03ba*y_t + \u03b5_t",
+              "beta": 0.6,
+              "kappa": 0.1,
+              "expected_inflation": 0.02,
+              "output_gap": 0.0,
+              "supply_shock": 0.0,
+              "adjustment_speed": 0.1
+            }
+          },
+          {
+            "field_path": "countries.USA.macro.policy_rate",
+            "old_value": 0.02,
+            "new_value": 0.12480000000000001,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "rule": "taylor",
+              "phi_pi": 0.5,
+              "phi_y": 0.5,
+              "inflation": 0.0732,
+              "inflation_target": 0.02,
+              "output_gap": 0.0,
+              "neutral_rate": 0.025
+            }
+          }
+        ],
+        "triggers_fired": [],
+        "errors": []
+      },
+      "created_at": "2025-09-15T22:33:47.954172"
+    },
+    {
+      "id": "fcda3ff1-4b5c-44ee-b17c-85e2d4a8242d",
+      "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+      "timestep": 2,
+      "state": {
+        "t": 2,
+        "base_ccy": "USD",
+        "countries": {
+          "USA": {
+            "name": "USA",
+            "macro": {
+              "gdp": 23000000.0,
+              "potential_gdp": null,
+              "inflation": 0.06708,
+              "unemployment": 0.037,
+              "output_gap": 0.0,
+              "primary_balance": null,
+              "debt_gdp": 0.95,
+              "neutral_rate": 0.025,
+              "policy_rate": 0.11562,
+              "inflation_target": 0.02,
+              "sfa": 0.0
+            },
+            "external": {
+              "fx_rate": null,
+              "reserves_usd": null,
+              "current_account_gdp": null,
+              "net_errors_omissions_gdp": 0.0
+            },
+            "finance": {
+              "sovereign_yield": null,
+              "credit_spread": null,
+              "bank_tier1_ratio": null,
+              "leverage_target": 10.0
+            },
+            "trade": {
+              "exports_gdp": null,
+              "imports_gdp": null,
+              "tariff_mfn_avg": null,
+              "ntm_index": null,
+              "terms_of_trade": 1.0
+            },
+            "energy": {
+              "energy_stock_to_use": null,
+              "food_price_index": null,
+              "energy_price_index": null
+            },
+            "security": {
+              "milex_gdp": null,
+              "personnel": null,
+              "conflict_intensity": null
+            },
+            "sentiment": {
+              "gdelt_tone": null,
+              "trends_salience": null,
+              "policy_pressure": null,
+              "approval": null
+            }
+          }
+        },
+        "trade_matrix": {},
+        "interbank_matrix": {},
+        "alliance_graph": {},
+        "sanctions": {},
+        "io_coefficients": {},
+        "commodity_prices": {},
+        "rules": {
+          "regimes": {
+            "monetary": {
+              "taylor_rule_enabled": true
+            },
+            "fx": {
+              "uip_rho_base": 0.0
+            },
+            "fiscal": {
+              "wealth_tax_rate": 0.0,
+              "elasticity_saving": -0.3
+            },
+            "trade": {
+              "tariff_multiplier": 1.0,
+              "ntm_shock": 0.0
+            },
+            "security": {
+              "mobilization_intensity": 0.0
+            },
+            "labor": {
+              "national_service_pct": 0.0
+            },
+            "sentiment": {
+              "propaganda_gain": 0.0
+            }
+          },
+          "rng_seed": 42,
+          "invariants": {
+            "bmp6": true,
+            "sfc_light": true
+          }
+        },
+        "events": {
+          "pending": [],
+          "processed": []
+        }
+      },
+      "audit": {
+        "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+        "timestep": 2,
+        "step_start_time": "2025-09-15T22:33:47.993180",
+        "step_end_time": "2025-09-15T22:33:47.993478",
+        "reducer_sequence": [
+          "output_gap_update",
+          "inflation_update",
+          "monetary_policy",
+          "fiscal_update",
+          "debt_update",
+          "fx_update",
+          "trade_update",
+          "labor_supply_update",
+          "security_update",
+          "bop_settlement"
+        ],
+        "field_changes": [
+          {
+            "field_path": "countries.USA.macro.inflation",
+            "old_value": 0.0732,
+            "new_value": 0.06708,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "phillips_curve": "\u03c0_t = \u03b2*E[\u03c0_{t+1}] + \u03ba*y_t + \u03b5_t",
+              "beta": 0.6,
+              "kappa": 0.1,
+              "expected_inflation": 0.02,
+              "output_gap": 0.0,
+              "supply_shock": 0.0,
+              "adjustment_speed": 0.1
+            }
+          },
+          {
+            "field_path": "countries.USA.macro.policy_rate",
+            "old_value": 0.12480000000000001,
+            "new_value": 0.11562,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "rule": "taylor",
+              "phi_pi": 0.5,
+              "phi_y": 0.5,
+              "inflation": 0.06708,
+              "inflation_target": 0.02,
+              "output_gap": 0.0,
+              "neutral_rate": 0.025
+            }
+          }
+        ],
+        "triggers_fired": [],
+        "errors": []
+      },
+      "created_at": "2025-09-15T22:33:47.993697"
+    },
+    {
+      "id": "70ccd917-33a1-4412-adda-a4b9dca26543",
+      "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+      "timestep": 3,
+      "state": {
+        "t": 3,
+        "base_ccy": "USD",
+        "countries": {
+          "USA": {
+            "name": "USA",
+            "macro": {
+              "gdp": 23000000.0,
+              "potential_gdp": null,
+              "inflation": 0.061572,
+              "unemployment": 0.037,
+              "output_gap": 0.0,
+              "primary_balance": null,
+              "debt_gdp": 0.95,
+              "neutral_rate": 0.025,
+              "policy_rate": 0.10735800000000001,
+              "inflation_target": 0.02,
+              "sfa": 0.0
+            },
+            "external": {
+              "fx_rate": null,
+              "reserves_usd": null,
+              "current_account_gdp": null,
+              "net_errors_omissions_gdp": 0.0
+            },
+            "finance": {
+              "sovereign_yield": null,
+              "credit_spread": null,
+              "bank_tier1_ratio": null,
+              "leverage_target": 10.0
+            },
+            "trade": {
+              "exports_gdp": null,
+              "imports_gdp": null,
+              "tariff_mfn_avg": null,
+              "ntm_index": null,
+              "terms_of_trade": 1.0
+            },
+            "energy": {
+              "energy_stock_to_use": null,
+              "food_price_index": null,
+              "energy_price_index": null
+            },
+            "security": {
+              "milex_gdp": null,
+              "personnel": null,
+              "conflict_intensity": null
+            },
+            "sentiment": {
+              "gdelt_tone": null,
+              "trends_salience": null,
+              "policy_pressure": null,
+              "approval": null
+            }
+          }
+        },
+        "trade_matrix": {},
+        "interbank_matrix": {},
+        "alliance_graph": {},
+        "sanctions": {},
+        "io_coefficients": {},
+        "commodity_prices": {},
+        "rules": {
+          "regimes": {
+            "monetary": {
+              "taylor_rule_enabled": true
+            },
+            "fx": {
+              "uip_rho_base": 0.0
+            },
+            "fiscal": {
+              "wealth_tax_rate": 0.0,
+              "elasticity_saving": -0.3
+            },
+            "trade": {
+              "tariff_multiplier": 1.0,
+              "ntm_shock": 0.0
+            },
+            "security": {
+              "mobilization_intensity": 0.0
+            },
+            "labor": {
+              "national_service_pct": 0.0
+            },
+            "sentiment": {
+              "propaganda_gain": 0.0
+            }
+          },
+          "rng_seed": 42,
+          "invariants": {
+            "bmp6": true,
+            "sfc_light": true
+          }
+        },
+        "events": {
+          "pending": [],
+          "processed": []
+        }
+      },
+      "audit": {
+        "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+        "timestep": 3,
+        "step_start_time": "2025-09-15T22:33:48.018282",
+        "step_end_time": "2025-09-15T22:33:48.018545",
+        "reducer_sequence": [
+          "output_gap_update",
+          "inflation_update",
+          "monetary_policy",
+          "fiscal_update",
+          "debt_update",
+          "fx_update",
+          "trade_update",
+          "labor_supply_update",
+          "security_update",
+          "bop_settlement"
+        ],
+        "field_changes": [
+          {
+            "field_path": "countries.USA.macro.inflation",
+            "old_value": 0.06708,
+            "new_value": 0.061572,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "phillips_curve": "\u03c0_t = \u03b2*E[\u03c0_{t+1}] + \u03ba*y_t + \u03b5_t",
+              "beta": 0.6,
+              "kappa": 0.1,
+              "expected_inflation": 0.02,
+              "output_gap": 0.0,
+              "supply_shock": 0.0,
+              "adjustment_speed": 0.1
+            }
+          },
+          {
+            "field_path": "countries.USA.macro.policy_rate",
+            "old_value": 0.11562,
+            "new_value": 0.10735800000000001,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "rule": "taylor",
+              "phi_pi": 0.5,
+              "phi_y": 0.5,
+              "inflation": 0.061572,
+              "inflation_target": 0.02,
+              "output_gap": 0.0,
+              "neutral_rate": 0.025
+            }
+          }
+        ],
+        "triggers_fired": [],
+        "errors": []
+      },
+      "created_at": "2025-09-15T22:33:48.018722"
+    },
+    {
+      "id": "dd0a1696-af0c-4e36-9ed3-16abed7716ff",
+      "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+      "timestep": 4,
+      "state": {
+        "t": 4,
+        "base_ccy": "USD",
+        "countries": {
+          "USA": {
+            "name": "USA",
+            "macro": {
+              "gdp": 23000000.0,
+              "potential_gdp": null,
+              "inflation": 0.0566148,
+              "unemployment": 0.037,
+              "output_gap": 0.0,
+              "primary_balance": null,
+              "debt_gdp": 0.95,
+              "neutral_rate": 0.025,
+              "policy_rate": 0.0999222,
+              "inflation_target": 0.02,
+              "sfa": 0.0
+            },
+            "external": {
+              "fx_rate": null,
+              "reserves_usd": null,
+              "current_account_gdp": null,
+              "net_errors_omissions_gdp": 0.0
+            },
+            "finance": {
+              "sovereign_yield": null,
+              "credit_spread": null,
+              "bank_tier1_ratio": null,
+              "leverage_target": 10.0
+            },
+            "trade": {
+              "exports_gdp": null,
+              "imports_gdp": null,
+              "tariff_mfn_avg": null,
+              "ntm_index": null,
+              "terms_of_trade": 1.0
+            },
+            "energy": {
+              "energy_stock_to_use": null,
+              "food_price_index": null,
+              "energy_price_index": null
+            },
+            "security": {
+              "milex_gdp": null,
+              "personnel": null,
+              "conflict_intensity": null
+            },
+            "sentiment": {
+              "gdelt_tone": null,
+              "trends_salience": null,
+              "policy_pressure": null,
+              "approval": null
+            }
+          }
+        },
+        "trade_matrix": {},
+        "interbank_matrix": {},
+        "alliance_graph": {},
+        "sanctions": {},
+        "io_coefficients": {},
+        "commodity_prices": {},
+        "rules": {
+          "regimes": {
+            "monetary": {
+              "taylor_rule_enabled": true
+            },
+            "fx": {
+              "uip_rho_base": 0.0
+            },
+            "fiscal": {
+              "wealth_tax_rate": 0.0,
+              "elasticity_saving": -0.3
+            },
+            "trade": {
+              "tariff_multiplier": 1.0,
+              "ntm_shock": 0.0
+            },
+            "security": {
+              "mobilization_intensity": 0.0
+            },
+            "labor": {
+              "national_service_pct": 0.0
+            },
+            "sentiment": {
+              "propaganda_gain": 0.0
+            }
+          },
+          "rng_seed": 42,
+          "invariants": {
+            "bmp6": true,
+            "sfc_light": true
+          }
+        },
+        "events": {
+          "pending": [],
+          "processed": []
+        }
+      },
+      "audit": {
+        "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+        "timestep": 4,
+        "step_start_time": "2025-09-15T22:33:48.037061",
+        "step_end_time": "2025-09-15T22:33:48.037322",
+        "reducer_sequence": [
+          "output_gap_update",
+          "inflation_update",
+          "monetary_policy",
+          "fiscal_update",
+          "debt_update",
+          "fx_update",
+          "trade_update",
+          "labor_supply_update",
+          "security_update",
+          "bop_settlement"
+        ],
+        "field_changes": [
+          {
+            "field_path": "countries.USA.macro.inflation",
+            "old_value": 0.061572,
+            "new_value": 0.0566148,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "phillips_curve": "\u03c0_t = \u03b2*E[\u03c0_{t+1}] + \u03ba*y_t + \u03b5_t",
+              "beta": 0.6,
+              "kappa": 0.1,
+              "expected_inflation": 0.02,
+              "output_gap": 0.0,
+              "supply_shock": 0.0,
+              "adjustment_speed": 0.1
+            }
+          },
+          {
+            "field_path": "countries.USA.macro.policy_rate",
+            "old_value": 0.10735800000000001,
+            "new_value": 0.0999222,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "rule": "taylor",
+              "phi_pi": 0.5,
+              "phi_y": 0.5,
+              "inflation": 0.0566148,
+              "inflation_target": 0.02,
+              "output_gap": 0.0,
+              "neutral_rate": 0.025
+            }
+          }
+        ],
+        "triggers_fired": [],
+        "errors": []
+      },
+      "created_at": "2025-09-15T22:33:48.037502"
+    },
+    {
+      "id": "caf98ff4-5a91-48d0-830e-a24fe29aa2a2",
+      "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+      "timestep": 5,
+      "state": {
+        "t": 5,
+        "base_ccy": "USD",
+        "countries": {
+          "USA": {
+            "name": "USA",
+            "macro": {
+              "gdp": 23000000.0,
+              "potential_gdp": null,
+              "inflation": 0.05215332,
+              "unemployment": 0.037,
+              "output_gap": 0.0,
+              "primary_balance": null,
+              "debt_gdp": 0.95,
+              "neutral_rate": 0.025,
+              "policy_rate": 0.09322997999999999,
+              "inflation_target": 0.02,
+              "sfa": 0.0
+            },
+            "external": {
+              "fx_rate": null,
+              "reserves_usd": null,
+              "current_account_gdp": null,
+              "net_errors_omissions_gdp": 0.0
+            },
+            "finance": {
+              "sovereign_yield": null,
+              "credit_spread": null,
+              "bank_tier1_ratio": null,
+              "leverage_target": 10.0
+            },
+            "trade": {
+              "exports_gdp": null,
+              "imports_gdp": null,
+              "tariff_mfn_avg": null,
+              "ntm_index": null,
+              "terms_of_trade": 1.0
+            },
+            "energy": {
+              "energy_stock_to_use": null,
+              "food_price_index": null,
+              "energy_price_index": null
+            },
+            "security": {
+              "milex_gdp": null,
+              "personnel": null,
+              "conflict_intensity": null
+            },
+            "sentiment": {
+              "gdelt_tone": null,
+              "trends_salience": null,
+              "policy_pressure": null,
+              "approval": null
+            }
+          }
+        },
+        "trade_matrix": {},
+        "interbank_matrix": {},
+        "alliance_graph": {},
+        "sanctions": {},
+        "io_coefficients": {},
+        "commodity_prices": {},
+        "rules": {
+          "regimes": {
+            "monetary": {
+              "taylor_rule_enabled": true
+            },
+            "fx": {
+              "uip_rho_base": 0.0
+            },
+            "fiscal": {
+              "wealth_tax_rate": 0.0,
+              "elasticity_saving": -0.3
+            },
+            "trade": {
+              "tariff_multiplier": 1.0,
+              "ntm_shock": 0.0
+            },
+            "security": {
+              "mobilization_intensity": 0.0
+            },
+            "labor": {
+              "national_service_pct": 0.0
+            },
+            "sentiment": {
+              "propaganda_gain": 0.0
+            }
+          },
+          "rng_seed": 42,
+          "invariants": {
+            "bmp6": true,
+            "sfc_light": true
+          }
+        },
+        "events": {
+          "pending": [],
+          "processed": []
+        }
+      },
+      "audit": {
+        "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+        "timestep": 5,
+        "step_start_time": "2025-09-15T22:33:48.056589",
+        "step_end_time": "2025-09-15T22:33:48.056854",
+        "reducer_sequence": [
+          "output_gap_update",
+          "inflation_update",
+          "monetary_policy",
+          "fiscal_update",
+          "debt_update",
+          "fx_update",
+          "trade_update",
+          "labor_supply_update",
+          "security_update",
+          "bop_settlement"
+        ],
+        "field_changes": [
+          {
+            "field_path": "countries.USA.macro.inflation",
+            "old_value": 0.0566148,
+            "new_value": 0.05215332,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "phillips_curve": "\u03c0_t = \u03b2*E[\u03c0_{t+1}] + \u03ba*y_t + \u03b5_t",
+              "beta": 0.6,
+              "kappa": 0.1,
+              "expected_inflation": 0.02,
+              "output_gap": 0.0,
+              "supply_shock": 0.0,
+              "adjustment_speed": 0.1
+            }
+          },
+          {
+            "field_path": "countries.USA.macro.policy_rate",
+            "old_value": 0.0999222,
+            "new_value": 0.09322997999999999,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "rule": "taylor",
+              "phi_pi": 0.5,
+              "phi_y": 0.5,
+              "inflation": 0.05215332,
+              "inflation_target": 0.02,
+              "output_gap": 0.0,
+              "neutral_rate": 0.025
+            }
+          }
+        ],
+        "triggers_fired": [],
+        "errors": []
+      },
+      "created_at": "2025-09-15T22:33:48.057035"
+    },
+    {
+      "id": "28dda157-56a2-4427-9ef6-816d834f2e6b",
+      "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+      "timestep": 6,
+      "state": {
+        "t": 6,
+        "base_ccy": "USD",
+        "countries": {
+          "USA": {
+            "name": "USA",
+            "macro": {
+              "gdp": 23000000.0,
+              "potential_gdp": null,
+              "inflation": 0.048137988,
+              "unemployment": 0.037,
+              "output_gap": 0.0,
+              "primary_balance": null,
+              "debt_gdp": 0.95,
+              "neutral_rate": 0.025,
+              "policy_rate": 0.087206982,
+              "inflation_target": 0.02,
+              "sfa": 0.0
+            },
+            "external": {
+              "fx_rate": null,
+              "reserves_usd": null,
+              "current_account_gdp": null,
+              "net_errors_omissions_gdp": 0.0
+            },
+            "finance": {
+              "sovereign_yield": null,
+              "credit_spread": null,
+              "bank_tier1_ratio": null,
+              "leverage_target": 10.0
+            },
+            "trade": {
+              "exports_gdp": null,
+              "imports_gdp": null,
+              "tariff_mfn_avg": null,
+              "ntm_index": null,
+              "terms_of_trade": 1.0
+            },
+            "energy": {
+              "energy_stock_to_use": null,
+              "food_price_index": null,
+              "energy_price_index": null
+            },
+            "security": {
+              "milex_gdp": null,
+              "personnel": null,
+              "conflict_intensity": null
+            },
+            "sentiment": {
+              "gdelt_tone": null,
+              "trends_salience": null,
+              "policy_pressure": null,
+              "approval": null
+            }
+          }
+        },
+        "trade_matrix": {},
+        "interbank_matrix": {},
+        "alliance_graph": {},
+        "sanctions": {},
+        "io_coefficients": {},
+        "commodity_prices": {},
+        "rules": {
+          "regimes": {
+            "monetary": {
+              "taylor_rule_enabled": true
+            },
+            "fx": {
+              "uip_rho_base": 0.0
+            },
+            "fiscal": {
+              "wealth_tax_rate": 0.0,
+              "elasticity_saving": -0.3
+            },
+            "trade": {
+              "tariff_multiplier": 1.0,
+              "ntm_shock": 0.0
+            },
+            "security": {
+              "mobilization_intensity": 0.0
+            },
+            "labor": {
+              "national_service_pct": 0.0
+            },
+            "sentiment": {
+              "propaganda_gain": 0.0
+            }
+          },
+          "rng_seed": 42,
+          "invariants": {
+            "bmp6": true,
+            "sfc_light": true
+          }
+        },
+        "events": {
+          "pending": [],
+          "processed": []
+        }
+      },
+      "audit": {
+        "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+        "timestep": 6,
+        "step_start_time": "2025-09-15T22:33:48.075227",
+        "step_end_time": "2025-09-15T22:33:48.075507",
+        "reducer_sequence": [
+          "output_gap_update",
+          "inflation_update",
+          "monetary_policy",
+          "fiscal_update",
+          "debt_update",
+          "fx_update",
+          "trade_update",
+          "labor_supply_update",
+          "security_update",
+          "bop_settlement"
+        ],
+        "field_changes": [
+          {
+            "field_path": "countries.USA.macro.inflation",
+            "old_value": 0.05215332,
+            "new_value": 0.048137988,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "phillips_curve": "\u03c0_t = \u03b2*E[\u03c0_{t+1}] + \u03ba*y_t + \u03b5_t",
+              "beta": 0.6,
+              "kappa": 0.1,
+              "expected_inflation": 0.02,
+              "output_gap": 0.0,
+              "supply_shock": 0.0,
+              "adjustment_speed": 0.1
+            }
+          },
+          {
+            "field_path": "countries.USA.macro.policy_rate",
+            "old_value": 0.09322997999999999,
+            "new_value": 0.087206982,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "rule": "taylor",
+              "phi_pi": 0.5,
+              "phi_y": 0.5,
+              "inflation": 0.048137988,
+              "inflation_target": 0.02,
+              "output_gap": 0.0,
+              "neutral_rate": 0.025
+            }
+          }
+        ],
+        "triggers_fired": [],
+        "errors": []
+      },
+      "created_at": "2025-09-15T22:33:48.075713"
+    },
+    {
+      "id": "d296da89-6f54-4b24-96a4-f6151032d150",
+      "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+      "timestep": 7,
+      "state": {
+        "t": 7,
+        "base_ccy": "USD",
+        "countries": {
+          "USA": {
+            "name": "USA",
+            "macro": {
+              "gdp": 23000000.0,
+              "potential_gdp": null,
+              "inflation": 0.0445241892,
+              "unemployment": 0.037,
+              "output_gap": 0.0,
+              "primary_balance": null,
+              "debt_gdp": 0.95,
+              "neutral_rate": 0.025,
+              "policy_rate": 0.0817862838,
+              "inflation_target": 0.02,
+              "sfa": 0.0
+            },
+            "external": {
+              "fx_rate": null,
+              "reserves_usd": null,
+              "current_account_gdp": null,
+              "net_errors_omissions_gdp": 0.0
+            },
+            "finance": {
+              "sovereign_yield": null,
+              "credit_spread": null,
+              "bank_tier1_ratio": null,
+              "leverage_target": 10.0
+            },
+            "trade": {
+              "exports_gdp": null,
+              "imports_gdp": null,
+              "tariff_mfn_avg": null,
+              "ntm_index": null,
+              "terms_of_trade": 1.0
+            },
+            "energy": {
+              "energy_stock_to_use": null,
+              "food_price_index": null,
+              "energy_price_index": null
+            },
+            "security": {
+              "milex_gdp": null,
+              "personnel": null,
+              "conflict_intensity": null
+            },
+            "sentiment": {
+              "gdelt_tone": null,
+              "trends_salience": null,
+              "policy_pressure": null,
+              "approval": null
+            }
+          }
+        },
+        "trade_matrix": {},
+        "interbank_matrix": {},
+        "alliance_graph": {},
+        "sanctions": {},
+        "io_coefficients": {},
+        "commodity_prices": {},
+        "rules": {
+          "regimes": {
+            "monetary": {
+              "taylor_rule_enabled": true
+            },
+            "fx": {
+              "uip_rho_base": 0.0
+            },
+            "fiscal": {
+              "wealth_tax_rate": 0.0,
+              "elasticity_saving": -0.3
+            },
+            "trade": {
+              "tariff_multiplier": 1.0,
+              "ntm_shock": 0.0
+            },
+            "security": {
+              "mobilization_intensity": 0.0
+            },
+            "labor": {
+              "national_service_pct": 0.0
+            },
+            "sentiment": {
+              "propaganda_gain": 0.0
+            }
+          },
+          "rng_seed": 42,
+          "invariants": {
+            "bmp6": true,
+            "sfc_light": true
+          }
+        },
+        "events": {
+          "pending": [],
+          "processed": []
+        }
+      },
+      "audit": {
+        "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+        "timestep": 7,
+        "step_start_time": "2025-09-15T22:33:48.096167",
+        "step_end_time": "2025-09-15T22:33:48.096760",
+        "reducer_sequence": [
+          "output_gap_update",
+          "inflation_update",
+          "monetary_policy",
+          "fiscal_update",
+          "debt_update",
+          "fx_update",
+          "trade_update",
+          "labor_supply_update",
+          "security_update",
+          "bop_settlement"
+        ],
+        "field_changes": [
+          {
+            "field_path": "countries.USA.macro.inflation",
+            "old_value": 0.048137988,
+            "new_value": 0.0445241892,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "phillips_curve": "\u03c0_t = \u03b2*E[\u03c0_{t+1}] + \u03ba*y_t + \u03b5_t",
+              "beta": 0.6,
+              "kappa": 0.1,
+              "expected_inflation": 0.02,
+              "output_gap": 0.0,
+              "supply_shock": 0.0,
+              "adjustment_speed": 0.1
+            }
+          },
+          {
+            "field_path": "countries.USA.macro.policy_rate",
+            "old_value": 0.087206982,
+            "new_value": 0.0817862838,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "rule": "taylor",
+              "phi_pi": 0.5,
+              "phi_y": 0.5,
+              "inflation": 0.0445241892,
+              "inflation_target": 0.02,
+              "output_gap": 0.0,
+              "neutral_rate": 0.025
+            }
+          }
+        ],
+        "triggers_fired": [],
+        "errors": []
+      },
+      "created_at": "2025-09-15T22:33:48.097272"
+    },
+    {
+      "id": "617c2e33-7d23-4912-a6cb-5317ac52b06a",
+      "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+      "timestep": 8,
+      "state": {
+        "t": 8,
+        "base_ccy": "USD",
+        "countries": {
+          "USA": {
+            "name": "USA",
+            "macro": {
+              "gdp": 23000000.0,
+              "potential_gdp": null,
+              "inflation": 0.04127177028,
+              "unemployment": 0.037,
+              "output_gap": 0.0,
+              "primary_balance": null,
+              "debt_gdp": 0.95,
+              "neutral_rate": 0.025,
+              "policy_rate": 0.07690765542,
+              "inflation_target": 0.02,
+              "sfa": 0.0
+            },
+            "external": {
+              "fx_rate": null,
+              "reserves_usd": null,
+              "current_account_gdp": null,
+              "net_errors_omissions_gdp": 0.0
+            },
+            "finance": {
+              "sovereign_yield": null,
+              "credit_spread": null,
+              "bank_tier1_ratio": null,
+              "leverage_target": 10.0
+            },
+            "trade": {
+              "exports_gdp": null,
+              "imports_gdp": null,
+              "tariff_mfn_avg": null,
+              "ntm_index": null,
+              "terms_of_trade": 1.0
+            },
+            "energy": {
+              "energy_stock_to_use": null,
+              "food_price_index": null,
+              "energy_price_index": null
+            },
+            "security": {
+              "milex_gdp": null,
+              "personnel": null,
+              "conflict_intensity": null
+            },
+            "sentiment": {
+              "gdelt_tone": null,
+              "trends_salience": null,
+              "policy_pressure": null,
+              "approval": null
+            }
+          }
+        },
+        "trade_matrix": {},
+        "interbank_matrix": {},
+        "alliance_graph": {},
+        "sanctions": {},
+        "io_coefficients": {},
+        "commodity_prices": {},
+        "rules": {
+          "regimes": {
+            "monetary": {
+              "taylor_rule_enabled": true
+            },
+            "fx": {
+              "uip_rho_base": 0.0
+            },
+            "fiscal": {
+              "wealth_tax_rate": 0.0,
+              "elasticity_saving": -0.3
+            },
+            "trade": {
+              "tariff_multiplier": 1.0,
+              "ntm_shock": 0.0
+            },
+            "security": {
+              "mobilization_intensity": 0.0
+            },
+            "labor": {
+              "national_service_pct": 0.0
+            },
+            "sentiment": {
+              "propaganda_gain": 0.0
+            }
+          },
+          "rng_seed": 42,
+          "invariants": {
+            "bmp6": true,
+            "sfc_light": true
+          }
+        },
+        "events": {
+          "pending": [],
+          "processed": []
+        }
+      },
+      "audit": {
+        "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+        "timestep": 8,
+        "step_start_time": "2025-09-15T22:33:48.118363",
+        "step_end_time": "2025-09-15T22:33:48.118638",
+        "reducer_sequence": [
+          "output_gap_update",
+          "inflation_update",
+          "monetary_policy",
+          "fiscal_update",
+          "debt_update",
+          "fx_update",
+          "trade_update",
+          "labor_supply_update",
+          "security_update",
+          "bop_settlement"
+        ],
+        "field_changes": [
+          {
+            "field_path": "countries.USA.macro.inflation",
+            "old_value": 0.0445241892,
+            "new_value": 0.04127177028,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "phillips_curve": "\u03c0_t = \u03b2*E[\u03c0_{t+1}] + \u03ba*y_t + \u03b5_t",
+              "beta": 0.6,
+              "kappa": 0.1,
+              "expected_inflation": 0.02,
+              "output_gap": 0.0,
+              "supply_shock": 0.0,
+              "adjustment_speed": 0.1
+            }
+          },
+          {
+            "field_path": "countries.USA.macro.policy_rate",
+            "old_value": 0.0817862838,
+            "new_value": 0.07690765542,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "rule": "taylor",
+              "phi_pi": 0.5,
+              "phi_y": 0.5,
+              "inflation": 0.04127177028,
+              "inflation_target": 0.02,
+              "output_gap": 0.0,
+              "neutral_rate": 0.025
+            }
+          }
+        ],
+        "triggers_fired": [],
+        "errors": []
+      },
+      "created_at": "2025-09-15T22:33:48.118816"
+    },
+    {
+      "id": "cc0d6adf-ebed-4c92-9327-a3e439cca424",
+      "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+      "timestep": 9,
+      "state": {
+        "t": 9,
+        "base_ccy": "USD",
+        "countries": {
+          "USA": {
+            "name": "USA",
+            "macro": {
+              "gdp": 23000000.0,
+              "potential_gdp": null,
+              "inflation": 0.038344593252,
+              "unemployment": 0.037,
+              "output_gap": 0.0,
+              "primary_balance": null,
+              "debt_gdp": 0.95,
+              "neutral_rate": 0.025,
+              "policy_rate": 0.07251688987800001,
+              "inflation_target": 0.02,
+              "sfa": 0.0
+            },
+            "external": {
+              "fx_rate": null,
+              "reserves_usd": null,
+              "current_account_gdp": null,
+              "net_errors_omissions_gdp": 0.0
+            },
+            "finance": {
+              "sovereign_yield": null,
+              "credit_spread": null,
+              "bank_tier1_ratio": null,
+              "leverage_target": 10.0
+            },
+            "trade": {
+              "exports_gdp": null,
+              "imports_gdp": null,
+              "tariff_mfn_avg": null,
+              "ntm_index": null,
+              "terms_of_trade": 1.0
+            },
+            "energy": {
+              "energy_stock_to_use": null,
+              "food_price_index": null,
+              "energy_price_index": null
+            },
+            "security": {
+              "milex_gdp": null,
+              "personnel": null,
+              "conflict_intensity": null
+            },
+            "sentiment": {
+              "gdelt_tone": null,
+              "trends_salience": null,
+              "policy_pressure": null,
+              "approval": null
+            }
+          }
+        },
+        "trade_matrix": {},
+        "interbank_matrix": {},
+        "alliance_graph": {},
+        "sanctions": {},
+        "io_coefficients": {},
+        "commodity_prices": {},
+        "rules": {
+          "regimes": {
+            "monetary": {
+              "taylor_rule_enabled": true
+            },
+            "fx": {
+              "uip_rho_base": 0.0
+            },
+            "fiscal": {
+              "wealth_tax_rate": 0.0,
+              "elasticity_saving": -0.3
+            },
+            "trade": {
+              "tariff_multiplier": 1.0,
+              "ntm_shock": 0.0
+            },
+            "security": {
+              "mobilization_intensity": 0.0
+            },
+            "labor": {
+              "national_service_pct": 0.0
+            },
+            "sentiment": {
+              "propaganda_gain": 0.0
+            }
+          },
+          "rng_seed": 42,
+          "invariants": {
+            "bmp6": true,
+            "sfc_light": true
+          }
+        },
+        "events": {
+          "pending": [],
+          "processed": []
+        }
+      },
+      "audit": {
+        "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+        "timestep": 9,
+        "step_start_time": "2025-09-15T22:33:48.139865",
+        "step_end_time": "2025-09-15T22:33:48.140306",
+        "reducer_sequence": [
+          "output_gap_update",
+          "inflation_update",
+          "monetary_policy",
+          "fiscal_update",
+          "debt_update",
+          "fx_update",
+          "trade_update",
+          "labor_supply_update",
+          "security_update",
+          "bop_settlement"
+        ],
+        "field_changes": [
+          {
+            "field_path": "countries.USA.macro.inflation",
+            "old_value": 0.04127177028,
+            "new_value": 0.038344593252,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "phillips_curve": "\u03c0_t = \u03b2*E[\u03c0_{t+1}] + \u03ba*y_t + \u03b5_t",
+              "beta": 0.6,
+              "kappa": 0.1,
+              "expected_inflation": 0.02,
+              "output_gap": 0.0,
+              "supply_shock": 0.0,
+              "adjustment_speed": 0.1
+            }
+          },
+          {
+            "field_path": "countries.USA.macro.policy_rate",
+            "old_value": 0.07690765542,
+            "new_value": 0.07251688987800001,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "rule": "taylor",
+              "phi_pi": 0.5,
+              "phi_y": 0.5,
+              "inflation": 0.038344593252,
+              "inflation_target": 0.02,
+              "output_gap": 0.0,
+              "neutral_rate": 0.025
+            }
+          }
+        ],
+        "triggers_fired": [],
+        "errors": []
+      },
+      "created_at": "2025-09-15T22:33:48.140535"
+    },
+    {
+      "id": "5ecca613-b11c-4aa7-9ea8-2d7458c27f89",
+      "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+      "timestep": 10,
+      "state": {
+        "t": 10,
+        "base_ccy": "USD",
+        "countries": {
+          "USA": {
+            "name": "USA",
+            "macro": {
+              "gdp": 23000000.0,
+              "potential_gdp": null,
+              "inflation": 0.0357101339268,
+              "unemployment": 0.037,
+              "output_gap": 0.0,
+              "primary_balance": null,
+              "debt_gdp": 0.95,
+              "neutral_rate": 0.025,
+              "policy_rate": 0.0685652008902,
+              "inflation_target": 0.02,
+              "sfa": 0.0
+            },
+            "external": {
+              "fx_rate": null,
+              "reserves_usd": null,
+              "current_account_gdp": null,
+              "net_errors_omissions_gdp": 0.0
+            },
+            "finance": {
+              "sovereign_yield": null,
+              "credit_spread": null,
+              "bank_tier1_ratio": null,
+              "leverage_target": 10.0
+            },
+            "trade": {
+              "exports_gdp": null,
+              "imports_gdp": null,
+              "tariff_mfn_avg": null,
+              "ntm_index": null,
+              "terms_of_trade": 1.0
+            },
+            "energy": {
+              "energy_stock_to_use": null,
+              "food_price_index": null,
+              "energy_price_index": null
+            },
+            "security": {
+              "milex_gdp": null,
+              "personnel": null,
+              "conflict_intensity": null
+            },
+            "sentiment": {
+              "gdelt_tone": null,
+              "trends_salience": null,
+              "policy_pressure": null,
+              "approval": null
+            }
+          }
+        },
+        "trade_matrix": {},
+        "interbank_matrix": {},
+        "alliance_graph": {},
+        "sanctions": {},
+        "io_coefficients": {},
+        "commodity_prices": {},
+        "rules": {
+          "regimes": {
+            "monetary": {
+              "taylor_rule_enabled": true
+            },
+            "fx": {
+              "uip_rho_base": 0.0
+            },
+            "fiscal": {
+              "wealth_tax_rate": 0.0,
+              "elasticity_saving": -0.3
+            },
+            "trade": {
+              "tariff_multiplier": 1.0,
+              "ntm_shock": 0.0
+            },
+            "security": {
+              "mobilization_intensity": 0.0
+            },
+            "labor": {
+              "national_service_pct": 0.0
+            },
+            "sentiment": {
+              "propaganda_gain": 0.0
+            }
+          },
+          "rng_seed": 42,
+          "invariants": {
+            "bmp6": true,
+            "sfc_light": true
+          }
+        },
+        "events": {
+          "pending": [],
+          "processed": []
+        }
+      },
+      "audit": {
+        "scenario_id": "692ce395-4a4f-4cf5-a966-6126135aa3b9",
+        "timestep": 10,
+        "step_start_time": "2025-09-15T22:33:48.166138",
+        "step_end_time": "2025-09-15T22:33:48.166410",
+        "reducer_sequence": [
+          "output_gap_update",
+          "inflation_update",
+          "monetary_policy",
+          "fiscal_update",
+          "debt_update",
+          "fx_update",
+          "trade_update",
+          "labor_supply_update",
+          "security_update",
+          "bop_settlement"
+        ],
+        "field_changes": [
+          {
+            "field_path": "countries.USA.macro.inflation",
+            "old_value": 0.038344593252,
+            "new_value": 0.0357101339268,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "phillips_curve": "\u03c0_t = \u03b2*E[\u03c0_{t+1}] + \u03ba*y_t + \u03b5_t",
+              "beta": 0.6,
+              "kappa": 0.1,
+              "expected_inflation": 0.02,
+              "output_gap": 0.0,
+              "supply_shock": 0.0,
+              "adjustment_speed": 0.1
+            }
+          },
+          {
+            "field_path": "countries.USA.macro.policy_rate",
+            "old_value": 0.07251688987800001,
+            "new_value": 0.0685652008902,
+            "reducer_name": "simulation_step",
+            "reducer_params": {},
+            "calculation_details": {
+              "rule": "taylor",
+              "phi_pi": 0.5,
+              "phi_y": 0.5,
+              "inflation": 0.0357101339268,
+              "inflation_target": 0.02,
+              "output_gap": 0.0,
+              "neutral_rate": 0.025
+            }
+          }
+        ],
+        "triggers_fired": [],
+        "errors": []
+      },
+      "created_at": "2025-09-15T22:33:48.166598"
+    }
+  ],
+  "captured_at": "2025-09-15T22:33:48.181638"
+}

@@ -1,0 +1,201 @@
+{
+  "scenario_name": "Great Power Conflict",
+  "success": true,
+  "validation_results": {
+    "economic_relationships": [
+      {
+        "check_name": "military_spending_increases_with_conflict",
+        "description": "Military conflict should escalate security spending",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: military_spending_increases_with_conflict"
+      },
+      {
+        "check_name": "sanctions_reduce_trade_volumes",
+        "description": "Sanctions should reduce bilateral trade",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: sanctions_reduce_trade_volumes"
+      },
+      {
+        "check_name": "energy_prices_increase_with_supply_disruption",
+        "description": "Energy weaponization should spike prices",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: energy_prices_increase_with_supply_disruption"
+      },
+      {
+        "check_name": "commodity_inflation_transmits_to_core_inflation",
+        "description": "Commodity price increases should drive inflation",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: commodity_inflation_transmits_to_core_inflation"
+      },
+      {
+        "check_name": "policy_rates_increase_with_inflation_shock",
+        "description": "Central banks should tighten to fight inflation",
+        "passed": false,
+        "details": {},
+        "error_message": "Unknown validation check: policy_rates_increase_with_inflation_shock"
+      }
+    ],
+    "expected_outcomes": [
+      {
+        "field": "countries.RUS.security.conflict_intensity",
+        "description": "Russian conflict intensity should reach 0.7",
+        "should": "equal",
+        "passed": true,
+        "initial_value": 0.0,
+        "final_value": 0.7,
+        "field_trajectory": [
+          [
+            8,
+            0.7
+          ],
+          [
+            9,
+            0.7
+          ],
+          [
+            10,
+            0.7
+          ],
+          [
+            11,
+            0.7
+          ],
+          [
+            12,
+            0.7
+          ]
+        ]
+      },
+      {
+        "field": "sanctions.USA.RUS",
+        "description": "US sanctions on Russia should reach 0.8",
+        "should": "equal",
+        "passed": true,
+        "initial_value": 0.0,
+        "final_value": 0.8,
+        "field_trajectory": [
+          [
+            8,
+            0.8
+          ],
+          [
+            9,
+            0.8
+          ],
+          [
+            10,
+            0.8
+          ],
+          [
+            11,
+            0.8
+          ],
+          [
+            12,
+            0.8
+          ]
+        ]
+      },
+      {
+        "field": "commodity_prices.oil",
+        "description": "Oil prices should increase by at least 40%",
+        "should": "increase",
+        "passed": true,
+        "initial_value": 80.0,
+        "final_value": 120.0,
+        "field_trajectory": [
+          [
+            8,
+            120.0
+          ],
+          [
+            9,
+            120.0
+          ],
+          [
+            10,
+            120.0
+          ],
+          [
+            11,
+            120.0
+          ],
+          [
+            12,
+            120.0
+          ]
+        ]
+      },
+      {
+        "field": "countries.USA.macro.inflation",
+        "description": "US inflation should increase significantly",
+        "should": "increase",
+        "passed": false,
+        "initial_value": 0.025,
+        "final_value": 0.032890272374253,
+        "field_trajectory": [
+          [
+            8,
+            0.043840073730000005
+          ],
+          [
+            9,
+            0.040656066357000004
+          ],
+          [
+            10,
+            0.037790459721300004
+          ],
+          [
+            11,
+            0.03521141374917
+          ],
+          [
+            12,
+            0.032890272374253
+          ]
+        ]
+      },
+      {
+        "field": "trade_matrix.USA.RUS",
+        "description": "US-Russia trade should decrease dramatically",
+        "should": "decrease",
+        "passed": false,
+        "initial_value": 15000,
+        "final_value": 15000.0,
+        "field_trajectory": [
+          [
+            8,
+            15000.0
+          ],
+          [
+            9,
+            15000.0
+          ],
+          [
+            10,
+            15000.0
+          ],
+          [
+            11,
+            15000.0
+          ],
+          [
+            12,
+            15000.0
+          ]
+        ]
+      }
+    ],
+    "overall_passed": false
+  },
+  "error_message": null,
+  "execution_summary": {
+    "timesteps_completed": 12,
+    "execution_time": 0.36919
+  }
+}

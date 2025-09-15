@@ -1,0 +1,102 @@
+{
+  "scenario_name": "Single Country Basic",
+  "success": true,
+  "validation_results": {
+    "economic_relationships": [
+      {
+        "check_name": "policy_rate_adjusts_for_inflation",
+        "description": "Taylor rule response",
+        "passed": false,
+        "details": {
+          "initial_inflation": 0.025,
+          "final_inflation": 0.019676370000000002,
+          "initial_rate": 0.05,
+          "final_rate": 0.04451455500000001,
+          "initial_gap": 0.005000000000000001,
+          "final_gap": -0.00032362999999999836,
+          "target_inflation": 0.02
+        },
+        "error_message": null
+      },
+      {
+        "check_name": "inflation_changes_over_time",
+        "description": "Inflation evolution",
+        "passed": true,
+        "details": {
+          "initial_inflation": 0.025,
+          "final_inflation": 0.019676370000000002,
+          "change": -0.005323629999999999
+        },
+        "error_message": null
+      }
+    ],
+    "expected_outcomes": [
+      {
+        "field": "countries.USA.macro.inflation",
+        "description": "Inflation should evolve from initial value",
+        "should": "change",
+        "passed": true,
+        "initial_value": 0.025,
+        "final_value": 0.019676370000000002,
+        "field_trajectory": [
+          [
+            1,
+            0.023700000000000002
+          ],
+          [
+            2,
+            0.02253
+          ],
+          [
+            3,
+            0.021477000000000003
+          ],
+          [
+            4,
+            0.020529300000000004
+          ],
+          [
+            5,
+            0.019676370000000002
+          ]
+        ]
+      },
+      {
+        "field": "countries.USA.macro.policy_rate",
+        "description": "Policy rate should adjust based on inflation gap",
+        "should": "respond_to_inflation_gap",
+        "passed": false,
+        "initial_value": 0.05,
+        "final_value": 0.04451455500000001,
+        "field_trajectory": [
+          [
+            1,
+            0.05055000000000001
+          ],
+          [
+            2,
+            0.048795000000000005
+          ],
+          [
+            3,
+            0.04721550000000001
+          ],
+          [
+            4,
+            0.045793950000000014
+          ],
+          [
+            5,
+            0.04451455500000001
+          ]
+        ]
+      }
+    ],
+    "overall_passed": false
+  },
+  "error_message": null,
+  "execution_summary": {
+    "timesteps_completed": 5,
+    "execution_time": 0.158443
+  }
+}

@@ -242,10 +242,6 @@ data/cache/
 data/temp/
 data/uploads/
 
-# Simulation reports and temporary files
-scenarios/reports/*.json
-scenarios/reports/*.md
-
 # Environment and secret files
 .env.local
 .env.development
