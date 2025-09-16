@@ -25,6 +25,10 @@ class AuthSettings(BaseModel):
     secret_key: str
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 60 * 24 * 7  # 7 days
+    # Default admin user for development
+    default_admin_email: str = "admin@slashrun.com"
+    default_admin_password: str = "admin123"
+    default_admin_username: str = "admin"
 
 
 class APISettings(BaseModel):
@@ -51,7 +55,7 @@ class Settings(BaseSettings):
     app_name: str = "SlashRun Simulation API"
     debug: bool = False
     version: str = "1.0.0"
-    api_prefix: str = "/api/v1"
+    api_prefix: str = "/api"
     
     # Database
     database_url: str = Field(..., env="DATABASE_URL")
@@ -64,6 +68,16 @@ class Settings(BaseSettings):
     secret_key: str = Field(..., env="SECRET_KEY")
     algorithm: str = Field("HS256", env="ALGORITHM")
     access_token_expire_minutes: int = Field(60 * 24 * 7, env="ACCESS_TOKEN_EXPIRE_MINUTES")
+    
+    # JWT Configuration
+    jwt_secret_key: str = Field(..., env="JWT_SECRET_KEY")
+    jwt_algorithm: str = Field("HS256", env="JWT_ALGORITHM")
+    jwt_access_token_expire_minutes: int = Field(60 * 24 * 7, env="JWT_ACCESS_TOKEN_EXPIRE_MINUTES")
+    
+    # Default admin user for development
+    default_admin_email: str = Field("admin@slashrun.com", env="DEFAULT_ADMIN_EMAIL")
+    default_admin_password: str = Field("admin123", env="DEFAULT_ADMIN_PASSWORD")
+    default_admin_username: str = Field("admin", env="DEFAULT_ADMIN_USERNAME")
     
     # External APIs
     fred_api_key: Optional[str] = Field(None, env="FRED_API_KEY")

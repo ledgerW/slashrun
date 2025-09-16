@@ -7,7 +7,7 @@ from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime, timedelta
 import aiohttp
 from ..core.config import settings
-from ..models.state import GlobalState, CountryState, Macro, External, Finance, Trade, EnergyFood, Security, Sentiment
+from db.models.state import GlobalState, CountryState, Macro, External, Finance, Trade, EnergyFood, Security, Sentiment
 
 logger = logging.getLogger(__name__)
 

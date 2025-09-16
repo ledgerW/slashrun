@@ -3,6 +3,6 @@
 __version__ = "1.0.0"
 __description__ = "Economic scenario modeling with complete transparency"
 
-from .main import app
-
-__all__ = ["app"]
+# Note: main.py has been moved to project root
+# The app is now accessible directly from the root main module
+__all__ = []

@@ -37,8 +37,8 @@ class TestAuthentication:
             "username": "newuser",
             "full_name": "New User"
         }
-        response = await client.post("/api/v1/register", json=user_data)
-        assert response.status_code == 200
+        response = await client.post("/api/users/register", json=user_data)
+        assert response.status_code == 201
         data = response.json()
         assert data["email"] == user_data["email"]
         assert data["username"] == user_data["username"]
@@ -46,11 +46,11 @@ class TestAuthentication:
     
     async def test_user_login(self, client: AsyncClient, test_user):
         """Test user login."""
-        login_data = {
-            "email": "test@example.com",
+        # Use form login endpoint for OAuth2PasswordRequestForm
+        response = await client.post("/api/auth/login/form", data={
+            "username": "test@example.com",
             "password": "testpassword123"
-        }
-        response = await client.post("/api/v1/login", json=login_data)
+        }, headers={"Content-Type": "application/x-www-form-urlencoded"})
         assert response.status_code == 200
         data = response.json()
         assert "access_token" in data
@@ -59,7 +59,7 @@ class TestAuthentication:
     
     async def test_get_current_user(self, client: AsyncClient, auth_headers):
         """Test getting current user info."""
-        response = await client.get("/api/v1/me", headers=auth_headers)
+        response = await client.get("/api/users/profile", headers=auth_headers)
         assert response.status_code == 200
         data = response.json()
         assert data["email"] == "test@example.com"
@@ -67,7 +67,7 @@ class TestAuthentication:
     
     async def test_protected_endpoint_without_auth(self, client: AsyncClient):
         """Test that protected endpoints require authentication."""
-        response = await client.get("/api/v1/me")
+        response = await client.get("/api/users/profile")
         assert response.status_code == 403  # FastAPI returns 403 for missing auth
     
     async def test_update_current_user(self, client: AsyncClient, auth_headers):
@@ -76,15 +76,26 @@ class TestAuthentication:
             "full_name": "Updated User Name",
             "bio": "Updated bio"
         }
-        response = await client.put("/api/v1/me", json=update_data, headers=auth_headers)
+        response = await client.put("/api/users/profile", json=update_data, headers=auth_headers)
         assert response.status_code == 200
         data = response.json()
         assert data["full_name"] == "Updated User Name"
         assert data["bio"] == "Updated bio"
     
+    async def test_change_password(self, client: AsyncClient, auth_headers):
+        """Test changing user password."""
+        password_data = {
+            "current_password": "testpassword123",
+            "new_password": "newtestpassword123"
+        }
+        response = await client.post("/api/users/change-password", json=password_data, headers=auth_headers)
+        assert response.status_code == 200
+        data = response.json()
+        assert "message" in data
+    
     async def test_logout(self, client: AsyncClient, auth_headers):
         """Test user logout."""
-        response = await client.post("/api/v1/logout", headers=auth_headers)
+        response = await client.post("/api/auth/logout", headers=auth_headers)
         assert response.status_code == 200
         data = response.json()
         assert "message" in data
@@ -102,7 +113,7 @@ class TestScenarioManagement:
             "triggers": []
         }
         response = await client.post(
-            "/api/v1/simulation/scenarios",
+            "/api/simulation/scenarios",
             json=scenario_data,
             headers=auth_headers
         )
@@ -119,7 +130,7 @@ class TestScenarioManagement:
         # Create a scenario first
         await self.test_create_scenario(client, auth_headers, sample_mvs_state)
         
-        response = await client.get("/api/v1/simulation/scenarios", headers=auth_headers)
+        response = await client.get("/api/simulation/scenarios", headers=auth_headers)
         assert response.status_code == 200
         scenarios = response.json()
         assert len(scenarios) >= 1
@@ -130,7 +141,7 @@ class TestScenarioManagement:
         scenario_id = await self.test_create_scenario(client, auth_headers, sample_mvs_state)
         
         response = await client.get(
-            f"/api/v1/simulation/scenarios/{scenario_id}",
+            f"/api/simulation/scenarios/{scenario_id}",
             headers=auth_headers
         )
         assert response.status_code == 200
@@ -147,7 +158,7 @@ class TestScenarioManagement:
             "description": "Updated description"
         }
         response = await client.put(
-            f"/api/v1/simulation/scenarios/{scenario_id}",
+            f"/api/simulation/scenarios/{scenario_id}",
             json=update_data,
             headers=auth_headers
         )
@@ -161,7 +172,7 @@ class TestScenarioManagement:
         scenario_id = await self.test_create_scenario(client, auth_headers, sample_mvs_state)
         
         response = await client.delete(
-            f"/api/v1/simulation/scenarios/{scenario_id}",
+            f"/api/simulation/scenarios/{scenario_id}",
             headers=auth_headers
         )
         assert response.status_code == 200
@@ -182,7 +193,7 @@ class TestSimulationExecution:
             "triggers": []
         }
         response = await client.post(
-            "/api/v1/simulation/scenarios",
+            "/api/simulation/scenarios",
             json=scenario_data,
             headers=auth_headers
         )
@@ -190,7 +201,7 @@ class TestSimulationExecution:
         
         # Execute simulation step
         response = await client.post(
-            f"/api/v1/simulation/scenarios/{scenario_id}/step",
+            f"/api/simulation/scenarios/{scenario_id}/step",
             headers=auth_headers
         )
         assert response.status_code == 200
@@ -210,18 +221,18 @@ class TestSimulationExecution:
             "triggers": []
         }
         response = await client.post(
-            "/api/v1/simulation/scenarios",
+            "/api/simulation/scenarios",
             json=scenario_data,
             headers=auth_headers
         )
         scenario_id = response.json()["id"]
         
         # Step once
-        await client.post(f"/api/v1/simulation/scenarios/{scenario_id}/step", headers=auth_headers)
+        await client.post(f"/api/simulation/scenarios/{scenario_id}/step", headers=auth_headers)
         
         # Get state at timestep 1
         response = await client.get(
-            f"/api/v1/simulation/scenarios/{scenario_id}/states/1",
+            f"/api/simulation/scenarios/{scenario_id}/states/1",
             headers=auth_headers
         )
         assert response.status_code == 200
@@ -233,9 +244,10 @@ class TestSimulationExecution:
 class TestTemplateGeneration:
     """Test scenario template generation."""
     
+    @pytest.mark.skip(reason="Slow external API calls - use for integration testing")
     async def test_mvs_template_generation(self, client: AsyncClient):
         """Test MVS template generation."""
-        response = await client.post("/api/v1/simulation/templates/mvs")
+        response = await client.post("/api/simulation/templates/mvs")
         assert response.status_code == 200
         data = response.json()
         assert "template_type" in data
@@ -244,9 +256,10 @@ class TestTemplateGeneration:
         assert "trade_matrix" in data["state"]
         assert "rules" in data["state"]
     
+    @pytest.mark.skip(reason="Slow external API calls - use for integration testing")
     async def test_fis_template_generation(self, client: AsyncClient):
         """Test FIS template generation."""
-        response = await client.post("/api/v1/simulation/templates/fis")
+        response = await client.post("/api/simulation/templates/fis")
         assert response.status_code == 200
         data = response.json()
         assert "template_type" in data
@@ -257,7 +270,7 @@ class TestTemplateGeneration:
     
     async def test_trigger_examples(self, client: AsyncClient):
         """Test trigger examples endpoint."""
-        response = await client.get("/api/v1/simulation/triggers/examples")
+        response = await client.get("/api/simulation/triggers/examples")
         assert response.status_code == 200
         examples = response.json()
         assert len(examples) > 0

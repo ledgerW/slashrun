@@ -12,11 +12,11 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 # Import all the classes and functions that tests need
-from app.models.state import (
+from db.models.state import (
     GlobalState, CountryState, Macro, External, Trade, Finance, Security,
     StepAudit, FieldChange, AuditCapture
 )
-from app.models.scenario import SimulationState
+from db.models.scenario import SimulationState
 from app.simulation.audit import DatabaseAuditCapture
 from app.simulation.reducers import (
     monetary_policy_taylor, monetary_policy_fx_peg, update_output_gap,
@@ -25,7 +25,7 @@ from app.simulation.reducers import (
     register_reducer_impl, list_reducer_implementations, get_reducer_impl,
     RegimeParams
 )
-from app.models.state import Trigger, TriggerCondition, TriggerAction, PolicyPatch
+from db.models.state import Trigger, TriggerCondition, TriggerAction, PolicyPatch
 from app.simulation.trigger_conditions import eval_condition
 from app.simulation.trigger_actions import apply_trigger
 from app.simulation.triggers import process_triggers, expire_triggers
@@ -37,7 +37,7 @@ def test_basic_math():
 
 def test_import_basic_models():
     """Test that basic models can be imported without app startup."""
-    from app.models.state import GlobalState, CountryState, Macro
+    from db.models.state import GlobalState, CountryState, Macro
     
     # Create basic instances
     macro = Macro(inflation=0.03, output_gap=0.02)
@@ -418,7 +418,7 @@ class TestAudit:
     async def test_create_audit_log(self, mock_db_session):
         """Test audit log creation in database."""
         from app.simulation.audit import create_audit_log
-        from app.models.state import StepAudit, FieldChange
+        from db.models.state import StepAudit, FieldChange
         
         # Create test data
         scenario_id = uuid4()

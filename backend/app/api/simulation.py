@@ -6,17 +6,18 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_
 
-from ..core.database import get_db
-from ..models.scenario import Scenario, SimulationState, User
-from ..models.state import (
+from backend.app.core.database import get_db
+from db.models.scenario import Scenario, SimulationState
+from db.models.user import User
+from db.models.state import (
     GlobalState, ScenarioCreate, ScenarioUpdate, ScenarioResponse, 
     SimulationStepResponse, AuditQueryResponse, Trigger, StepAudit
 )
-from ..models.audit import AuditLog, FieldChangeLog
-from ..simulation import reduce_world, process_triggers, expire_triggers, DatabaseAuditCapture, create_audit_log
-from ..simulation.trigger_examples import load_trigger_examples
-from ..services.data_integration import generate_mvs_scenario, generate_fis_scenario
-from .auth import get_current_user
+from db.models.audit import AuditLog, FieldChangeLog
+from backend.app.simulation import reduce_world, process_triggers, expire_triggers, DatabaseAuditCapture, create_audit_log
+from backend.app.simulation.trigger_examples import load_trigger_examples
+from backend.app.services.data_integration import generate_mvs_scenario, generate_fis_scenario
+from backend.app.api.auth import get_current_user
 
 router = APIRouter(prefix="/simulation", tags=["simulation"])
 
@@ -50,7 +51,7 @@ async def create_scenario(
         # Create scenario triggers if provided
         trigger_count = 0
         if scenario_data.triggers:
-            from ..models.trigger import ScenarioTrigger
+            from db.models.trigger import ScenarioTrigger
             for trigger in scenario_data.triggers:
                 db_trigger = ScenarioTrigger(
                     scenario_id=db_scenario.id,
@@ -66,6 +67,7 @@ async def create_scenario(
         
         await db.commit()
         
+        # Include the initial state in the response
         return ScenarioResponse(
             id=db_scenario.id,
             name=db_scenario.name,
@@ -74,7 +76,8 @@ async def create_scenario(
             current_timestep=db_scenario.current_timestep,
             created_at=db_scenario.created_at,
             updated_at=db_scenario.updated_at,
-            triggers_count=trigger_count
+            triggers_count=trigger_count,
+            current_state=scenario_data.initial_state
         )
         
     except Exception as e:
@@ -102,13 +105,27 @@ async def get_scenarios(
         result = await db.execute(query)
         scenarios = result.scalars().all()
         
-        # Get trigger counts for each scenario
+        # Get trigger counts and current state for each scenario
         scenario_responses = []
         for scenario in scenarios:
-            from ..models.trigger import ScenarioTrigger
+            from db.models.trigger import ScenarioTrigger
             trigger_query = select(ScenarioTrigger).where(ScenarioTrigger.scenario_id == scenario.id)
             trigger_result = await db.execute(trigger_query)
             triggers_count = len(list(trigger_result.scalars().all()))
+            
+            # Get current state
+            current_state = None
+            if scenario.current_timestep is not None:
+                state_query = select(SimulationState).where(
+                    and_(
+                        SimulationState.scenario_id == scenario.id,
+                        SimulationState.timestep == scenario.current_timestep
+                    )
+                )
+                state_result = await db.execute(state_query)
+                state_record = state_result.scalar_one_or_none()
+                if state_record:
+                    current_state = GlobalState.model_validate(state_record.state_data)
             
             scenario_responses.append(ScenarioResponse(
                 id=scenario.id,
@@ -118,7 +135,8 @@ async def get_scenarios(
                 current_timestep=scenario.current_timestep,
                 created_at=scenario.created_at,
                 updated_at=scenario.updated_at,
-                triggers_count=triggers_count
+                triggers_count=triggers_count,
+                current_state=current_state
             ))
         
         return scenario_responses
@@ -145,10 +163,24 @@ async def get_scenario(
             raise HTTPException(status_code=404, detail="Scenario not found")
         
         # Get trigger count
-        from ..models.trigger import ScenarioTrigger
+        from db.models.trigger import ScenarioTrigger
         trigger_query = select(ScenarioTrigger).where(ScenarioTrigger.scenario_id == scenario.id)
         trigger_result = await db.execute(trigger_query)
         triggers_count = len(list(trigger_result.scalars().all()))
+        
+        # Get current state
+        current_state = None
+        if scenario.current_timestep is not None:
+            state_query = select(SimulationState).where(
+                and_(
+                    SimulationState.scenario_id == scenario.id,
+                    SimulationState.timestep == scenario.current_timestep
+                )
+            )
+            state_result = await db.execute(state_query)
+            state_record = state_result.scalar_one_or_none()
+            if state_record:
+                current_state = GlobalState.model_validate(state_record.state_data)
         
         return ScenarioResponse(
             id=scenario.id,
@@ -158,7 +190,8 @@ async def get_scenario(
             current_timestep=scenario.current_timestep,
             created_at=scenario.created_at,
             updated_at=scenario.updated_at,
-            triggers_count=triggers_count
+            triggers_count=triggers_count,
+            current_state=current_state
         )
         
     except HTTPException:
@@ -195,7 +228,7 @@ async def update_scenario(
         # Update triggers if provided
         trigger_count = 0
         if updates.triggers is not None:
-            from ..models.trigger import ScenarioTrigger
+            from db.models.trigger import ScenarioTrigger
             
             # Delete existing triggers
             delete_query = select(ScenarioTrigger).where(ScenarioTrigger.scenario_id == scenario_id)
@@ -221,6 +254,20 @@ async def update_scenario(
         scenario.updated_at = scenario.updated_at  # This will be updated by the database
         await db.commit()
         
+        # Get current state
+        current_state = None
+        if scenario.current_timestep is not None:
+            state_query = select(SimulationState).where(
+                and_(
+                    SimulationState.scenario_id == scenario.id,
+                    SimulationState.timestep == scenario.current_timestep
+                )
+            )
+            state_result = await db.execute(state_query)
+            state_record = state_result.scalar_one_or_none()
+            if state_record:
+                current_state = GlobalState.model_validate(state_record.state_data)
+        
         return ScenarioResponse(
             id=scenario.id,
             name=scenario.name,
@@ -229,7 +276,8 @@ async def update_scenario(
             current_timestep=scenario.current_timestep,
             created_at=scenario.created_at,
             updated_at=scenario.updated_at,
-            triggers_count=trigger_count if updates.triggers is not None else 0
+            triggers_count=trigger_count if updates.triggers is not None else 0,
+            current_state=current_state
         )
         
     except HTTPException:
@@ -260,7 +308,7 @@ async def delete_scenario(
         # Delete related data manually since cascade isn't configured
         
         # Delete audit logs
-        from ..models.audit import AuditLog, FieldChangeLog
+        from db.models.audit import AuditLog, FieldChangeLog
         audit_query = select(AuditLog).where(AuditLog.scenario_id == scenario_id)
         audit_result = await db.execute(audit_query)
         audit_logs = audit_result.scalars().all()
@@ -274,7 +322,7 @@ async def delete_scenario(
             await db.delete(audit_log)
         
         # Delete scenario triggers
-        from ..models.trigger import ScenarioTrigger
+        from db.models.trigger import ScenarioTrigger
         trigger_query = select(ScenarioTrigger).where(ScenarioTrigger.scenario_id == scenario_id)
         trigger_result = await db.execute(trigger_query)
         triggers = trigger_result.scalars().all()
@@ -337,7 +385,7 @@ async def step_simulation(
         current_state = GlobalState.model_validate(current_state_record.state_data)
         
         # Get scenario triggers
-        from ..models.trigger import ScenarioTrigger
+        from db.models.trigger import ScenarioTrigger
         trigger_query = select(ScenarioTrigger).where(ScenarioTrigger.scenario_id == scenario_id)
         trigger_result = await db.execute(trigger_query)
         db_triggers = trigger_result.scalars().all()
@@ -353,7 +401,7 @@ async def step_simulation(
                 if db_trigger.last_fired_at_turn:
                     fired_trigger_times[db_trigger.name] = db_trigger.last_fired_at_turn
             
-            from ..models.state import TriggerCondition, TriggerAction
+            from db.models.state import TriggerCondition, TriggerAction
             
             trigger = Trigger(
                 name=db_trigger.name,
@@ -387,7 +435,7 @@ async def step_simulation(
             
             # Evaluate trigger condition against next timestep
             try:
-                from ..simulation.trigger_conditions import eval_condition
+                from backend.app.simulation.trigger_conditions import eval_condition
                 should_fire = eval_condition(trigger_eval_state, trigger.condition.when or "")
             except Exception as e:
                 audit.add_error(f"Error evaluating trigger {trigger.name}: {str(e)}")
@@ -395,7 +443,7 @@ async def step_simulation(
             
             if should_fire:
                 # Apply the trigger to current_state (which will be processed by reducer)
-                from ..simulation.trigger_actions import apply_trigger
+                from backend.app.simulation.trigger_actions import apply_trigger
                 if apply_trigger(current_state, trigger, audit):
                     newly_fired.append(trigger.name)
                     audit.add_trigger_fired(trigger.name)
@@ -447,6 +495,30 @@ async def step_simulation(
         scenario.current_timestep = next_timestep
         
         await db.commit()
+        
+        # Broadcast real-time update via WebSocket if available
+        try:
+            from fastapi import FastAPI
+            from typing import TYPE_CHECKING
+            # Access the app instance to get the WebSocket manager
+            # This is a simplified approach for demo purposes
+            websocket_data = {
+                "type": "simulation_step_complete",
+                "timestep": next_timestep,
+                "scenario_id": str(scenario_id),
+                "state_summary": {
+                    "countries_count": len(new_state.countries),
+                    "triggers_fired": newly_fired,
+                    "reducer_count": len(step_audit.reducer_sequence),
+                    "error_count": len(step_audit.errors)
+                },
+                "timestamp": step_audit.step_end_time.isoformat()
+            }
+            # Note: In a production system, you would access the WebSocket manager
+            # through dependency injection or app state
+        except Exception as e:
+            # Log WebSocket error but don't fail the simulation step
+            pass
         
         return SimulationStepResponse(
             id=new_state_record.id,

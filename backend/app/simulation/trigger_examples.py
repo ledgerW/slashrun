@@ -1,7 +1,7 @@
 """Example trigger configurations for common policy scenarios."""
 
 from typing import Dict
-from ..models.state import (
+from db.models.state import (
     Trigger, TriggerCondition, TriggerAction,
     PolicyPatch, ReducerOverride, NetworkRewrite, EventInject
 )

@@ -2,7 +2,7 @@
 
 from typing import List, Dict, Any, Set, Optional
 
-from ..models.state import GlobalState, Trigger, AuditCapture
+from db.models.state import GlobalState, Trigger, AuditCapture
 from .trigger_conditions import eval_condition
 from .trigger_actions import apply_trigger
 from .trigger_examples import load_trigger_examples

@@ -16,15 +16,15 @@ RUN apt-get update && apt-get install -y \
 # Install uv for fast Python package management
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
-# Copy dependency files
+# Copy dependency files first for better layer caching
 COPY pyproject.toml ./
 COPY uv.lock ./
 
 # Install dependencies
 RUN uv sync --frozen --no-cache
 
-# Copy backend application code
-COPY backend/ .
+# Copy entire project structure to maintain relative imports
+COPY . /app/
 
 # Create data directory for file storage
 RUN mkdir -p /app/data
@@ -35,5 +35,5 @@ ENV PYTHONPATH=/app
 # Expose port
 EXPOSE 8000
 
-# Default command (will be overridden in docker-compose)
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Default command - use correct path to main.py at project root
+CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -3,7 +3,7 @@
 import math
 import random
 from typing import Dict, Any, Optional, Callable, List, Set
-from ..models.state import (
+from db.models.state import (
     GlobalState, CountryState, Macro, External, Finance, Trade, 
     EnergyFood, Security, Sentiment, RegimeParams, AuditCapture
 )

@@ -3,7 +3,7 @@
 from typing import Optional, Dict, Any, List, Literal, Tuple
 from datetime import datetime
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 # Economic state slices
@@ -122,6 +122,8 @@ class SimulationRules(BaseModel):
 
 class GlobalState(BaseModel):
     """Complete global economic simulation state."""
+    model_config = ConfigDict(extra='allow')
+    
     t: int = 0
     base_ccy: str = "USD"
     countries: Dict[str, CountryState] = Field(default_factory=dict)
@@ -242,6 +244,7 @@ class ScenarioResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     triggers_count: int
+    current_state: Optional[GlobalState] = None
 
 
 class SimulationStepResponse(BaseModel):

@@ -5,9 +5,9 @@ from datetime import datetime
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..models.state import FieldChange, StepAudit, AuditCapture
-from ..models.audit import AuditLog, FieldChangeLog, TriggerLog
-from ..models.scenario import SimulationState
+from db.models.state import FieldChange, StepAudit, AuditCapture
+from db.models.audit import AuditLog, FieldChangeLog, TriggerLog
+from db.models.scenario import SimulationState
 
 
 class DatabaseAuditCapture(AuditCapture):

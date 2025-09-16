@@ -1,6 +1,7 @@
 """Database models for the simulation framework."""
 
-from .scenario import Scenario, SimulationState, User
+from .scenario import Scenario, SimulationState
+from .user import User
 from .audit import AuditLog, FieldChangeLog, TriggerLog
 from .trigger import (
     ScenarioTrigger,

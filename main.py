@@ -2,15 +2,19 @@
 
 import logging
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 import uvicorn
+import json
+from typing import Dict, Set
 
-from .core.config import settings
-from .core.database import init_db, close_db
-from .api.auth import router as auth_router
-from .api.simulation import router as simulation_router
+from backend.app.core.config import settings
+from backend.app.core.database import init_db, close_db
+from backend.app.api.auth import router as auth_router
+from backend.app.api.users import router as users_router
+from backend.app.api.simulation import router as simulation_router
 
 # Configure logging
 logging.basicConfig(
@@ -68,14 +72,46 @@ app = FastAPI(
     debug=settings.debug
 )
 
-# Add CORS middleware
+# Add CORS middleware with expanded origins for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.allowed_origins,
+    allow_origins=settings.allowed_origins + ["http://localhost:3000", "http://127.0.0.1:3000"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+
+# WebSocket connection manager for real-time simulation updates
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: Dict[str, Set[WebSocket]] = {}
+
+    async def connect(self, websocket: WebSocket, room_id: str):
+        await websocket.accept()
+        if room_id not in self.active_connections:
+            self.active_connections[room_id] = set()
+        self.active_connections[room_id].add(websocket)
+
+    def disconnect(self, websocket: WebSocket, room_id: str):
+        if room_id in self.active_connections:
+            self.active_connections[room_id].discard(websocket)
+            if not self.active_connections[room_id]:
+                del self.active_connections[room_id]
+
+    async def broadcast_to_room(self, room_id: str, message: dict):
+        if room_id in self.active_connections:
+            disconnected = []
+            for connection in self.active_connections[room_id]:
+                try:
+                    await connection.send_text(json.dumps(message))
+                except:
+                    disconnected.append(connection)
+            
+            # Clean up disconnected connections
+            for connection in disconnected:
+                self.active_connections[room_id].discard(connection)
+
+manager = ConnectionManager()
 
 
 # Global exception handler
@@ -96,6 +132,18 @@ async def global_exception_handler(request: Request, exc: Exception):
 @app.get("/health", tags=["health"])
 async def health_check():
     """Health check endpoint."""
+    return {
+        "status": "healthy",
+        "service": settings.app_name,
+        "version": settings.version,
+        "environment": "development" if settings.debug else "production"
+    }
+
+
+# API Health check endpoint (for consistency with API prefix)
+@app.get(f"{settings.api_prefix}/health", tags=["health"])
+async def api_health_check():
+    """API health check endpoint with API prefix."""
     return {
         "status": "healthy",
         "service": settings.app_name,
@@ -137,15 +185,35 @@ async def root():
     }
 
 
+# WebSocket endpoint for real-time simulation updates
+@app.websocket("/ws/simulation/{scenario_id}")
+async def websocket_simulation_updates(websocket: WebSocket, scenario_id: str):
+    """WebSocket endpoint for real-time simulation step updates."""
+    await manager.connect(websocket, f"scenario_{scenario_id}")
+    try:
+        while True:
+            # Keep connection alive by waiting for messages
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket, f"scenario_{scenario_id}")
+
 # Include routers
-app.include_router(auth_router, prefix=settings.api_prefix)
-app.include_router(simulation_router, prefix=settings.api_prefix)
+app.include_router(auth_router, prefix=f"{settings.api_prefix}/auth", tags=["authentication"])
+app.include_router(users_router, prefix=f"{settings.api_prefix}/users", tags=["users"])
+app.include_router(simulation_router, prefix=settings.api_prefix, tags=["simulation"])
+
+# Make connection manager available to simulation router
+app.state.websocket_manager = manager
+
+# FUTURE: Mount frontend static files after API routes are defined
+# This will be implemented in the next phase
+# app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
 
 # Development server
 if __name__ == "__main__":
     uvicorn.run(
-        "backend.app.main:app",
+        "main:app",
         host="0.0.0.0",
         port=8000,
         reload=settings.debug,

@@ -62,33 +62,3 @@ class SimulationState(SQLModel, table=True):
         Index("ix_simulation_states_scenario_timestep", "scenario_id", "timestep", unique=True),
         Index("ix_simulation_states_scenario_created", "scenario_id", "created_at"),
     )
-
-
-class User(SQLModel, table=True):
-    """Database model for users - extends existing auth system."""
-    
-    __tablename__ = "users"
-    
-    # Primary key
-    id: UUID = Field(default_factory=uuid4, primary_key=True)
-    
-    # User information
-    email: str = Field(max_length=255, unique=True, index=True)
-    username: str = Field(max_length=100, unique=True, index=True)
-    hashed_password: str = Field(max_length=255)
-    full_name: Optional[str] = Field(default=None, max_length=255)
-    bio: Optional[str] = Field(default=None, sa_column=Column(Text))
-    organization: Optional[str] = Field(default=None, max_length=255)
-    position: Optional[str] = Field(default=None, max_length=255)
-    
-    # Status and activity
-    is_active: bool = Field(default=True)
-    is_superuser: bool = Field(default=False)
-    login_count: int = Field(default=0)
-    
-    # Timestamps
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
-    last_login_at: Optional[datetime] = Field(default=None)
-    
-    # Relationships (note: this will be populated by the foreign key reference)

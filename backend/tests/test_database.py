@@ -5,10 +5,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlmodel import SQLModel
 
-from app.models.scenario import User, Scenario, SimulationState
-from app.models.audit import AuditLog, FieldChangeLog, TriggerLog
-from app.models.trigger import ScenarioTrigger, PolicyPatch
-from app.api.auth import get_password_hash
+from db.models.user import User
+from db.models.scenario import Scenario, SimulationState
+from db.models.audit import AuditLog, FieldChangeLog, TriggerLog
+from db.models.trigger import ScenarioTrigger, PolicyPatch
+from backend.app.services.auth_service import auth_service
 
 
 class TestUserModel:
@@ -19,7 +20,7 @@ class TestUserModel:
         user = User(
             email="testuser@example.com",
             username="testuser",
-            hashed_password=get_password_hash("password123"),
+            hashed_password=auth_service.hash_password("password123"),
             full_name="Test User",
             bio="Test bio",
             organization="Test Org"

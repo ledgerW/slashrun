@@ -3,7 +3,7 @@
 import re
 from typing import Any
 
-from ..models.state import GlobalState
+from db.models.state import GlobalState
 
 
 def eval_condition(state: GlobalState, condition: str) -> bool:

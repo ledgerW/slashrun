@@ -13,13 +13,14 @@ from sqlmodel import SQLModel
 # Set required environment variables before importing app modules
 os.environ.setdefault("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
 os.environ.setdefault("SECRET_KEY", "test-secret-key-for-testing-only")
+os.environ.setdefault("JWT_SECRET_KEY", "test-jwt-secret-key-for-testing-only")
 os.environ.setdefault("ENVIRONMENT", "test")
 
-from app.main import app
-from app.core.database import get_db
-from app.core.config import settings
-from app.models.scenario import User
-from app.api.auth import get_password_hash
+from main import app
+from backend.app.core.database import get_db
+from backend.app.core.config import settings
+from db.models.user import User
+from backend.app.services.auth_service import auth_service
 
 
 # Test database URL - using in-memory SQLite for fast tests
@@ -90,7 +91,7 @@ async def test_user(test_db: AsyncSession) -> User:
     user = User(
         email="test@example.com",
         username="testuser",
-        hashed_password=get_password_hash("testpassword123"),
+        hashed_password=auth_service.hash_password("testpassword123"),
         full_name="Test User"
     )
     test_db.add(user)
@@ -102,10 +103,10 @@ async def test_user(test_db: AsyncSession) -> User:
 @pytest_asyncio.fixture(scope="function")
 async def auth_headers(client: AsyncClient, test_user: User) -> dict:
     """Get authentication headers for test requests."""
-    response = await client.post("/api/v1/login", json={
-        "email": "test@example.com",
+    response = await client.post("/api/auth/login/form", data={
+        "username": "test@example.com",
         "password": "testpassword123"
-    })
+    }, headers={"Content-Type": "application/x-www-form-urlencoded"})
     assert response.status_code == 200
     token_data = response.json()
     return {"Authorization": f"Bearer {token_data['access_token']}"}

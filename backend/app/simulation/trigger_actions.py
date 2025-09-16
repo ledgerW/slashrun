@@ -1,7 +1,7 @@
 """Trigger action application logic."""
 
 from typing import List, Dict, Any, Set, Optional
-from ..models.state import (
+from db.models.state import (
     GlobalState, Trigger, TriggerCondition, TriggerAction,
     PolicyPatch, ReducerOverride, NetworkRewrite, EventInject,
     AuditCapture
