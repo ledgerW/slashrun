@@ -53,8 +53,8 @@ def main():
     test_args = []
     if len(sys.argv) > 1:
         for arg in sys.argv[1:]:
-            if arg in ["simple", "medium", "complex", "api", "database"]:
-                test_args.extend([f"backend/tests/test_scenarios_{arg}.py", "-v"])
+            if arg == "core":
+                test_args.extend(["backend/tests/test_simulation_core.py", "-v"])
             elif arg == "api":
                 test_args.extend(["backend/tests/test_api.py", "-v"]) 
             elif arg == "database":
@@ -87,13 +87,15 @@ def main():
         
         print()
         print("📊 Additional commands:")
-        print("   • Simple scenarios: python run_tests.py simple")
-        print("   • Medium scenarios: python run_tests.py medium")
-        print("   • Complex scenarios: python run_tests.py complex")
+        print("   • Core simulation: python run_tests.py core")
         print("   • API tests: python run_tests.py api")
         print("   • Database tests: python run_tests.py database")
         print("   • Fast tests (no slow): python run_tests.py fast")
         print("   • With coverage: python run_tests.py coverage")
+        print()
+        print("📋 Scenario Testing (dedicated framework):")
+        print("   • cd scenarios && uv run python runner.py --all")
+        print("   • cd scenarios && uv run python analyzer.py")
         
         if Path("coverage_html/index.html").exists():
             print("📈 Coverage report: coverage_html/index.html")
