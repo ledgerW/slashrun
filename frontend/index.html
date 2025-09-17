@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlashRun Simulation Console</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/components/dashboard.css">
+</head>
+<body class="landing-body">
+    <header class="landing-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>SlashRun Global Simulation Intelligence</h1>
+            <p>Operate complex macroeconomic scenarios with full transparency, auditability, and cinematic visual analytics inspired by Palantir.</p>
+            <div class="hero-actions">
+                <a class="btn btn-primary" href="/login.html">Launch Console</a>
+                <a class="btn btn-secondary" href="#capabilities">Explore Capabilities</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="landing-main">
+        <section id="capabilities" class="landing-section">
+            <h2>Operational Intelligence for Scenario Designers</h2>
+            <div class="capabilities-grid">
+                <article class="capability-card">
+                    <h3>Simulation Control</h3>
+                    <p>Step, rewind, and fast-forward through discrete time horizons while inspecting reducer chains, trigger firings, and full audit logs.</p>
+                </article>
+                <article class="capability-card">
+                    <h3>Transparent State Graph</h3>
+                    <p>Inspect every node of the <code>GlobalState</code> graph in a structured explorer with diff-highlighting, exports, and drill-down views.</p>
+                </article>
+                <article class="capability-card">
+                    <h3>Policy Studio</h3>
+                    <p>Design and schedule triggers, policy patches, and network rewrites with a live evaluation sandbox before promotion to production scenarios.</p>
+                </article>
+                <article class="capability-card">
+                    <h3>Visual Analytics</h3>
+                    <p>Interact with animated timelines, world heatmaps, trade networks, and sentiment flows to understand macro trajectories instantly.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="landing-section">
+            <h2>How SlashRun Works</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-index">01</span>
+                    <div>
+                        <h3>Compose Scenario</h3>
+                        <p>Pull a real-world template or start from scratch, configure policy regimes, and seed event queues using live data integrations.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-index">02</span>
+                    <div>
+                        <h3>Simulate Transparently</h3>
+                        <p>SlashRun reducers iterate across monetary, fiscal, trade, and sentiment domains with audit captures that detail every calculation.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-index">03</span>
+                    <div>
+                        <h3>Audit & Explain</h3>
+                        <p>Every timestep produces a trace of field changes, triggers, and supporting math so you can justify strategic moves to stakeholders.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-index">04</span>
+                    <div>
+                        <h3>Iterate with Confidence</h3>
+                        <p>Branch scenarios, compare trajectories, and orchestrate multi-run experiments with curated dashboards and exportable dossiers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="landing-footer">
+        <p>© <span id="footer-year"></span> SlashRun Simulation Platform</p>
+    </footer>
+
+    <script type="module">
+        document.getElementById('footer-year').textContent = new Date().getFullYear().toString();
+    </script>
+</body>
+</html>

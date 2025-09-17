@@ -172,16 +172,15 @@ async def get_version():
     }
 
 
-# Root endpoint
-@app.get("/", tags=["info"])
-async def root():
-    """Root endpoint with API information."""
+@app.get(f"{settings.api_prefix}", tags=["info"])
+async def api_root():
+    """API metadata endpoint."""
     return {
-        "message": "Welcome to SlashRun Simulation API",
+        "message": "SlashRun Simulation API",
         "description": "Economic scenario modeling with complete transparency",
         "version": settings.version,
         "docs_url": "/docs",
-        "health_url": "/health"
+        "health_url": f"{settings.api_prefix}/health"
     }
 
 
@@ -205,9 +204,7 @@ app.include_router(simulation_router, prefix=settings.api_prefix, tags=["simulat
 # Make connection manager available to simulation router
 app.state.websocket_manager = manager
 
-# FUTURE: Mount frontend static files after API routes are defined
-# This will be implemented in the next phase
-# app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
 
 # Development server

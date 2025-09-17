@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlashRun Command Console</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/components/dashboard.css">
+    <link rel="stylesheet" href="/css/components/simulation.css">
+</head>
+<body class="console-body">
+    <div class="app-shell">
+        <aside class="nav-rail" id="nav-rail">
+            <div class="nav-brand">
+                <span class="brand-glyph">∑</span>
+                <h1>SlashRun</h1>
+            </div>
+            <nav>
+                <button class="nav-link active" data-panel="scenario-library">Scenarios</button>
+                <button class="nav-link" data-panel="trigger-designer">Trigger Studio</button>
+                <button class="nav-link" data-panel="data-catalog">Data Catalog</button>
+                <button class="nav-link" data-panel="settings">Settings</button>
+            </nav>
+            <footer class="nav-footer">
+                <button id="logout-btn" class="btn btn-secondary">Sign out</button>
+            </footer>
+        </aside>
+        <main class="app-main">
+            <header class="top-bar">
+                <div class="top-status">
+                    <span class="status-light" id="connection-indicator"></span>
+                    <span id="environment-label">Environment: <strong>Simulation</strong></span>
+                </div>
+                <div class="top-actions">
+                    <span id="user-display" class="user-display"></span>
+                </div>
+            </header>
+
+            <section class="panel" id="scenario-library" data-panel>
+                <header class="panel-header">
+                    <div>
+                        <h2>Scenario Library</h2>
+                        <p>Review, create, and launch macro simulations. Powered by live backend data—no placeholders.</p>
+                    </div>
+                    <div class="panel-controls">
+                        <input type="search" id="scenario-search" placeholder="Search scenarios" aria-label="Search scenarios">
+                        <button class="btn btn-primary" id="create-scenario-btn">New Scenario</button>
+                    </div>
+                </header>
+                <div class="metrics-bar" id="scenario-metrics"></div>
+                <div class="scenario-grid" id="scenario-grid"></div>
+            </section>
+
+            <section class="panel hidden" id="trigger-designer" data-panel>
+                <header class="panel-header">
+                    <div>
+                        <h2>Trigger &amp; Action Studio</h2>
+                        <p>Design policy triggers with real-time validation against the current global state snapshot.</p>
+                    </div>
+                    <div class="panel-controls">
+                        <button class="btn btn-secondary" id="load-trigger-examples">Load Examples</button>
+                        <button class="btn btn-primary" id="save-trigger-draft">Save Draft to Scenario</button>
+                    </div>
+                </header>
+                <div class="trigger-layout">
+                    <form id="trigger-form" class="trigger-form" autocomplete="off">
+                        <fieldset>
+                            <legend>Trigger Metadata</legend>
+                            <label for="trigger-name">Name</label>
+                            <input type="text" id="trigger-name" name="trigger-name" required>
+                            <label for="trigger-description">Description</label>
+                            <textarea id="trigger-description" name="trigger-description" rows="3"></textarea>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Condition</legend>
+                            <label for="trigger-condition">When (DSL)</label>
+                            <textarea id="trigger-condition" rows="4" placeholder="country('USA').macro.inflation > 0.05 && t >= 4"></textarea>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="trigger-once" checked>
+                                Fire once only
+                            </label>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Actions</legend>
+                            <div class="action-list" id="trigger-actions"></div>
+                            <div class="action-controls">
+                                <button type="button" class="btn btn-secondary" data-action="patch">Add Policy Patch</button>
+                                <button type="button" class="btn btn-secondary" data-action="override">Add Reducer Override</button>
+                                <button type="button" class="btn btn-secondary" data-action="network">Add Network Rewrite</button>
+                                <button type="button" class="btn btn-secondary" data-action="event">Inject Event</button>
+                            </div>
+                        </fieldset>
+                        <fieldset class="trigger-footer">
+                            <label for="trigger-expiry">Expires After (turns)</label>
+                            <input type="number" id="trigger-expiry" min="1" step="1">
+                        </fieldset>
+                    </form>
+                    <aside class="trigger-preview">
+                        <h3>Live Evaluation</h3>
+                        <pre id="trigger-eval-output">Select a scenario to evaluate trigger conditions.</pre>
+                        <div id="trigger-example-list" class="draft-list"></div>
+                    </aside>
+                </div>
+            </section>
+
+            <section class="panel hidden" id="data-catalog" data-panel>
+                <header class="panel-header">
+                    <div>
+                        <h2>Data Catalog</h2>
+                        <p>Contextual guides for each economic indicator sourced from SlashRun documentation.</p>
+                    </div>
+                </header>
+                <div id="data-catalog-content" class="catalog-grid"></div>
+            </section>
+
+            <section class="panel hidden" id="settings" data-panel>
+                <header class="panel-header">
+                    <div>
+                        <h2>User Settings</h2>
+                        <p>Manage personal preferences and workspace configuration.</p>
+                    </div>
+                </header>
+                <form id="settings-form" class="settings-form">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="setting-animations" checked>
+                        Enable cinematic transitions
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="setting-autoplay">
+                        Auto-play timeline on scenario load
+                    </label>
+                </form>
+            </section>
+        </main>
+
+        <aside class="workspace" id="scenario-workspace">
+            <header class="workspace-header">
+                <div>
+                    <h2 id="workspace-title">Select a Scenario</h2>
+                    <p id="workspace-description">Choose a scenario from the library to unlock visual analytics, audits, and trigger evaluation.</p>
+                </div>
+                <div class="workspace-controls">
+                    <button class="btn btn-secondary" id="export-state">Export State JSON</button>
+                    <button class="btn btn-primary" id="step-simulation">Advance Step</button>
+                </div>
+            </header>
+            <div class="timeline-wrapper">
+                <div class="timeline-controls">
+                    <button id="timeline-prev" aria-label="Previous step">◀</button>
+                    <div class="timeline-track" id="timeline-track" tabindex="0" role="list"></div>
+                    <button id="timeline-next" aria-label="Next step">▶</button>
+                </div>
+                <div class="timeline-playback">
+                    <button class="btn btn-secondary" id="timeline-play">Play</button>
+                    <span id="timeline-status">No scenario loaded</span>
+                </div>
+            </div>
+            <div class="state-lens">
+                <div class="lens-tabs" role="tablist">
+                    <button class="lens-tab active" data-tab="macro" role="tab">Macro Dashboard</button>
+                    <button class="lens-tab" data-tab="networks" role="tab">Networks</button>
+                    <button class="lens-tab" data-tab="policy" role="tab">Policy &amp; Regimes</button>
+                    <button class="lens-tab" data-tab="events" role="tab">Event Queue</button>
+                </div>
+                <div class="lens-panel" id="lens-macro" data-tab-panel></div>
+                <div class="lens-panel hidden" id="lens-networks" data-tab-panel></div>
+                <div class="lens-panel hidden" id="lens-policy" data-tab-panel></div>
+                <div class="lens-panel hidden" id="lens-events" data-tab-panel></div>
+            </div>
+            <div class="workspace-bottom">
+                <section class="audit-console">
+                    <header>
+                        <h3>Audit Console</h3>
+                        <span id="audit-summary"></span>
+                    </header>
+                    <div class="audit-log" id="audit-log"></div>
+                </section>
+                <section class="state-inspector">
+                    <header>
+                        <h3>Global State Explorer</h3>
+                        <div>
+                            <button class="btn btn-secondary" id="expand-all">Expand All</button>
+                            <button class="btn btn-secondary" id="collapse-all">Collapse All</button>
+                        </div>
+                    </header>
+                    <div class="state-tree" id="state-tree" role="tree"></div>
+                </section>
+            </div>
+        </aside>
+    </div>
+
+    <dialog id="scenario-modal" class="modal">
+        <form method="dialog" id="scenario-form" class="modal-content">
+            <header>
+                <h2 id="scenario-modal-title">Create Scenario</h2>
+                <button type="button" class="modal-close" aria-label="Close">×</button>
+            </header>
+            <section class="modal-body">
+                <label for="scenario-name">Name</label>
+                <input type="text" id="scenario-name" required>
+                <label for="scenario-description">Description</label>
+                <textarea id="scenario-description" rows="3"></textarea>
+                <label for="scenario-template">Initial State</label>
+                <select id="scenario-template">
+                    <option value="mvs">MVS Template (10 major economies)</option>
+                    <option value="fis">FIS Template (30+ economies)</option>
+                </select>
+                <div class="modal-note">Templates are generated live via backend services using real data integrations.</div>
+                <section id="scenario-trigger-draft">
+                    <h3>Attach Trigger Drafts</h3>
+                    <p class="small">Any trigger drafts stored locally can be attached to the new scenario.</p>
+                    <div id="trigger-draft-list" class="draft-list"></div>
+                </section>
+            </section>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="scenario-cancel">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Scenario</button>
+            </footer>
+        </form>
+    </dialog>
+
+    <dialog id="action-modal" class="modal">
+        <form method="dialog" id="action-form" class="modal-content">
+            <header>
+                <h2 id="action-modal-title">Configure Action</h2>
+                <button type="button" class="modal-close" aria-label="Close">×</button>
+            </header>
+            <section class="modal-body" id="action-modal-body"></section>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="action-cancel">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Action</button>
+            </footer>
+        </form>
+    </dialog>
+
+    <dialog id="confirm-dialog" class="modal">
+        <form method="dialog" class="modal-content">
+            <header>
+                <h2 id="confirm-title">Confirm</h2>
+            </header>
+            <section class="modal-body">
+                <p id="confirm-message"></p>
+            </section>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" value="cancel">Cancel</button>
+                <button type="submit" class="btn btn-primary" value="confirm">Confirm</button>
+            </footer>
+        </form>
+    </dialog>
+
+    <template id="audit-row-template">
+        <article class="audit-row">
+            <div class="audit-field"></div>
+            <div class="audit-reducer"></div>
+            <div class="audit-value"></div>
+        </article>
+    </template>
+
+    <template id="timeline-card-template">
+        <article class="timeline-card" role="listitem">
+            <header>
+                <h4 class="timestep-label"></h4>
+                <time class="timestep-time"></time>
+            </header>
+            <dl>
+                <div><dt>GDP Δ</dt><dd class="metric-gdp"></dd></div>
+                <div><dt>Inflation Δ</dt><dd class="metric-inflation"></dd></div>
+                <div><dt>Triggers</dt><dd class="metric-triggers"></dd></div>
+            </dl>
+        </article>
+    </template>
+
+    <script type="module" src="/js/auth.js"></script>
+    <script type="module" src="/js/api.js"></script>
+    <script type="module" src="/js/websocket.js"></script>
+    <script type="module" src="/js/utils/dom.js"></script>
+    <script type="module" src="/js/utils/storage.js"></script>
+    <script type="module" src="/js/utils/validation.js"></script>
+    <script type="module" src="/js/components/state-inspector.js"></script>
+    <script type="module" src="/js/components/scenario-workspace.js"></script>
+    <script type="module" src="/js/components/scenario-library.js"></script>
+    <script type="module" src="/js/components/trigger-designer.js"></script>
+    <script type="module" src="/js/main.js"></script>
+</body>
+</html>

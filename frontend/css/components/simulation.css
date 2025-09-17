@@ -1,0 +1,181 @@
+.macro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.country-card {
+    background: rgba(6, 11, 22, 0.82);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(59, 156, 255, 0.18);
+    padding: 1rem;
+    display: grid;
+    gap: 0.75rem;
+    transition: transform 160ms ease;
+}
+
+.country-card:hover {
+    transform: translateY(-3px);
+}
+
+.country-card header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.country-card header h3 {
+    margin: 0;
+}
+
+.country-kpis {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.kpi-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.sparkline {
+    height: 42px;
+    position: relative;
+    background: rgba(59, 156, 255, 0.1);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.sparkline svg {
+    position: absolute;
+    inset: 0;
+}
+
+.network-canvas {
+    width: 100%;
+    min-height: 280px;
+    background: rgba(5, 10, 22, 0.8);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(59, 156, 255, 0.22);
+    position: relative;
+    overflow: hidden;
+}
+
+.network-node {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(59, 156, 255, 0.65);
+}
+
+.network-edge {
+    position: absolute;
+    background: linear-gradient(90deg, rgba(59, 156, 255, 0.25), rgba(109, 214, 255, 0.75));
+    transform-origin: 0 50%;
+    height: 2px;
+}
+
+.network-tooltip {
+    position: absolute;
+    background: rgba(8, 13, 25, 0.95);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(109, 214, 255, 0.35);
+    pointer-events: none;
+    font-size: 0.8rem;
+}
+
+.policy-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.policy-table th,
+.policy-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid rgba(59, 156, 255, 0.18);
+}
+
+.policy-table th {
+    text-align: left;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.event-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.event-column {
+    background: rgba(6, 11, 22, 0.8);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(59, 156, 255, 0.2);
+    padding: 1rem;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.event-card {
+    background: rgba(9, 16, 32, 0.85);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(109, 214, 255, 0.25);
+    padding: 0.75rem;
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+}
+
+.event-card h4 {
+    margin: 0;
+    color: var(--accent-strong);
+}
+
+.event-card pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.draft-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.draft-card {
+    background: rgba(6, 11, 22, 0.85);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(109, 214, 255, 0.3);
+    padding: 0.75rem;
+    display: grid;
+    gap: 0.4rem;
+}
+
+.draft-card h4 {
+    margin: 0;
+}
+
+.timeline-track::-webkit-scrollbar,
+.audit-log::-webkit-scrollbar,
+.state-tree::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.timeline-track::-webkit-scrollbar-thumb,
+.audit-log::-webkit-scrollbar-thumb,
+.state-tree::-webkit-scrollbar-thumb {
+    background: rgba(59, 156, 255, 0.35);
+    border-radius: 999px;
+}
+
+.timeline-track::-webkit-scrollbar-track,
+.audit-log::-webkit-scrollbar-track,
+.state-tree::-webkit-scrollbar-track {
+    background: rgba(10, 15, 28, 0.6);
+}
