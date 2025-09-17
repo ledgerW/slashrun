@@ -1,0 +1,27 @@
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  height: 100%;
+}
+
+.rail > * {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 1280px) {
+  .rail {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .rail > * {
+    min-width: 320px;
+  }
+}
+
+@media (max-width: 900px) {
+  .rail {
+    flex-direction: column;
+  }
+}

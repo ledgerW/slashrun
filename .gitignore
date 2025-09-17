@@ -267,3 +267,9 @@ config.local.json
 local_*
 temp_*
 scratch_*
+
+# Frontend build artifacts
+frontend/node_modules/
+frontend/.next/
+!frontend/lib/
+!frontend/lib/**
