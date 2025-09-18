@@ -1,356 +1,135 @@
-# Phase 3 — Map View (Geospatial Layers)
+# Phase 3 — Map View (Geospatial Layers, Next.js / React Translation)
 
 ## Purpose
 
-Implement the **Map View** - an interactive world map with time-bound overlays that visualize global relationships and events. This phase brings geospatial intelligence to SlashRun, mirroring Palantir Gotham's emphasis on map-centric investigation and analysis. The map becomes a primary interface for exploring country interactions, trade flows, sanctions, alliances, and economic relationships across time.
-
-This visualization transforms abstract economic data into intuitive spatial relationships, allowing analysts to see how geographical proximity influences economic outcomes and policy decisions.
+Introduce a Gotham-inspired geospatial panel that visualizes scenario relationships in space and time. The map becomes a synchronized client component inside the workspace center column, reflecting data from `GlobalState.trade_matrix`, `alliances`, `sanctions`, `interbank_matrix`, and `countries`. This phase connects timeline changes to animated overlays and feeds country selections back into the evidence rail and time-series views.
 
 ## Inputs
 
 **From Phase 2:**
-- Timeline controller with smooth timestep navigation
-- State management with caching and performance optimization
-- Evidence rail integration for contextual data display
-- Audit trail system for tracking changes
+- Timeline controller emitting timestep change events and cached `SimulationStepResponse`
+- Evidence rail capable of filtering by selected entities
+- `SimulationProvider` aware of active scenario, timeline status, and caches
 
 **Backend Dependencies:**
-- State data: `countries.*`, `trade_matrix`, `sanctions`, `alliances`, `interbank`
-- Geospatial data: Country boundaries, centroids, coordinate mapping
-- Time-series data: Historical values for overlay animations
+- `GlobalState` fields: `countries`, `trade_matrix`, `alliances`, `sanctions`, `interbank_matrix`, `events`
+- Optional geospatial metadata endpoint (if available) or static GeoJSON assets
 
-**External Dependencies:**
-- MapLibre GL JS (recommended) or Leaflet for base mapping
-- Natural Earth data for country boundaries (GeoJSON)
-- Map tiles (OpenStreetMap, Mapbox, or custom styling)
+**External Libraries:**
+- **MapLibre GL JS** (preferred) or **Deck.gl** for base map rendering
+- `react-map-gl` bindings for React integration
+- Natural Earth / OSM vector tiles for basemap styling
 
 ## Deliverables
 
 ```
 frontend/
-├── css/
-│   └── components/
-│       ├── map.css               # Base map styling
-│       ├── map-controls.css      # Layer controls and UI
-│       ├── map-overlays.css      # Overlay styling (flows, choropleths)
-│       └── map-popups.css        # Country info popups
-├── js/
-│   ├── components/
-│   │   ├── map-view.js          # Main map component
-│   │   ├── map-controls.js      # Layer toggles and settings
-│   │   ├── country-popup.js     # Country detail popup
-│   │   └── map-legends.js       # Legend components for overlays
-│   ├── features/
-│   │   └── map/
-│   │       ├── map-controller.js     # Map state management
-│   │       ├── layers/
-│   │       │   ├── base-layer.js     # Base map configuration
-│   │       │   ├── trade-flows.js    # Trade relationship arcs
-│   │       │   ├── sanctions.js      # Sanctions overlay
-│   │       │   ├── alliances.js      # Alliance networks
-│   │       │   ├── choropleth.js     # Country data visualization
-│   │       │   └── interbank.js      # Financial exposure flows
-│   │       └── utils/
-│   │           ├── geo-utils.js      # Geospatial calculations
-│   │           ├── projection.js     # Coordinate transformations
-│   │           └── animation.js      # Time-based animations
-├── assets/
-│   └── geo/
-│       ├── countries.geojson     # Country boundary data
-│       ├── centroids.json        # Country center coordinates
-│       └── map-style.json        # Custom map styling
-└── docs/
-    └── PHASE-3-README.md         # This file
+├── app/(workspace)/map/MapPanel.tsx                 # Suspense-wrapped map container
+├── app/(workspace)/map/MapViewport.tsx              # Client component hosting MapLibre canvas
+├── app/(workspace)/map/layers/
+│   ├── TradeFlowsLayer.tsx                          # Animated arcs using Deck.gl Layer or custom MapLibre source
+│   ├── SanctionsLayer.tsx                           # Choropleth + link overlays
+│   ├── AlliancesLayer.tsx                           # Network lines w/ strength encoding
+│   ├── InterbankLayer.tsx                           # Directed financial exposure flows
+│   └── CountryMetricsLayer.tsx                      # Choropleth for macro indicators
+├── app/(workspace)/map/controls/
+│   ├── LayerTogglePanel.tsx                         # UI for toggling overlays, opacity sliders
+│   ├── TimeSyncBadge.tsx                            # Displays timeline sync status
+│   ├── SearchControl.tsx                            # Country search (Combobox)
+│   └── BasemapStyleSwitch.tsx                       # Toggle between dark/light basemap (if needed)
+├── app/(workspace)/map/hooks/
+│   ├── useMapDataSources.ts                         # Builds GeoJSON/flow data from `GlobalState`
+│   ├── useTimelineSync.ts                           # Subscribes to timeline events and updates map
+│   └── useCountrySelection.ts                       # Handles click/hover interactions and updates provider
+├── data/geo/
+│   ├── countries.geojson                            # Preprocessed boundaries with ISO codes
+│   └── centroids.json                               # Country centroid coordinates for flows/labels
+├── styles/map.module.css                            # Layout for map panel + overlays
+├── styles/map-tokens.css                            # Elevation, glow, accent variables for map-specific UI
+└── docs/PHASE-3-README.md
 ```
 
 ## Implementation Checklist
 
-### Base Map Setup
-- [ ] **MapLibre GL JS integration**: Initialize map with custom dark theme
-- [ ] **Country boundaries**: Load and render country GeoJSON data
-- [ ] **Map styling**: Gotham-inspired dark theme with high contrast
-- [ ] **Performance optimization**: Efficient rendering of world-scale data
-- [ ] **Responsive design**: Map adapts to different screen sizes
-- [ ] **Navigation controls**: Zoom, pan, reset view, full-screen toggle
-- [ ] **Loading states**: Progressive map loading with skeleton UI
+### Map Infrastructure
+- [ ] Set up MapLibre GL with Gotham dark style (`map-style-dark.json`) and OSM vector tiles
+- [ ] Build `MapPanel` as a client component wrapped in Suspense (loading skeleton while resources initialize)
+- [ ] Implement `MapViewport` using `react-map-gl` with device pixel ratio awareness and WebGL context cleanup
+- [ ] Add responsive layout rules—map should resize with window, maintain min height 600px
+- [ ] Provide keyboard-accessible controls (layer toggles, search) with ARIA labels
 
-### Layer System Architecture
-- [ ] **Layer manager**: Unified system for managing overlay visibility and data
-- [ ] **Trade flows layer**: Animated arcs showing bilateral trade relationships
-- [ ] **Sanctions layer**: Choropleth and network visualization of sanctions
-- [ ] **Alliance layer**: Network connections showing diplomatic relationships
-- [ ] **Interbank layer**: Financial exposure flows between countries
-- [ ] **Economic indicators**: Choropleth overlays for GDP, inflation, etc.
-- [ ] **Layer controls**: Toggle visibility, adjust opacity, layer ordering
+### Data Preparation
+- [ ] `useMapDataSources` transforms `GlobalState` into overlay-ready structures:
+  - Countries: merge simulation metrics with GeoJSON features via ISO code
+  - Trade flows/interbank exposures: convert matrix entries into arc segments with weights and direction
+  - Sanctions/alliances: adjacency lists for network overlays
+  - Events: geolocate from `GlobalState.events` payloads (requires backend lat/lon or country mapping)
+- [ ] Memoize derived data keyed by `scenarioId + timestep`
+- [ ] Provide filtering utilities (e.g., min threshold slider for flows)
 
-### Time Integration
-- [ ] **Timeline synchronization**: Map updates automatically with timeline changes
-- [ ] **Animation system**: Smooth transitions between timesteps
-- [ ] **Historical overlays**: Show evolution of relationships over time
-- [ ] **Event markers**: Visual indicators for significant events on map
-- [ ] **Playback controls**: Auto-play timeline with map animations
-- [ ] **Performance optimization**: Efficient re-rendering during time navigation
-- [ ] **State persistence**: Remember map position and layer settings
+### Timeline Synchronization
+- [ ] `useTimelineSync` subscribes to `SimulationProvider` timestep changes and updates map layers
+- [ ] Animate transitions between timesteps (ease-in-out) for choropleth intensity and arc opacity
+- [ ] Provide playback mode indicator when timeline is auto-advancing; pause/resume controls integrated with timeline
+- [ ] Prefetch upcoming layer data using TanStack Query when user scrubs timeline
 
-### Interactive Features
-- [ ] **Country selection**: Click countries to select and highlight
-- [ ] **Contextual popups**: Show country data and recent changes
-- [ ] **Evidence rail integration**: Selected country filters audit trail
-- [ ] **Multi-country comparison**: Select multiple countries for analysis
-- [ ] **Search functionality**: Find and zoom to specific countries
-- [ ] **Measurement tools**: Distance and area calculations
-- [ ] **Export capabilities**: Save map views as images
+### Interaction & Selection
+- [ ] Enable hover tooltips showing key metrics (GDP, inflation, alliances count) using MapLibre popups or custom overlays
+- [ ] Clicking a country sets `SimulationProvider.activeCountry` and triggers evidence rail filter + time-series selection
+- [ ] Support multi-select via modifier key (e.g., shift+click) to compare multiple countries (store array in provider)
+- [ ] Implement search combobox (Radix UI + `cmd+k` style) to jump to a country and set selection
+- [ ] Provide layer-specific legends explaining color/width encodings; legends update when timeline changes
 
-### Data Visualization Layers
+### Performance & UX
+- [ ] Use WebGL instancing (Deck.gl) or data-driven styling (MapLibre) for large flow sets (thousands of edges)
+- [ ] Debounce hover events; throttle map updates during continuous scrubbing
+- [ ] Offload expensive calculations (e.g., great-circle arcs) to Web Worker via `comlink` if necessary
+- [ ] Persist layer visibility and map camera (lat/lon/zoom) per user in localStorage
+- [ ] Provide fallback message if WebGL unsupported with guidance on enabling hardware acceleration
 
-#### Trade Flows
-- [ ] **Arc visualization**: Curved lines representing trade relationships
-- [ ] **Flow direction**: Visual indicators showing import/export direction
-- [ ] **Volume encoding**: Line thickness represents trade volume
-- [ ] **Animation**: Flow particles moving along trade routes
-- [ ] **Filtering**: Show specific commodities or trade partners
-- [ ] **Temporal changes**: Highlight growing/declining trade relationships
-
-#### Sanctions Overlay
-- [ ] **Network visualization**: Countries and sanctioning relationships
-- [ ] **Severity encoding**: Color intensity represents sanction severity
-- [ ] **Type differentiation**: Different visual styles for different sanction types
-- [ ] **Historical tracking**: Show when sanctions were imposed/lifted
-- [ ] **Impact visualization**: Economic metrics affected by sanctions
-
-#### Alliance Networks
-- [ ] **Network connections**: Lines connecting allied countries
-- [ ] **Alliance strength**: Line thickness represents alliance strength
-- [ ] **Military vs economic**: Different visual styles for alliance types
-- [ ] **Bloc visualization**: Group highlighting for major alliance blocs
-- [ ] **Temporal evolution**: Show alliance formation and dissolution
-
-## API Integration Details
-
-### Geospatial Data Access
-```javascript
-// Access country data from GlobalState
-const countryData = state.countries[countryCode];
-const economicData = {
-  gdp: countryData.macro.gdp,
-  inflation: countryData.macro.cpi_rate,
-  policy_rate: countryData.macro.policy_rate,
-  // ... other indicators
-};
-
-// Trade matrix access
-const tradeFlows = state.trade_matrix;
-// Structure: { "USA->CHN": volume, "CHN->USA": volume, ... }
-
-// Sanctions data
-const sanctions = state.sanctions;
-// Structure: { "source": "target": { severity, type, start_date } }
-```
-
-### Timeline Integration
-```javascript
-// Subscribe to timeline changes
-timelineController.onTimestepChange((timestep) => {
-  mapController.updateOverlays(timestep);
-  mapController.animateToTimestep(timestep);
-});
-
-// Trigger timeline navigation from map events
-mapController.onEventClick((event) => {
-  timelineController.goToTimestep(event.timestep);
-});
-```
-
-## Component Specifications
-
-### Map Controller
-```javascript
-class MapController {
-  constructor(container, timelineController, stateManager)
-  
-  // Core map functionality
-  initializeMap(style, bounds)
-  addLayer(layerConfig)
-  removeLayer(layerId)
-  updateOverlays(timestep)
-  
-  // Country interaction
-  selectCountry(countryCode)
-  highlightCountries(countryCodes)
-  showCountryPopup(countryCode, data)
-  
-  // View management
-  fitToBounds(bounds)
-  setView(center, zoom)
-  saveViewState()
-  restoreViewState()
-  
-  // Animation
-  animateToTimestep(timestep)
-  playTimelineAnimation()
-  pauseAnimation()
-  
-  // Events
-  onCountryClick(callback)
-  onLayerChange(callback)
-}
-```
-
-### Trade Flows Layer
-```javascript
-class TradeFlowsLayer {
-  constructor(map, stateManager)
-  
-  // Data processing
-  processTradeMatrix(matrix)
-  calculateFlowPaths(sourceCoords, targetCoords)
-  
-  // Visualization
-  renderFlows(flows, options)
-  animateFlowParticles()
-  updateFlowsForTimestep(t)
-  
-  // Interaction
-  filterByCountry(countryCode)
-  filterByCommodity(commodity)
-  setVolumeThreshold(minVolume)
-  
-  // Performance
-  optimizeForZoomLevel(zoom)
-  throttleAnimations()
-}
-```
-
-### Country Choropleth Layer
-```javascript
-class ChoroplethLayer {
-  constructor(map, stateManager)
-  
-  // Data mapping
-  mapIndicatorToColors(indicator, colorScale)
-  updateCountryColors(data, timestep)
-  
-  // Styling
-  setColorScale(scale)
-  updateOpacity(opacity)
-  addLegend()
-  
-  // Interaction
-  showDataTooltip(country, value)
-  highlightCountry(countryCode)
-}
-```
+### Testing
+- [ ] Unit test `useMapDataSources` to ensure correct transformation from matrices to flow objects
+- [ ] Snapshot tests for legend/controls states (light/dark, toggled layers)
+- [ ] Playwright scenario: select scenario, toggle layers, scrub timeline, ensure map updates and evidence rail filters
+- [ ] Visual regression via Storybook/Chromatic for base map + overlays
 
 ## Validation Tests
 
-### Map Functionality
-- [ ] **Base map loading**: Map loads without errors, shows world view
-- [ ] **Country boundaries**: All countries render correctly with proper boundaries
-- [ ] **Navigation**: Pan, zoom, reset controls work smoothly
-- [ ] **Performance**: Smooth interaction at all zoom levels
-- [ ] **Responsive design**: Map adapts to container size changes
-- [ ] **Touch support**: Mobile gestures work correctly
+### Functional
+- [ ] Timeline scrub updates choropleth colors and flow intensities accordingly
+- [ ] Layer toggles show/hide overlays without reloading map
+- [ ] Selecting a country updates evidence rail filters and timeline header summary
+- [ ] Multi-select retains highlight styling and updates time-series comparison (Phase 5 dependency)
 
-### Layer System
-- [ ] **Layer toggles**: Each layer can be independently shown/hidden
-- [ ] **Opacity controls**: Layer opacity adjusts smoothly from 0-100%
-- [ ] **Layer ordering**: Layers stack correctly with proper z-index
-- [ ] **Data accuracy**: Overlay data matches backend state data
-- [ ] **Performance**: Multiple layers render without significant lag
+### Accessibility
+- [ ] All controls reachable via keyboard; focus ring visible against dark theme
+- [ ] Tooltip content accessible via programmatic focus (fallback list in DOM for screen readers)
+- [ ] Map operations have ARIA live region to announce timeline sync status
 
-### Time Integration
-- [ ] **Timeline sync**: Map updates automatically when timeline changes
-- [ ] **Animation smooth**: Transitions between timesteps are fluid
-- [ ] **Event integration**: Map events trigger appropriate timeline navigation
-- [ ] **State persistence**: Map remembers position during time navigation
-- [ ] **Performance**: Timeline scrubbing doesn't cause map lag
+### Performance
+- [ ] Maintain >45 FPS when displaying 200+ trade arcs and 150 sanctions edges simultaneously
+- [ ] Initial map load under 3s including GeoJSON fetch (cache results locally)
+- [ ] Memory footprint remains stable when scrubbing through 100 timesteps (cache management validated)
 
-### Interactive Features
-- [ ] **Country selection**: Click selects country, updates evidence rail
-- [ ] **Multi-selection**: Ctrl+click allows multiple country selection
-- [ ] **Popup accuracy**: Country popups show correct, current data
-- [ ] **Search functionality**: Country search finds and zooms correctly
-- [ ] **Evidence integration**: Map selection filters audit trail appropriately
+## API Integration Notes
 
-## Architecture Decisions
-
-### Mapping Library Choice
-**Decision**: MapLibre GL JS over Leaflet  
-**Rationale**: Better performance for complex overlays, WebGL acceleration  
-**Implementation**: Progressive enhancement, fallback to Leaflet if needed
-
-### Layer Architecture  
-**Decision**: Modular layer system with unified interface  
-**Rationale**: Easy to add new layers, maintain performance isolation  
-**Implementation**: Base layer class with consistent API
-
-### Animation Strategy
-**Decision**: CSS transitions for simple animations, custom tweening for complex  
-**Rationale**: Leverage browser optimization where possible  
-**Implementation**: Animation utility with fallback strategies
-
-### Data Caching
-**Decision**: Separate geospatial cache from timeline state cache  
-**Rationale**: Different access patterns and memory requirements  
-**Implementation**: Specialized geo cache with spatial indexing
-
-## Performance Considerations
-
-### Rendering Optimization
-- **Level-of-detail**: Simplify geometries at lower zoom levels
-- **Viewport culling**: Only render features visible in current view
-- **Batch updates**: Group layer updates to minimize re-renders
-- **WebGL acceleration**: Use GPU for heavy computational overlays
-
-### Data Loading
-- **Progressive loading**: Load country boundaries first, overlays second
-- **Lazy loading**: Load overlay data only when layers are activated
-- **Compression**: Use compressed GeoJSON or vector tiles
-- **CDN delivery**: Serve static geo assets from fast CDN
-
-### Memory Management
-- **Feature pooling**: Reuse map feature objects to reduce GC pressure
-- **Layer cleanup**: Remove unused layers and their data from memory
-- **Viewport-based loading**: Only keep features near current view in memory
+- Map relies on timeline data already fetched in Phase 2; no additional endpoints unless geospatial metadata provided
+- For large matrices, consider backend-provided aggregated layers to reduce client transformation cost
+- Use TanStack Query’s `prefetchQuery` to warm caches for adjacent timesteps when map data derived from remote requests
 
 ## Handoff Memo → Phase 4
 
-**What's Complete:**
-- Interactive world map with Gotham-inspired dark theme
-- Multiple overlay layers (trade flows, sanctions, alliances)
-- Timeline integration with smooth time-based animations
-- Country selection with evidence rail integration
-- Performance-optimized rendering for world-scale data
-- Layer controls with visibility and opacity management
+**What’s Complete:**
+- Geospatial visualization synchronized with timeline and evidence rail
+- Country selection + multi-select stored in provider for cross-component communication
+- Layer management infrastructure for relationships (trade, sanctions, alliances, interbank)
 
-**What's Next:**
-Phase 4 will implement the **Network View (Link Analysis)** - force-directed graph visualization of country relationships. This includes:
-- D3.js integration for interactive network graphs
-- Multiple relationship types (trade, diplomatic, financial)
-- Dynamic layouts with physics simulation
-- Node filtering and ego-network highlighting
-- Integration with map view for dual-perspective analysis
+**Up Next (Phase 4):**
+- Build network view (link analysis) reusing selection state and timeline synchronization
+- Share data transformation utilities between map and network layers (e.g., adjacency lists, weights)
+- Extend provider to broadcast selections/events to network panel for consistent highlighting
 
-**Key Integration Points for Phase 4:**
-- Shared country selection state between map and network views
-- Timeline synchronization for both map and network animations
-- Coordinated highlighting when selecting countries in either view
-- Performance optimization for smooth view switching
-
-**Shared Data Structures:**
-- Country relationship matrices (trade, sanctions, alliances)
-- Timeline state management for both visualizations
-- Evidence rail filtering for network-selected countries
-- Layout preferences and view state persistence
-
-**Architecture Notes:**
-- Network view will complement rather than replace map view
-- Consider view switching animations for smooth user experience
-- Plan for synchronized zoom/pan between map and network when appropriate
-- Network layout algorithms should be optimized for real-time updates
-
-**Data Processing Needs for Phase 4:**
-- Convert matrix data to network graph format (nodes/edges)
-- Calculate network metrics (centrality, clustering, etc.)
-- Optimize edge bundling for visual clarity
-- Prepare force simulation parameters for stable layouts
+**Integration Notes:**
+- Ensure `useMapDataSources` exports shareable selectors for network view (avoid duplication)
+- Maintain consistent color palettes for entity categories across map and upcoming network view
+- Validate that provider events fire once per timestep to avoid redundant renders in other panels
