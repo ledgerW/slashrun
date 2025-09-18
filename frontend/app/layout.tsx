@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { IBM_Plex_Sans, Inter } from 'next/font/google';
 import type { ReactNode } from 'react';
 import './globals.css';
+import { ToastProvider } from '@/providers/ToastProvider';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const plex = IBM_Plex_Sans({
@@ -23,7 +24,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       className={`${inter.variable} ${plex.variable}`}
       suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body>
+        <ToastProvider>{children}</ToastProvider>
+      </body>
     </html>
   );
 }

@@ -1,41 +1,16 @@
 import { NextResponse } from 'next/server';
-import { apiFetch } from '@/lib/api';
-import { applySessionCookie } from '@/lib/auth';
-import type { AuthenticatedUser, LoginPayload } from '@/lib/types';
-
-interface BackendLoginResponse {
-  access_token: string;
-  token_type: string;
-  user: {
-    id: string;
-    email: string;
-    name?: string;
-  };
-}
+import { login } from '@/lib/auth';
+import type { LoginPayload } from '@/lib/types';
 
 export async function POST(request: Request) {
   const payload = (await request.json()) as LoginPayload;
 
   try {
-    const backendResponse = await apiFetch<BackendLoginResponse>('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      authenticated: false,
-    });
-
-    const user: AuthenticatedUser = {
-      userId: backendResponse.user.id,
-      email: backendResponse.user.email,
-      displayName: backendResponse.user.name,
-      token: backendResponse.access_token,
-    };
-
-    const response = NextResponse.json({
+    const user = await login(payload);
+    return NextResponse.json({
       success: true,
-      user: { id: user.userId, email: user.email },
+      user: { id: user.id, email: user.email, displayName: user.displayName },
     });
-    applySessionCookie(response, user);
-    return response;
   } catch (error) {
     console.error('Failed to login user', error);
     return NextResponse.json(

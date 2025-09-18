@@ -50,3 +50,17 @@ main:focus {
   background-color: rgba(78, 160, 255, 0.4);
   color: var(--color-text-primary);
 }
+
+@keyframes loading-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  60% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}

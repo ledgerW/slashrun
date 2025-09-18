@@ -21,8 +21,20 @@ export default defineConfig({
     jsxImportSource: 'react',
   },
   resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./', import.meta.url)),
-    },
+    alias: [
+      {
+        find: '@/providers',
+        replacement: fileURLToPath(
+          new URL('./app/(workspace)/_providers', import.meta.url),
+        ),
+      },
+      {
+        find: '@/components',
+        replacement: fileURLToPath(
+          new URL('./app/(workspace)/_components', import.meta.url),
+        ),
+      },
+      { find: '@', replacement: fileURLToPath(new URL('./', import.meta.url)) },
+    ],
   },
 });

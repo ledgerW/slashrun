@@ -1,23 +1,34 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { WorkspaceShell } from '@/app/(workspace)/_components/WorkspaceShell';
-import { AuthProvider } from '@/app/(workspace)/_providers/AuthProvider';
+import { AuthProvider } from '@/providers/AuthProvider';
 import { UIStateProvider } from '@/app/(workspace)/_providers/UIStateProvider';
+import { SimulationProvider } from '@/providers/SimulationProvider';
+import { ToastProvider } from '@/providers/ToastProvider';
 import type { AuthenticatedUser } from '@/lib/types';
+
+vi.mock('@/hooks/useScenarioList', () => ({
+  useScenarioList: () => ({ data: [], isLoading: false }),
+}));
 
 function renderWorkspace(children: React.ReactNode) {
   const user: AuthenticatedUser = {
-    userId: 'analyst-1',
+    id: 'analyst-1',
     email: 'analyst@slash.run',
-    token: 'test-token',
+    displayName: 'Analyst One',
+    roles: ['analyst'],
   };
 
   return render(
-    <AuthProvider initialUser={user}>
-      <UIStateProvider>
-        <WorkspaceShell>{children}</WorkspaceShell>
-      </UIStateProvider>
-    </AuthProvider>,
+    <ToastProvider>
+      <AuthProvider initialUser={user}>
+        <UIStateProvider>
+          <SimulationProvider>
+            <WorkspaceShell>{children}</WorkspaceShell>
+          </SimulationProvider>
+        </UIStateProvider>
+      </AuthProvider>
+    </ToastProvider>,
   );
 }
 

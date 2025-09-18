@@ -1,32 +1,12 @@
 'use client';
 
-import type { CSSProperties } from 'react';
 import layoutStyles from '@/styles/layout.module.css';
-import { useAuth } from '../_providers/AuthProvider';
+import { useAuth } from '@/providers/AuthProvider';
 import { useUIState } from '../_providers/UIStateProvider';
-
-const selectStyle: CSSProperties = {
-  background: 'rgba(16, 24, 38, 0.85)',
-  border: '1px solid rgba(78, 160, 255, 0.25)',
-  borderRadius: 'var(--radius-md)',
-  color: 'var(--color-text-primary)',
-  padding: '12px 16px',
-  minWidth: '220px',
-};
-
-const badgeStyle: CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '8px',
-  padding: '8px 12px',
-  borderRadius: '999px',
-  background: 'rgba(78, 160, 255, 0.16)',
-  color: 'var(--color-text-primary)',
-  fontSize: '13px',
-};
+import { ScenarioSwitcher } from './ScenarioSwitcher';
 
 export function TopBar() {
-  const { user, logout } = useAuth();
+  const { user, logout, isLoggingOut } = useAuth();
   const toggleTimeline = useUIState((state) => state.toggleTimeline);
 
   return (
@@ -39,25 +19,7 @@ export function TopBar() {
         </div>
       </div>
       <div className={layoutStyles.controls}>
-        <div>
-          <label
-            htmlFor="scenario-select"
-            className="label"
-            style={{ display: 'block', marginBottom: '4px' }}
-          >
-            Scenario
-          </label>
-          <select
-            id="scenario-select"
-            name="scenario"
-            defaultValue="baseline"
-            style={selectStyle}
-          >
-            <option value="baseline">Baseline Sanctions</option>
-            <option value="escalated">Escalated Conflict</option>
-            <option value="energy">Energy Shock</option>
-          </select>
-        </div>
+        <ScenarioSwitcher />
         <button
           type="button"
           onClick={toggleTimeline}
@@ -65,14 +27,60 @@ export function TopBar() {
         >
           Toggle Timeline
         </button>
-        <span style={badgeStyle}>
-          <span className="label">Analyst</span>
-          <span>{user?.email ?? 'unassigned@slash.run'}</span>
-        </span>
-        <button type="button" className={layoutStyles.controlButton} onClick={logout}>
-          Logout
+        <UserBadge email={user?.email ?? 'unassigned@slash.run'} name={user?.displayName} />
+        <button
+          type="button"
+          className={layoutStyles.controlButton}
+          onClick={() => {
+            void logout();
+          }}
+          disabled={isLoggingOut}
+        >
+          {isLoggingOut ? 'Signing out…' : 'Logout'}
         </button>
       </div>
     </header>
+  );
+}
+
+function UserBadge({ name, email }: { name?: string | null; email: string }) {
+  const initials = (name ?? email)
+    .split(' ')
+    .map((part) => part.charAt(0))
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '8px 12px',
+        borderRadius: '999px',
+        background: 'rgba(78, 160, 255, 0.16)',
+        color: 'var(--color-text-primary)',
+        fontSize: '13px',
+      }}
+      aria-label={`Signed in as ${name ?? email}`}
+    >
+      <span
+        aria-hidden
+        style={{
+          width: '26px',
+          height: '26px',
+          borderRadius: '50%',
+          background: 'rgba(78, 160, 255, 0.35)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontWeight: 600,
+        }}
+      >
+        {initials || 'AN'}
+      </span>
+      <span>{name ?? email}</span>
+    </span>
   );
 }

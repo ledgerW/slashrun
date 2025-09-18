@@ -1,9 +1,12 @@
+import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { getUserSession } from '@/lib/auth';
-import { AuthProvider } from './_providers/AuthProvider';
+import { AuthProvider } from '@/providers/AuthProvider';
 import { UIStateProvider } from './_providers/UIStateProvider';
-import { WorkspaceShell } from './_components/WorkspaceShell';
+import { QueryProvider } from '@/providers/QueryProvider';
+import { SimulationProvider } from '@/providers/SimulationProvider';
+import { WorkspaceLoadingState } from './_components/LoadingStates';
 
 export default async function WorkspaceLayout({ children }: { children: ReactNode }) {
   const user = await getUserSession();
@@ -14,9 +17,13 @@ export default async function WorkspaceLayout({ children }: { children: ReactNod
 
   return (
     <AuthProvider initialUser={user}>
-      <UIStateProvider>
-        <WorkspaceShell>{children}</WorkspaceShell>
-      </UIStateProvider>
+      <QueryProvider>
+        <UIStateProvider>
+          <SimulationProvider>
+            <Suspense fallback={<WorkspaceLoadingState />}>{children}</Suspense>
+          </SimulationProvider>
+        </UIStateProvider>
+      </QueryProvider>
     </AuthProvider>
   );
 }
