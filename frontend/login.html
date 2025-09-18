@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlashRun Console Login</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/components/auth.css">
+</head>
+<body class="auth-body">
+    <div class="auth-shell">
+        <section class="auth-panel">
+            <header>
+                <h1>Welcome to SlashRun</h1>
+                <p>Authenticate to orchestrate macro scenarios with full transparency.</p>
+            </header>
+            <form id="login-form" class="auth-form">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" autocomplete="email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" autocomplete="current-password" required>
+
+                <button class="btn btn-primary" type="submit">Sign In</button>
+            </form>
+            <p class="auth-error" id="login-error" role="alert" aria-live="assertive"></p>
+            <p class="auth-footer">By signing in you agree to the transparent audit logging of all simulation interactions.</p>
+        </section>
+        <aside class="auth-side">
+            <h2>Mission Control</h2>
+            <ul>
+                <li>Inspect every reducer decision</li>
+                <li>Drill into trade, finance, sentiment, and energy layers</li>
+                <li>Animate time-step trajectories with cinematic clarity</li>
+            </ul>
+        </aside>
+    </div>
+
+    <script type="module" src="/js/auth.js"></script>
+    <script type="module" src="/js/main.js"></script>
+</body>
+</html>
