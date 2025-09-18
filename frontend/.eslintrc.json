@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:storybook/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["prettier"],
+  "ignorePatterns": ["node_modules/", ".next/", "storybook-static/", "stories/"],
+  "rules": {
+    "prettier/prettier": ["error", { "endOfLine": "lf" }]
+  }
+}

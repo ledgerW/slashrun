@@ -1,0 +1,9 @@
+node_modules
+.next
+storybook-static
+coverage
+.DS_Store
+
+# Env
+.env
+tsconfig.tsbuildinfo

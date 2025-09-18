@@ -267,3 +267,6 @@ config.local.json
 local_*
 temp_*
 scratch_*
+
+*storybook.log
+storybook-static

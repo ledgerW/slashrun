@@ -1,0 +1,44 @@
+.authShell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, rgba(39, 68, 116, 0.45), rgba(5, 7, 13, 0.95));
+  padding: var(--space-8);
+}
+
+.authShell main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authCard {
+  width: min(420px, 100%);
+  background: rgba(9, 13, 22, 0.85);
+  border: 1px solid rgba(78, 160, 255, 0.18);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.authHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.authHeaderTitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.authHeaderSubtitle {
+  color: var(--color-text-muted);
+  font-size: 15px;
+}
