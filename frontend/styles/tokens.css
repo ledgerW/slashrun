@@ -1,0 +1,43 @@
+:root {
+  color-scheme: dark;
+  --color-background: #05070d;
+  --color-surface: #0c111c;
+  --color-surface-raised: #121a2b;
+  --color-surface-muted: #1b2538;
+  --color-border: rgba(120, 162, 233, 0.2);
+  --color-accent: #4ea0ff;
+  --color-accent-soft: rgba(78, 160, 255, 0.2);
+  --color-positive: #3dd68c;
+  --color-warning: #f1a208;
+  --color-danger: #ff5c5c;
+  --color-text-primary: #f5f7ff;
+  --color-text-secondary: rgba(245, 247, 255, 0.65);
+  --color-text-muted: rgba(245, 247, 255, 0.45);
+  --shadow-sm: 0 8px 18px rgba(5, 7, 13, 0.35);
+  --shadow-md: 0 18px 45px rgba(5, 7, 13, 0.45);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-9: 64px;
+  --layout-nav-width: min(280px, 22vw);
+  --layout-nav-width-collapsed: 80px;
+  --layout-rail-width: clamp(280px, 24vw, 360px);
+  --layout-footer-height: 120px;
+  --transition-fast: 120ms ease-out;
+  --transition-medium: 180ms ease;
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --layout-nav-width: 320px;
+  }
+}
