@@ -12,6 +12,149 @@ This template provides a complete foundation for building modern AI-native appli
 - **AI-First Architecture:** Designed for agentic and generative capabilities
 - **Comprehensive Documentation:** Detailed guides for every aspect
 
+## 🤖 Built With
+
+This template is designed to work seamlessly with modern AI coding assistants and leverages best-in-class technologies for rapid development.
+
+### AI Development Assistant
+
+<table>
+<tr>
+<td width="80" align="center">
+<a href="https://cline.bot/" target="_blank">
+<img src="./assets/BOT_LIGHT.png" alt="Cline" width="64" height="64"/>
+</a>
+</td>
+<td>
+<strong><a href="https://cline.bot/">Cline</a></strong> - The Collaborative Coding Agent<br/>
+<em>Recommended backbone for AI-assisted development</em><br/>
+<br/>
+Open-source AI coding assistant with Plan/Act modes, complete transparency, and client-side architecture. Features 3.8M+ installs, SOC 2 compliance, and works with any AI model (Claude, GPT, Gemini, etc.). Perfect for workflow-driven development with this template's <code>.clinerules/</code> guides.
+</td>
+</tr>
+</table>
+
+### Core Technologies
+
+<table>
+<tr>
+<td width="80" align="center">
+<a href="https://www.langchain.com/langchain" target="_blank">
+<img src="./assets/LangChain-logo.svg" alt="LangChain" width="64" height="64"/>
+</a>
+</td>
+<td>
+<strong><a href="https://www.langchain.com/langchain">LangChain</a></strong> - AI Agent Framework<br/>
+Open-source framework with 1000+ integrations for building AI agents. Features proven agent patterns, model-agnostic design, middleware customization, and durable runtime with built-in persistence and memory.
+</td>
+</tr>
+<tr>
+<td width="80" align="center">
+<a href="https://www.langchain.com/langsmith/deployment" target="_blank">
+<img src="./assets/LangSmith-logo.svg" alt="LangSmith" width="64" height="64"/>
+</a>
+</td>
+<td>
+<strong><a href="https://www.langchain.com/langsmith/deployment">LangSmith Deployment</a></strong> - Agent Deployment Platform<br/>
+Production deployment platform for LangChain agents. Features 1-click deployment, robust APIs for checkpointing and memory management, horizontal scaling, and built-in observability for enterprise workloads.
+</td>
+</tr>
+<tr>
+<td width="80" align="center">
+<a href="https://supabase.com/" target="_blank">
+<img src="./assets/supabase-logo-icon.png" alt="Supabase" width="64" height="64"/>
+</a>
+</td>
+<td>
+<strong><a href="https://supabase.com/">Supabase</a></strong> - The Postgres Development Platform<br/>
+Full Postgres database with built-in authentication, Row Level Security, Edge Functions, real-time subscriptions, file storage, and vector embeddings. "Build in a weekend, scale to millions."
+</td>
+</tr>
+<tr>
+<td width="80" align="center">
+<a href="https://nextjs.org/" target="_blank">
+<img src="./assets/nextjs.svg" alt="Next.js" width="64" height="64"/>
+</a>
+</td>
+<td>
+<strong><a href="https://nextjs.org/">Next.js</a></strong> - The React Framework for the Web<br/>
+React framework with built-in optimizations, Server Components, Server Actions, and advanced routing. Currently on Next.js 16 with App Router, TypeScript, and Tailwind CSS integration.
+</td>
+</tr>
+<tr>
+<td width="80" align="center">
+<a href="https://vercel.com/" target="_blank">
+<img src="./assets/vercel.svg" alt="Vercel" width="64" height="64"/>
+</a>
+</td>
+<td>
+<strong><a href="https://vercel.com/">Vercel</a></strong> - Frontend Cloud Platform<br/>
+Cloud platform for deploying frontend applications with global CDN, automatic HTTPS, preview deployments, and AI capabilities. Created by the team behind Next.js for optimal framework integration and performance.
+</td>
+</tr>
+</table>
+
+### UI Libraries
+
+<table>
+<tr>
+<td width="80" align="center">
+<a href="https://ui.shadcn.com/" target="_blank">
+<img src="./assets/shadcn.png" alt="shadcn/ui" width="64" height="64"/>
+</a>
+</td>
+<td>
+<strong><a href="https://ui.shadcn.com/">shadcn/ui</a></strong> - Beautifully Designed Components<br/>
+Not a component library - components you copy into your apps and own. Built on Radix UI primitives. Accessible, customizable, and open source. Includes 50+ production-ready components that you can modify to fit your needs.
+</td>
+</tr>
+<tr>
+<td width="80" align="center">
+<a href="https://supabase.com/ui" target="_blank">
+<img src="./assets/supabase-logo-icon.png" alt="Supabase UI" width="64" height="64"/>
+</a>
+</td>
+<td>
+<strong><a href="https://supabase.com/ui">Supabase UI</a></strong> - Pre-Built UI Components<br/>
+Official Supabase component library with pre-built authentication forms, data tables, and dashboard layouts. Designed specifically for Supabase integration with built-in support for auth flows, real-time updates, and database operations.
+</td>
+</tr>
+<tr>
+<td width="80" align="center">
+<a href="https://reactflow.dev/" target="_blank">
+<img src="./assets/reactflow.png" alt="React Flow" width="64" height="64"/>
+</a>
+</td>
+<td>
+<strong><a href="https://reactflow.dev/">React Flow</a></strong> - Node-Based UI Library<br/>
+Powerful library for building node-based editors, workflow designers, diagrams, and interactive visualizations. Features drag-and-drop, zooming, panning, custom nodes, and extensive customization options. Perfect for AI workflow builders.
+</td>
+</tr>
+</table>
+
+### Why These Technologies?
+
+- **Cline**: Workflow-driven development with Plan/Act modes aligns perfectly with the template's `.clinerules/` guides
+- **LangChain**: Battle-tested agent framework with extensive model integrations
+- **LangSmith**: Production-ready deployment with enterprise features included
+- **Supabase**: Complete backend-as-a-service eliminates infrastructure complexity
+- **Next.js**: Industry-standard React framework with excellent DX and built-in optimizations
+- **Vercel**: Zero-config deployments with global performance out of the box
+- **shadcn/ui**: Copy-paste components you own and customize, not a dependency
+- **Supabase UI**: Official component library designed specifically for Supabase workflows
+- **React Flow**: Best-in-class solution for node-based UIs and workflow visualization
+
+### 🏠 Local-First Development
+
+**A key advantage of this stack:** Every technology in this template provides a complete local development environment that emulates the cloud service, enabling full-stack development entirely on your machine:
+
+- **LangSmith Deployment** → `langgraph dev` runs a local server with LangGraph Studio for testing agents
+- **Supabase** → Docker-based local instance with full PostgreSQL, Auth, Realtime, and Storage
+- **Next.js** → Built-in dev server with hot reload and instant updates
+- **Vercel** → Local preview mode for testing deployments before pushing
+
+This means you can build and test your entire application - database, authentication, AI agents, and frontend - completely offline, with zero cloud dependencies during development. Deploy to production only when ready.
+
 ## 🏗️ Template Structure
 
 ```

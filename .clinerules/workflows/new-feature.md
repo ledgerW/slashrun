@@ -94,7 +94,7 @@ Before writing code:
 ## 📋 Workflow Phases
 
 ### Phase 0: Feature Discovery & Planning [MANDATORY]
-**📄 [Full Guide: phase-0-feature-discovery.md](./new-feature-phases/phase-0-feature-discovery.md)**
+**📄 [Full Guide: phase-0-feature-discovery.md](.clinefiles/workflows/new-feature-phases/phase-0-feature-discovery.md)**
 
 **Purpose:** Thoroughly plan the feature before implementation
 
@@ -111,7 +111,7 @@ Before writing code:
 ---
 
 ### Phase 1: Database Schema Updates [IF NEEDED]
-**📄 [Full Guide: phase-1-database-updates.md](./new-feature-phases/phase-1-database-updates.md)**
+**📄 [Full Guide: phase-1-database-updates.md](.clinefiles/workflows/new-feature-phases/phase-1-database-updates.md)**
 
 **Execute if feature requires:**
 - New database tables
@@ -132,7 +132,7 @@ Before writing code:
 ---
 
 ### Phase 2: Next.js Frontend Implementation [IF NEEDED]
-**📄 [Full Guide: phase-2-frontend-implementation.md](./new-feature-phases/phase-2-frontend-implementation.md)**
+**📄 [Full Guide: phase-2-frontend-implementation.md](.clinefiles/workflows/new-feature-phases/phase-2-frontend-implementation.md)**
 
 **Execute if feature requires:**
 - New pages or routes
@@ -153,7 +153,7 @@ Before writing code:
 ---
 
 ### Phase 3: Agent Service Integration [IF NEEDED]
-**📄 [Full Guide: phase-3-agent-integration.md](./new-feature-phases/phase-3-agent-integration.md)**
+**📄 [Full Guide: phase-3-agent-integration.md](.clinefiles/workflows/new-feature-phases/phase-3-agent-integration.md)**
 
 **Execute if feature requires:**
 - New agent tools
@@ -174,7 +174,7 @@ Before writing code:
 ---
 
 ### Phase 4: Integration & End-to-End Testing [MANDATORY IF MULTIPLE PHASES]
-**📄 [Full Guide: phase-4-integration-testing.md](./new-feature-phases/phase-4-integration-testing.md)**
+**📄 [Full Guide: phase-4-integration-testing.md](.clinefiles/workflows/new-feature-phases/phase-4-integration-testing.md)**
 
 **Execute:** When feature touches 2+ services
 
@@ -191,7 +191,7 @@ Before writing code:
 ---
 
 ### Phase 5: Documentation & System Update [MANDATORY]
-**📄 [Full Guide: phase-5-documentation-update.md](./new-feature-phases/phase-5-documentation-update.md)**
+**📄 [Full Guide: phase-5-documentation-update.md](.clinefiles/workflows/new-feature-phases/phase-5-documentation-update.md)**
 
 **Always execute:** Every feature requires documentation
 

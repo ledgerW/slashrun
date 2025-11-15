@@ -179,7 +179,7 @@ Throughout all phases, continuously cross-reference PROJECT_REQUIREMENTS.md:
 ## 📋 Workflow Phases
 
 ### Phase 0: Application Discovery [MANDATORY]
-**📄 [Full Guide: phase-0-discovery.md](./get-started-phases/phase-0-discovery.md)**
+**📄 [Full Guide: phase-0-discovery.md](.clinefiles/workflows/get-started-phases/phase-0-discovery.md)**
 
 **Purpose:** Gather requirements and define the application scope for an agentic-first application
 
@@ -208,12 +208,12 @@ All applications are agentic-first. Phase 0 defines the intelligence layer:
 ---
 
 ### Phase 1: Supabase Local Setup [MANDATORY]
-**📄 [Full Guide: phase-1-supabase-setup.md](./get-started-phases/phase-1-supabase-setup.md)**
+**📄 [Full Guide: phase-1-supabase-setup.md](.clinefiles/workflows/get-started-phases/phase-1-supabase-setup.md)**
 
 **References:** 
-- `.clinerules/supabase/database/create_migrations.md`
-- `.clinerules/supabase/database/create_rls_policies.md`
-- `.clinerules/supabase/database/postgres_sql_style_guide.md`
+- `.clinefiles/supabase/database/create_migrations.md`
+- `.clinefiles/supabase/database/create_rls_policies.md`
+- `.clinefiles/supabase/database/postgres_sql_style_guide.md`
 
 **Purpose:** Complete database setup with all entities, security, and seed data
 
@@ -229,11 +229,11 @@ All applications are agentic-first. Phase 0 defines the intelligence layer:
 ---
 
 ### Phase 2: Next.js Application Setup [MANDATORY]
-**📄 [Full Guide: phase-2-nextjs-setup.md](./get-started-phases/phase-2-nextjs-setup.md)**
+**📄 [Full Guide: phase-2-nextjs-setup.md](.clinefiles/workflows/get-started-phases/phase-2-nextjs-setup.md)**
 
 **References:** 
-- `.clinerules/ui/ui.md`
-- `.clinerules/langchain/langsmith/next-js-integration/` (awareness only, implemented in Phase 8)
+- `.clinefiles/ui/ui.md`
+- `.clinefiles/langchain/langsmith/next-js-integration/` (awareness only, implemented in Phase 8)
 
 **Purpose:** Set up Next.js application with all critical fixes and prepare for agentic AI integration
 
@@ -257,7 +257,7 @@ All apps are agentic-first. While the agent service is built in Phase 8, prepare
 
 **LangSmith Integration Features (Implemented in Phase 8):**
 
-Review `.clinerules/langchain/langsmith/next-js-integration/` to understand what's coming:
+Review `.clinefiles/langchain/langsmith/next-js-integration/` to understand what's coming:
 - **Streaming** - `useStream()` hook for token-by-token responses
 - **Threads** - URL-based thread persistence for conversation history  
 - **Human-in-the-Loop** - Approval workflows with interrupt/resume patterns
@@ -280,12 +280,12 @@ This prepares the app architecture for seamless Phase 8 integration.
 ---
 
 ### Phase 3: Marketing & UI Foundation [MANDATORY]
-**📄 [Full Guide: phase-3-marketing-and-ui.md](./get-started-phases/phase-3-marketing-and-ui.md)**
+**📄 [Full Guide: phase-3-marketing-and-ui.md](.clinefiles/workflows/get-started-phases/phase-3-marketing-and-ui.md)**
 
 **References:** 
-- `.clinerules/ui/ui.md`
-- `.clinerules/ui/shadcn-blocks.md`
-- `.clinerules/ui/shadcn-components.md`
+- `.clinefiles/ui/ui.md`
+- `.clinefiles/ui/shadcn-blocks.md`
+- `.clinefiles/ui/shadcn-components.md`
 
 **Purpose:** Build complete UI foundation including landing page and dashboard
 
@@ -307,11 +307,11 @@ This prepares the app architecture for seamless Phase 8 integration.
 ---
 
 ### Phase 4: CRUD Implementation [MANDATORY]
-**📄 [Full Guide: phase-4-crud-implementation.md](./get-started-phases/phase-4-crud-implementation.md)**
+**📄 [Full Guide: phase-4-crud-implementation.md](.clinefiles/workflows/get-started-phases/phase-4-crud-implementation.md)**
 
 **References:** 
-- `.clinerules/ui/shadcn-blocks.md`
-- `.clinerules/supabase/database/create_rls_policies.md`
+- `.clinefiles/ui/shadcn-blocks.md`
+- `.clinefiles/supabase/database/create_rls_policies.md`
 
 **Purpose:** Implement complete CRUD operations for ALL entities with seed data display
 
@@ -327,11 +327,11 @@ This prepares the app architecture for seamless Phase 8 integration.
 ---
 
 ### Phase 5: User Management [MANDATORY]
-**📄 [Full Guide: phase-5-user-management.md](./get-started-phases/phase-5-user-management.md)**
+**📄 [Full Guide: phase-5-user-management.md](.clinefiles/workflows/get-started-phases/phase-5-user-management.md)**
 
 **References:** 
-- `.clinerules/ui/supabase-blocks.md`
-- `.clinerules/supabase/auth-for-nextjs.md`
+- `.clinefiles/ui/supabase-blocks.md`
+- `.clinefiles/supabase/auth-for-nextjs.md`
 
 **Purpose:** Implement complete user management functionality
 
@@ -346,13 +346,13 @@ This prepares the app architecture for seamless Phase 8 integration.
 ---
 
 ### Phase 6: Advanced Features [MANDATORY]
-**📄 [Full Guide: phase-6-advanced-features.md](./get-started-phases/phase-6-advanced-features.md)**
+**📄 [Full Guide: phase-6-advanced-features.md](.clinefiles/workflows/get-started-phases/phase-6-advanced-features.md)**
 
 **References:** 
-- `.clinerules/ui/reactflow-patterns.md`
-- `.clinerules/supabase/database/realtime_guide.md`
-- `.clinerules/ui/realtime-nextjs.md` (Client-side implementation patterns, critical JWT auth)
-- `.clinerules/supabase/database/realtime-broadcast-setup.md` (Server-side triggers and RLS)
+- `.clinefiles/ui/reactflow-patterns.md`
+- `.clinefiles/supabase/database/realtime_guide.md`
+- `.clinefiles/ui/realtime-nextjs.md` (Client-side implementation patterns, critical JWT auth)
+- `.clinefiles/supabase/database/realtime-broadcast-setup.md` (Server-side triggers and RLS)
 
 **Purpose:** Implement advanced features based on application needs
 
@@ -367,10 +367,10 @@ This prepares the app architecture for seamless Phase 8 integration.
 ---
 
 ### Phase 7: Polish & Documentation [MANDATORY]
-**📄 [Full Guide: phase-7-polish-and-docs.md](./get-started-phases/phase-7-polish-and-docs.md)**
+**📄 [Full Guide: phase-7-polish-and-docs.md](.clinefiles/workflows/get-started-phases/phase-7-polish-and-docs.md)**
 
 **References:** 
-- `.clinerules/ui/shadcn-components.md`
+- `.clinefiles/ui/shadcn-components.md`
 
 **Purpose:** Polish the application and create comprehensive documentation
 
@@ -384,7 +384,7 @@ This prepares the app architecture for seamless Phase 8 integration.
 ---
 
 ### Phase 8: Agentic AI Service [MANDATORY]
-**📄 [Full Guide: phase-8-agentic-ai-service.md](./get-started-phases/phase-8-agentic-ai-service.md)**
+**📄 [Full Guide: phase-8-agentic-ai-service.md](.clinefiles/workflows/get-started-phases/phase-8-agentic-ai-service.md)**
 
 **Purpose:** Set up LangChain/LangGraph agent service with production patterns using LangGraph dev server
 
@@ -393,22 +393,22 @@ This prepares the app architecture for seamless Phase 8 integration.
 **Philosophy:** All applications built with this workflow are **agentic-first** and **generative-first**. The agent service is not an add-on feature—it's a core architectural component that defines how users interact with your application's intelligence layer.
 
 **Sub-Phases:**
-- **[8.1: Agent Setup](./get-started-phases/phase-8-1-agent-setup.md)** - Directory structure with middleware/, models/, tools/, prompts/ (15-20 min)
-- **[8.2: Agent Implementation](./get-started-phases/phase-8-2-agent-implementation.md)** - Middleware-first architecture, tools with prompt additions (30-40 min)
-- **[8.3: LangSmith Features](./get-started-phases/phase-8-3-langsmith-features.md)** - Memory, threads, HITL, background runs (20-30 min)
-- **[8.4: Next.js Integration](./get-started-phases/phase-8-4-nextjs-integration.md)** - Client SDK, streaming, agent hooks (25-35 min)
-- **[8.5: Testing & Documentation](./get-started-phases/phase-8-5-testing-docs.md)** - Testing, troubleshooting, docs (20-25 min)
+- **[8.1: Agent Setup](.clinefiles/workflows/get-started-phases/phase-8-1-agent-setup.md)** - Directory structure with middleware/, models/, tools/, prompts/ (15-20 min)
+- **[8.2: Agent Implementation](.clinefiles/workflows/get-started-phases/phase-8-2-agent-implementation.md)** - Middleware-first architecture, tools with prompt additions (30-40 min)
+- **[8.3: LangSmith Features](.clinefiles/workflows/get-started-phases/phase-8-3-langsmith-features.md)** - Memory, threads, HITL, background runs (20-30 min)
+- **[8.4: Next.js Integration](.clinefiles/workflows/get-started-phases/phase-8-4-nextjs-integration.md)** - Client SDK, streaming, agent hooks (25-35 min)
+- **[8.5: Testing & Documentation](.clinefiles/workflows/get-started-phases/phase-8-5-testing-docs.md)** - Testing, troubleshooting, docs (20-25 min)
 
 **Key References:**
-- `.clinerules/langchain/core/` - All core concepts (agents, tools, middleware, memory, streaming)
-- `.clinerules/langchain/patterns/` - Production patterns (middleware-centric, custom subagents)
-- `.clinerules/langchain/langsmith/` - Deployment and local development with langgraph dev
-- `.clinerules/langchain/langsmith/next-js-integration/` - Complete Next.js integration patterns
+- `.clinefiles/langchain/core/` - All core concepts (agents, tools, middleware, memory, streaming)
+- `.clinefiles/langchain/patterns/` - Production patterns (middleware-centric, custom subagents)
+- `.clinefiles/langchain/langsmith/` - Deployment and local development with langgraph dev
+- `.clinefiles/langchain/langsmith/next-js-integration/` - Complete Next.js integration patterns
 
 **Critical Requirements:**
 - Memory infrastructure is AUTOMATIC via LangSmith (never manually configure PostgresSaver/PostgresStore)
 - Use `uv add` for all Python dependencies (NOT pip or uv pip install)
-- Reference ONLY patterns from `.clinerules/langchain/` docs
+- Reference ONLY patterns from `.clinefiles/langchain/` docs
 - Streaming and async are defaults, not opt-in features
 - **Middleware-first architecture:** Every tool comes with prompt additions and optional state modifications
 
@@ -417,7 +417,7 @@ This prepares the app architecture for seamless Phase 8 integration.
 ---
 
 ### Phase 9: System Review & Integration Validation [MANDATORY]
-**📄 [Full Guide: phase-9-system-review.md](./get-started-phases/phase-9-system-review.md)**
+**📄 [Full Guide: phase-9-system-review.md](.clinefiles/workflows/get-started-phases/phase-9-system-review.md)**
 
 **Purpose:** Comprehensive review of all work, validation of integration points, and creation of developer reference documentation
 
@@ -589,7 +589,7 @@ This prepares the app architecture for seamless Phase 8 integration.
 
 **Phase 8.2: Agent Implementation**
 - [ ] Agent pattern selected (simple vs supervisor) based on Phase 0 decisions
-- [ ] Core agent file created with proper imports from `.clinerules/langchain/` patterns
+- [ ] Core agent file created with proper imports from `.clinefiles/langchain/` patterns
 - [ ] Middleware functions organized in `middleware/` folder
 - [ ] Each middleware function adds tools with accompanying prompt additions
 - [ ] Agent state models defined in `models/` folder (agent state, context, structured output schemas)
@@ -630,7 +630,7 @@ This prepares the app architecture for seamless Phase 8 integration.
 **Critical Verification:**
 - [ ] Confirmed NO manual PostgresSaver or PostgresStore configuration anywhere
 - [ ] All Python packages installed via `uv add` (NOT pip)
-- [ ] All patterns reference ONLY `.clinerules/langchain/` docs
+- [ ] All patterns reference ONLY `.clinefiles/langchain/` docs
 - [ ] Streaming enabled by default (no opt-in required)
 
 **Verification:** Test complete agent workflow: Next.js UI → send message → agent processes with streaming → response appears token-by-token → memory persists → tools execute correctly.
@@ -685,30 +685,30 @@ When encountering issues during development, first check the relevant phase file
 
 ### Phase-Specific Issue Guides
 
-- **Database Issues** → [Phase 1: Supabase Setup](./get-started-phases/phase-1-supabase-setup.md)
+- **Database Issues** → [Phase 1: Supabase Setup](.clinefiles/workflows/get-started-phases/phase-1-supabase-setup.md)
   - Seed data implementation
   - Variable type mismatches
   - Schema qualification errors
   - RLS permission problems
   
-- **Next.js Setup Issues** → [Phase 2: Next.js Setup](./get-started-phases/phase-2-nextjs-setup.md)
+- **Next.js Setup Issues** → [Phase 2: Next.js Setup](.clinefiles/workflows/get-started-phases/phase-2-nextjs-setup.md)
   - Environment variable problems
   - Supabase client configuration
   - Authentication setup
   
-- **UI Component Issues** → [Phase 3: Marketing & UI](./get-started-phases/phase-3-marketing-and-ui.md)
+- **UI Component Issues** → [Phase 3: Marketing & UI](.clinefiles/workflows/get-started-phases/phase-3-marketing-and-ui.md)
   - Sidebar configuration
   - Navigation link problems
   - Component installation
   - Tailwind v3 vs v4 syntax
   
-- **CRUD & Form Issues** → [Phase 4: CRUD Implementation](./get-started-phases/phase-4-crud-implementation.md)
+- **CRUD & Form Issues** → [Phase 4: CRUD Implementation](.clinefiles/workflows/get-started-phases/phase-4-crud-implementation.md)
   - Form validation
   - Redirect path problems
   - Data fetching errors
   - Relationship display
   
-- **User Management Issues** → [Phase 5: User Management](./get-started-phases/phase-5-user-management.md)
+- **User Management Issues** → [Phase 5: User Management](.clinefiles/workflows/get-started-phases/phase-5-user-management.md)
   - Profile management
   - Logout functionality
   - Settings persistence
