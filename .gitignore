@@ -1,0 +1,97 @@
+# ===================================
+# Template Development .gitignore
+# ===================================
+# This .gitignore is for developing the TEMPLATE itself
+# It ignores service folders so your test implementations don't get committed
+# 
+# Users will use .gitignore.template instead, which tracks service folders
+
+# TEMPLATE DEVELOPMENT: Ignore entire service folders
+nextjs_/
+supabase_/
+langchain_/
+
+# Dependencies
+node_modules/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Environment variables (local only)
+.env
+.env.local
+.env.*.local
+
+# Keep example file
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+*.test.js.snap
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Database (local only)
+*.db
+*.sqlite
+*.sqlite3
+
+# Vercel
+.vercel
+
+# Turborepo
+.turbo
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+
+# UV (Python package manager)
+uv.lock
+
+# LangSmith/LangGraph
+.langgraph/
+langgraph.db
+
+# Project tracking (created during development, not part of template)
+project/
+
+# Template files (keep these tracked)
+!.gitignore.template
+!README.md
+!.clinerules/
+!.clinerules/**

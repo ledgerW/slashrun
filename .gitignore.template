@@ -1,0 +1,119 @@
+# ===================================
+# Template .gitignore
+# ===================================
+# When starting a new project from this template:
+# 1. Copy this file: cp .gitignore.template .gitignore
+# 2. The service folders (nextjs_/, supabase_/, langchain_/) will be tracked
+# 3. Only their internal build artifacts and env files will be ignored
+
+# Dependencies
+node_modules/
+nextjs_/node_modules/
+langchain_/.venv/
+langchain_/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Build outputs
+nextjs_/.next/
+nextjs_/out/
+nextjs_/build/
+nextjs_/dist/
+langchain_/.langgraph/
+langchain_/dist/
+langchain_/build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+nextjs_/.env
+nextjs_/.env.local
+nextjs_/.env.*.local
+langchain_/.env
+langchain_/.env.local
+
+# Keep example files
+!.env.example
+!nextjs_/.env.example
+!langchain_/.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+nextjs_/*.log
+langchain_/*.log
+
+# Testing
+coverage/
+.nyc_output/
+*.test.js.snap
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+supabase_/.branches/
+supabase_/.temp/
+
+# Supabase
+supabase_/.branches
+supabase_/.temp
+supabase_/volumes/
+
+# Vercel
+.vercel
+
+# Turborepo
+.turbo
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+
+# UV (Python package manager)
+uv.lock
+
+# LangSmith/LangGraph
+.langgraph/
+langgraph.db
+
+# Documentation (keep these tracked)
+!README.md
+!nextjs_/README.md
+!supabase_/README.md
+!langchain_/README.md
+!.clinerules/
+!.clinerules/**
