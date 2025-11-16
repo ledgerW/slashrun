@@ -370,13 +370,13 @@ A: [Answer]
 
 ### If Feature Introduces New Patterns
 
-**Update `.clinerules/guide-index.md`:**
+**Update `.clinefiles/guide-index.md`:**
 
 ```markdown
 ### [category]/[new-guide].md
 **Read this for:** [When to use this guide]
 **Summary:** [Brief description]
-**Location:** `.clinerules/[path]`
+**Location:** `.clinefiles/[path]`
 ```
 
 **Add to Common Task Scenarios:**

@@ -7,7 +7,7 @@
 - Phase 1: Supabase running with complete database
 
 **References:**
-- `.clinerules/ui.md` - Tailwind CSS v3 configuration and UI guidelines
+- `.clinefiles/ui.md` - Tailwind CSS v3 configuration and UI guidelines
 
 ---
 

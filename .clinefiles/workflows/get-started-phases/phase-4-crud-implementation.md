@@ -7,8 +7,8 @@
 - Phase 0: Entity classification complete (Primary, Junction, System-Generated, Configuration)
 
 **References:**
-- `.clinerules/ui/shadcn-blocks.md`
-- `.clinerules/supabase/database/create_rls_policies.md`
+- `.clinefiles/ui/shadcn-blocks.md`
+- `.clinefiles/supabase/database/create_rls_policies.md`
 - `PROJECT_REQUIREMENTS.md` - Reference throughout to ensure all entities are implemented
 
 ---

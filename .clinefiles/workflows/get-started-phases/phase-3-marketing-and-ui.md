@@ -6,9 +6,9 @@
 - Phase 2: Next.js app running
 
 **References:**
-- `.clinerules/ui.md`
-- `.clinerules/ui/shadcn-blocks.md`
-- `.clinerules/ui/shadcn-components.md`
+- `.clinefiles/ui.md`
+- `.clinefiles/ui/shadcn-blocks.md`
+- `.clinefiles/ui/shadcn-components.md`
 
 ---
 
@@ -83,7 +83,7 @@ Use requirements from Phase 0 to build:
 - **Pricing Section** - 3 tiers (Free, Pro, Enterprise)
 - **Final CTA** - Strong call-to-action
 
-See `.clinerules/ui/shadcn-blocks.md` for block examples.
+See `.clinefiles/ui/shadcn-blocks.md` for block examples.
 
 ---
 

@@ -202,7 +202,7 @@ Create `AGENT_TROUBLESHOOTING.md` for common issues:
 1. Check agent service logs in terminal
 2. Check browser console for errors
 3. Verify Phase 0-8 checklists all complete
-4. Review `.clinerules/langchain/` docs
+4. Review `.clinefiles/langchain/` docs
 ```
 
 ---

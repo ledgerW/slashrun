@@ -10,9 +10,9 @@
 - PROJECT_REQUIREMENTS.md documenting thread management strategy
 
 **Key References:**
-- `.clinerules/langchain/langsmith/next-js-integration/core.md` - useStream() fundamentals
-- `.clinerules/langchain/langsmith/next-js-integration/streaming.md` - Streaming patterns
-- `.clinerules/langchain/langsmith/next-js-integration/threads.md` - Thread management
+- `.clinefiles/langchain/langsmith/next-js-integration/core.md` - useStream() fundamentals
+- `.clinefiles/langchain/langsmith/next-js-integration/streaming.md` - Streaming patterns
+- `.clinefiles/langchain/langsmith/next-js-integration/threads.md` - Thread management
 
 ---
 
@@ -66,7 +66,7 @@ export function useAgent(threadId?: string | null) {
 }
 ```
 
-**Reference:** `.clinerules/langchain/langsmith/next-js-integration/core.md`
+**Reference:** `.clinefiles/langchain/langsmith/next-js-integration/core.md`
 
 ---
 
@@ -188,7 +188,7 @@ const handleThreadChange = (id: string) => {
 };
 ```
 
-**Reference:** `.clinerules/langchain/langsmith/next-js-integration/threads.md`
+**Reference:** `.clinefiles/langchain/langsmith/next-js-integration/threads.md`
 
 ---
 
@@ -216,7 +216,7 @@ if (agent.interrupt) {
 }
 ```
 
-**Reference:** `.clinerules/langchain/langsmith/next-js-integration/human-in-the-loop.md`
+**Reference:** `.clinefiles/langchain/langsmith/next-js-integration/human-in-the-loop.md`
 
 ---
 
@@ -253,7 +253,7 @@ export async function checkRunStatus(runId: string) {
 }
 ```
 
-**Reference:** `.clinerules/langchain/langsmith/next-js-integration/background-runs.md`
+**Reference:** `.clinefiles/langchain/langsmith/next-js-integration/background-runs.md`
 
 ---
 

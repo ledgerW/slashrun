@@ -6,8 +6,8 @@
 - Phase 5: User management complete
 
 **References:**
-- `.clinerules/ui/reactflow-patterns.md`
-- `.clinerules/supabase/realtime_guide.md`
+- `.clinefiles/ui/reactflow-patterns.md`
+- `.clinefiles/supabase/realtime_guide.md`
 
 ---
 
@@ -62,7 +62,7 @@ npm install @xyflow/react
 
 ### Basic Flow Component
 
-**Reference:** `.clinerules/ui/reactflow-patterns.md` for complete patterns
+**Reference:** `.clinefiles/ui/reactflow-patterns.md` for complete patterns
 
 **`components/flow-editor.tsx`:**
 ```typescript
@@ -173,7 +173,7 @@ export async function loadFlow(flowId: string) {
 }
 ```
 
-**See `.clinerules/ui/reactflow-patterns.md` for:**
+**See `.clinefiles/ui/reactflow-patterns.md` for:**
 - Custom node types
 - Drag-and-drop functionality
 - Autosave implementation
@@ -185,7 +185,7 @@ export async function loadFlow(flowId: string) {
 
 **If application needs real-time features, implement using Supabase Realtime.**
 
-**Reference:** `.clinerules/supabase/realtime_guide.md`
+**Reference:** `.clinefiles/supabase/realtime_guide.md`
 
 ### Basic Realtime Subscription
 

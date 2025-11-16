@@ -79,12 +79,12 @@ By the end of this phase, your application will have:
 **Purpose:** Implement agent(s) based on Phase 0 assessment using middleware-centric pattern
 
 **Key References:**
-- `.clinerules/langchain/core/agents.md` - Agent creation fundamentals
-- `.clinerules/langchain/patterns/middleware-centric.md` - **CRITICAL:** Middleware composition pattern
-- `.clinerules/langchain/patterns/agent-folder-organization.md` - Standard agent code structure
-- `.clinerules/langchain/patterns/middleware-tools.md` - Production middleware-tools pattern
-- `.clinerules/langchain/core/tools.md` - Custom tool creation
-- `.clinerules/langchain/reference-implementations/` - Production-ready code examples
+- `.clinefiles/langchain/core/agents.md` - Agent creation fundamentals
+- `.clinefiles/langchain/patterns/middleware-centric.md` - **CRITICAL:** Middleware composition pattern
+- `.clinefiles/langchain/patterns/agent-folder-organization.md` - Standard agent code structure
+- `.clinefiles/langchain/patterns/middleware-tools.md` - Production middleware-tools pattern
+- `.clinefiles/langchain/core/tools.md` - Custom tool creation
+- `.clinefiles/langchain/reference-implementations/` - Production-ready code examples
 
 **Key Steps:**
 - Implement agent(s) - can be multiple types (supervisor, simple, specialized)
@@ -109,9 +109,9 @@ By the end of this phase, your application will have:
 **Purpose:** Integrate LangSmith features identified in Phase 0 assessment
 
 **Key References:**
-- `.clinerules/langchain/langsmith/next-js-integration/` folder - All Next.js patterns
-- `.clinerules/langchain/core/human-in-the-loop.md` - Approval workflows
-- `.clinerules/langchain/core/retrieval.md` - RAG implementation (if needed)
+- `.clinefiles/langchain/langsmith/next-js-integration/` folder - All Next.js patterns
+- `.clinefiles/langchain/core/human-in-the-loop.md` - Approval workflows
+- `.clinefiles/langchain/core/retrieval.md` - RAG implementation (if needed)
 
 **Key Steps:**
 - Implement thread management (always required)
@@ -142,9 +142,9 @@ By the end of this phase, your application will have:
 **Purpose:** Connect Next.js frontend to agent service using LangGraph SDK
 
 **Key References:**
-- `.clinerules/langchain/langsmith/next-js-integration/core.md` - useStream() patterns
-- `.clinerules/langchain/langsmith/next-js-integration/streaming.md` - Streaming implementation
-- `.clinerules/langchain/langsmith/next-js-integration/threads.md` - Thread management
+- `.clinefiles/langchain/langsmith/next-js-integration/core.md` - useStream() patterns
+- `.clinefiles/langchain/langsmith/next-js-integration/streaming.md` - Streaming implementation
+- `.clinefiles/langchain/langsmith/next-js-integration/threads.md` - Thread management
 
 **Key Steps:**
 - Add `NEXT_PUBLIC_AGENT_API_URL=http://localhost:2024` to `.env.local`
@@ -189,27 +189,27 @@ By the end of this phase, your application will have:
 Throughout Phase 8, you MUST reference ONLY these docs:
 
 ### Core LangChain Patterns
-- `.clinerules/langchain/core/agents.md`
-- `.clinerules/langchain/core/tools.md`
-- `.clinerules/langchain/core/middleware.md`
-- `.clinerules/langchain/core/context-engineering.md`
-- `.clinerules/langchain/patterns/middleware-centric.md` - **CRITICAL PATTERN**
-- `.clinerules/langchain/patterns/agent-folder-organization.md` - Standard structure
+- `.clinefiles/langchain/core/agents.md`
+- `.clinefiles/langchain/core/tools.md`
+- `.clinefiles/langchain/core/middleware.md`
+- `.clinefiles/langchain/core/context-engineering.md`
+- `.clinefiles/langchain/patterns/middleware-centric.md` - **CRITICAL PATTERN**
+- `.clinefiles/langchain/patterns/agent-folder-organization.md` - Standard structure
 
 ### Memory & Persistence
-- `.clinerules/langchain/core/short-term-memory.md`
-- `.clinerules/langchain/core/long-term-memory.md`
-- `.clinerules/langchain/langsmith/local-development.md`
+- `.clinefiles/langchain/core/short-term-memory.md`
+- `.clinefiles/langchain/core/long-term-memory.md`
+- `.clinefiles/langchain/langsmith/local-development.md`
 
 ### Production Patterns
-- `.clinerules/langchain/patterns/middleware-centric.md` - **CRITICAL:** Middleware composition
-- `.clinerules/langchain/patterns/agent-folder-organization.md` - Code organization
-- `.clinerules/langchain/patterns/middleware-tools.md` - Tools middleware pattern
-- `.clinerules/langchain/patterns/custom-subagents.md` - Multi-agent patterns
-- `.clinerules/langchain/reference-implementations/` - Working code examples
+- `.clinefiles/langchain/patterns/middleware-centric.md` - **CRITICAL:** Middleware composition
+- `.clinefiles/langchain/patterns/agent-folder-organization.md` - Code organization
+- `.clinefiles/langchain/patterns/middleware-tools.md` - Tools middleware pattern
+- `.clinefiles/langchain/patterns/custom-subagents.md` - Multi-agent patterns
+- `.clinefiles/langchain/reference-implementations/` - Working code examples
 
 ### Next.js Integration
-- All files in `.clinerules/langchain/langsmith/next-js-integration/`
+- All files in `.clinefiles/langchain/langsmith/next-js-integration/`
 
 ---
 
@@ -308,7 +308,7 @@ For detailed troubleshooting, see each sub-phase guide:
 
 ### Patterns to Follow
 - ✅ Use middleware-centric pattern for production agents
-- ✅ Reference `.clinerules/langchain/` docs ONLY
+- ✅ Reference `.clinefiles/langchain/` docs ONLY
 - ✅ Follow patterns from Next.js integration guides exactly
 - ✅ Implement streaming by default (rarely disable)
 

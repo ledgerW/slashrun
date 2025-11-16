@@ -10,10 +10,10 @@
 - Understanding of agent architecture from Phase 0 (supervisor/simple/both)
 
 **Key References:**
-- `.clinerules/langchain/core/agents.md` - Agent fundamentals
-- `.clinerules/langchain/patterns/middleware-tools.md` - Production middleware-tools pattern
-- `.clinerules/langchain/core/tools.md` - Custom tool creation
-- `.clinerules/langchain/core/middleware.md` - Middleware concepts
+- `.clinefiles/langchain/core/agents.md` - Agent fundamentals
+- `.clinefiles/langchain/patterns/middleware-tools.md` - Production middleware-tools pattern
+- `.clinefiles/langchain/core/tools.md` - Custom tool creation
+- `.clinefiles/langchain/core/middleware.md` - Middleware concepts
 
 ---
 
@@ -59,7 +59,7 @@ from langgraph.graph.message import add_messages
 class State(TypedDict):
     """
     Agent state schema.
-    Reference: .clinerules/langchain/core/agents.md
+    Reference: .clinefiles/langchain/core/agents.md
     """
     # Messages are REQUIRED for all agents
     messages: Annotated[list, add_messages]
@@ -106,7 +106,7 @@ graph = create_react_agent(
 )
 ```
 
-**Reference:** `.clinerules/langchain/core/agents.md` for simple agent patterns
+**Reference:** `.clinefiles/langchain/core/agents.md` for simple agent patterns
 
 ### Option B: Supervisor Agent (Planning & Delegation)
 
@@ -144,7 +144,7 @@ builder.add_conditional_edges(
 graph = builder.compile()
 ```
 
-**Reference:** `.clinerules/langchain/patterns/custom-subagents.md` for supervisor patterns
+**Reference:** `.clinefiles/langchain/patterns/custom-subagents.md` for supervisor patterns
 
 ### Option C: Multiple Agents (Both Types)
 
@@ -170,7 +170,7 @@ Update `langgraph.json`:
 
 **Critical Pattern:** Tools should be organized in **middleware**, not passed directly to `create_agent()`.
 
-**Reference:** `.clinerules/langchain/patterns/middleware-tools.md` for complete pattern.
+**Reference:** `.clinefiles/langchain/patterns/middleware-tools.md` for complete pattern.
 
 ### Step 4.1: Define Tools
 
@@ -179,7 +179,7 @@ Create `src/agent/tools/database_tools.py`:
 ```python
 """
 Database tools for agent.
-Reference: .clinerules/langchain/core/tools.md
+Reference: .clinefiles/langchain/core/tools.md
 """
 from langchain_core.tools import tool
 from langgraph.prebuilt import InjectedState
@@ -272,7 +272,7 @@ Create `src/agent/middleware/tools.py`:
 """
 Generalizable tools middleware.
 Accepts any list of tools and optional prompt guidance.
-Reference: .clinerules/langchain/patterns/middleware-tools.md
+Reference: .clinefiles/langchain/patterns/middleware-tools.md
 """
 from langgraph.prebuilt.chat_agent_executor import AgentMiddleware
 from typing import Callable, Optional
@@ -346,13 +346,13 @@ class ToolsMiddleware(AgentMiddleware):
 - Handle errors gracefully
 - **Always pair tools with system prompt guidance**
 
-**Reference:** `.clinerules/langchain/patterns/middleware-tools.md` for complete patterns
+**Reference:** `.clinefiles/langchain/patterns/middleware-tools.md` for complete patterns
 
 ---
 
 ## Step 5: Add Middleware (If Using)
 
-**Per `.clinerules/langchain/patterns/middleware-tools.md`, middleware is the PRIMARY way to add capabilities.**
+**Per `.clinefiles/langchain/patterns/middleware-tools.md`, middleware is the PRIMARY way to add capabilities.**
 
 ### Example: Adding TodoListMiddleware (Planning)
 
@@ -415,7 +415,7 @@ model_with_middleware = patch.wrap_model(
 2. Context management (Summarization)
 3. Error handling (Patch) - outermost
 
-**Reference:** `.clinerules/langchain/core/middleware.md` for middleware concepts
+**Reference:** `.clinefiles/langchain/core/middleware.md` for middleware concepts
 
 ---
 
@@ -429,7 +429,7 @@ For supervisor agents, define node functions:
 def planner_node(state: State):
     """
     Planning node - breaks down task into steps.
-    Reference: .clinerules/langchain/patterns/custom-subagents.md
+    Reference: .clinefiles/langchain/patterns/custom-subagents.md
     """
     messages = state["messages"]
     
@@ -492,7 +492,7 @@ model = ChatOpenAI(
 
 **That's it!** LangSmith handles the streaming infrastructure automatically.
 
-**Reference:** `.clinerules/langchain/core/streaming.md` for streaming patterns
+**Reference:** `.clinefiles/langchain/core/streaming.md` for streaming patterns
 
 ---
 
@@ -506,8 +506,8 @@ model = ChatOpenAI(
 Implements [supervisor/simple/both] architecture per Phase 0 assessment.
 
 References:
-- .clinerules/langchain/core/agents.md
-- .clinerules/langchain/patterns/middleware-tools.md
+- .clinefiles/langchain/core/agents.md
+- .clinefiles/langchain/patterns/middleware-tools.md
 """
 from typing import TypedDict, Annotated
 from langgraph.graph.message import add_messages
@@ -688,7 +688,7 @@ Before proceeding to Phase 8.3, verify:
 
 **Agent reliability depends 90% on context.**
 
-Per `.clinerules/langchain/core/context-engineering.md`:
+Per `.clinefiles/langchain/core/context-engineering.md`:
 - Clear tool descriptions are essential
 - Provide examples in docstrings
 - System prompts set expectations
@@ -696,7 +696,7 @@ Per `.clinerules/langchain/core/context-engineering.md`:
 
 ### Production Best Practices
 
-From `.clinerules/langchain/patterns/middleware-tools.md`:
+From `.clinefiles/langchain/patterns/middleware-tools.md`:
 - ✅ Use middleware-centric pattern
 - ✅ Organize tools separately from graph
 - ✅ Add error handling middleware

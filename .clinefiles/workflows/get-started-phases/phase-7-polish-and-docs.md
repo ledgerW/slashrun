@@ -6,7 +6,7 @@
 - Phase 6: Advanced features complete
 
 **References:**
-- `.clinerules/ui/shadcn-components.md`
+- `.clinefiles/ui/shadcn-components.md`
 
 ---
 
@@ -433,7 +433,7 @@ This application includes:
 - ✅ [ReactFlow integration] (if applicable)
 - ✅ Comprehensive documentation
 
-Built following the [Get Started Workflow](.clinerules/workflows/get-started.md)
+Built following the [Get Started Workflow](.clinefiles/workflows/get-started.md)
 ```
 
 ---

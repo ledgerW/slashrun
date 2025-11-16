@@ -13,10 +13,10 @@
 **Skip this phase if:** Feature uses only existing database structures without modifications
 
 **References:**
-- `.clinerules/supabase/database/create_migrations.md`
-- `.clinerules/supabase/database/create_rls_policies.md`
-- `.clinerules/supabase/database/postgres_sql_style_guide.md`
-- `.clinerules/supabase/database/declarative_schema.md`
+- `.clinefiles/supabase/database/create_migrations.md`
+- `.clinefiles/supabase/database/create_rls_policies.md`
+- `.clinefiles/supabase/database/postgres_sql_style_guide.md`
+- `.clinefiles/supabase/database/declarative_schema.md`
 
 ---
 
@@ -407,7 +407,7 @@ alter table [table_name] enable row level security;
 
 ### Create Policies for Each Operation
 
-**Read `.clinerules/supabase/database/create_rls_policies.md` for comprehensive patterns.**
+**Read `.clinefiles/supabase/database/create_rls_policies.md` for comprehensive patterns.**
 
 **Standard pattern - separate policy per operation:**
 

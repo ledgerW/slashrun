@@ -12,9 +12,9 @@
 **Skip this phase if:** Feature is backend-only
 
 **References:**
-- `.clinerules/ui/ui.md`
-- `.clinerules/ui/shadcn-components.md`
-- `.clinerules/ui/shadcn-blocks.md`
+- `.clinefiles/ui/ui.md`
+- `.clinefiles/ui/shadcn-components.md`
+- `.clinefiles/ui/shadcn-blocks.md`
 
 ---
 

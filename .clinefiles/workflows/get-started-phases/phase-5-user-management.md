@@ -6,8 +6,8 @@
 - Phase 4: CRUD operations complete
 
 **References:**
-- `.clinerules/ui/supabase-blocks.md`
-- `.clinerules/supabase/auth-for-nextjs.md`
+- `.clinefiles/ui/supabase-blocks.md`
+- `.clinefiles/supabase/auth-for-nextjs.md`
 
 ---
 

@@ -457,10 +457,10 @@ async def test_tool_execution():
 
 ## Related Guides
 
-- **Supervisor Pattern**: `.clinerules/langchain/core/supervisor-pattern.md`
-- **Custom Subagents**: `.clinerules/langchain/patterns/custom-subagents.md`
-- **Tools Guide**: `.clinerules/langchain/core/tools.md`
-- **Middleware Guide**: `.clinerules/langchain/core/middleware.md`
+- **Supervisor Pattern**: `.clinefiles/langchain/patterns/custom-subagents.md`
+- **Custom Subagents**: `.clinefiles/langchain/patterns/custom-subagents.md`
+- **Tools Guide**: `.clinefiles/langchain/core/tools.md`
+- **Middleware Guide**: `.clinefiles/langchain/core/middleware.md`
 
 ## When to Use This Pattern
 

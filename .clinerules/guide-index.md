@@ -346,7 +346,7 @@ These guides contain **breaking patterns** that will cause failures if not follo
 
 ### "Following the get-started workflow"
 **Read these guides in sequence:**
-1. `.clinerules/workflows/get-started.md` - Master workflow anchor (start here)
+1. `.clinefiles/workflows/get-started.md` - Master workflow anchor (start here)
 2. `.clinefiles/workflows/get-started-phases/phase-0-discovery.md` - Application discovery
 3. `.clinefiles/workflows/get-started-phases/phase-1-supabase-setup.md` - Database setup
 4. `.clinefiles/workflows/get-started-phases/phase-2-nextjs-setup.md` - Frontend setup
@@ -361,7 +361,7 @@ These guides contain **breaking patterns** that will cause failures if not follo
 
 ### "Following the new-feature workflow"
 **Read these guides in sequence:**
-1. `.clinerules/workflows/new-feature.md` - Feature development workflow anchor (start here)
+1. `.clinefiles/workflows/new-feature.md` - Feature development workflow anchor (start here)
 2. `.clinefiles/workflows/new-feature-phases/phase-0-feature-discovery.md` - Feature planning & requirements
 3. `.clinefiles/workflows/new-feature-phases/phase-1-database-updates.md` - Database schema changes (if needed)
 4. `.clinefiles/workflows/new-feature-phases/phase-2-frontend-implementation.md` - Next.js UI implementation (if needed)

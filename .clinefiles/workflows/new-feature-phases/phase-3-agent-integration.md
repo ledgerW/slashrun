@@ -12,12 +12,12 @@
 **Skip this phase if:** Feature doesn't involve AI capabilities
 
 **References:**
-- `.clinerules/langchain/patterns/middleware-centric.md` - **CRITICAL:** Middleware composition pattern
-- `.clinerules/langchain/patterns/agent-folder-organization.md` - Standard agent code structure
-- `.clinerules/langchain/patterns/middleware-tools.md` - Tools middleware pattern
-- `.clinerules/langchain/core/tools.md` - Custom tool creation
-- `.clinerules/langchain/patterns/custom-subagents.md` - Multi-agent patterns
-- `.clinerules/langchain/reference-implementations/` - Production-ready code examples
+- `.clinefiles/langchain/patterns/middleware-centric.md` - **CRITICAL:** Middleware composition pattern
+- `.clinefiles/langchain/patterns/agent-folder-organization.md` - Standard agent code structure
+- `.clinefiles/langchain/patterns/middleware-tools.md` - Tools middleware pattern
+- `.clinefiles/langchain/core/tools.md` - Custom tool creation
+- `.clinefiles/langchain/patterns/custom-subagents.md` - Multi-agent patterns
+- `.clinefiles/langchain/reference-implementations/` - Production-ready code examples
 
 ---
 

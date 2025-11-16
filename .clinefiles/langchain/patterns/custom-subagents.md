@@ -584,7 +584,7 @@ export async function invokeAgent(
 }
 ```
 
-See `.clinerules/workflows/phases/phase-8-agentic-ai-service.md` for complete setup.
+See `.clinefiles/workflows/get-started-phases/phase-8-agentic-ai-service.md` for complete setup.
 
 ---
 
@@ -736,5 +736,5 @@ supervisor = create_agent(
 
 - [LangChain create_agent](https://docs.langchain.com/oss/python/langchain/agents)
 - [DeepAgents Harness](https://docs.langchain.com/oss/python/deepagents/harness)
-- `.clinerules/langchain/patterns/middleware-centric.md` - Middleware pattern
-- `.clinerules/langchain/core/middleware.md` - Middleware fundamentals
+- `.clinefiles/langchain/patterns/middleware-centric.md` - Middleware pattern
+- `.clinefiles/langchain/core/middleware.md` - Middleware fundamentals

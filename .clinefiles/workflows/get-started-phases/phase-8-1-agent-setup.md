@@ -28,14 +28,14 @@ your-app/
 ├── your-nextjs-app/     # Next.js frontend
 ├── supabase/            # Database
 ├── agent-service/       # NEW - LangChain agents (this phase)
-└── .clinerules/         # Documentation
+└── .clinefiles/         # Documentation
 ```
 
 ---
 
 ## Step 2: Initialize Python Project with uv
 
-**Per `.clinerules/general.md` rules, use `uv` for Python dependency management:**
+**Per `.clinefiles/general.md` rules, use `uv` for Python dependency management:**
 
 ```bash
 # Initialize Python project
@@ -126,7 +126,7 @@ agent-service/
 - **tools/** - Tool definitions (though middleware-centric pattern preferred)
 - **prompts/** - System prompts paired with tools/middleware
 
-**Reference:** `.clinerules/langchain/patterns/middleware-centric.md` for organization patterns
+**Reference:** `.clinefiles/langchain/patterns/middleware-centric.md` for organization patterns
 
 ---
 
@@ -149,7 +149,7 @@ Create `langgraph.json` in `agent-service/` root:
 - `graphs.agent` - Exposes agent at `/agent` endpoint, references `graph` variable in `graph.py`
 - `env: ".env"` - Load environment variables from .env file
 
-**Reference:** `.clinerules/langchain/langsmith/local-development.md` for configuration details
+**Reference:** `.clinefiles/langchain/langsmith/local-development.md` for configuration details
 
 ---
 
@@ -357,11 +357,11 @@ You simply USE these via:
 - `thread_id` parameter for conversation persistence
 - `runtime.store` in tools/middleware for long-term data
 
-**Reference:** `.clinerules/langchain/core/short-term-memory.md` and `.clinerules/langchain/core/long-term-memory.md`
+**Reference:** `.clinefiles/langchain/core/short-term-memory.md` and `.clinefiles/langchain/core/long-term-memory.md`
 
 ### Using uv for Python
 
-Per `.clinerules/general.md`:
+Per `.clinefiles/general.md`:
 - ✅ Use `uv add package-name` to install packages
 - ✅ Use `uv run` to run commands
 - ❌ Do NOT use `pip install`

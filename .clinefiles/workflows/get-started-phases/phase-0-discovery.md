@@ -425,9 +425,9 @@ Separate:
 Determine if the application needs AI agent capabilities and which LangChain features are required.
 
 **Reference Guides:**
-- `.clinerules/langchain/core/supervisor-pattern.md` - Standard supervisor architecture with 7-middleware stack
-- `.clinerules/langchain/patterns/custom-subagents.md` - Production-ready subagent delegation pattern
-- `.clinerules/langchain/core/filesystem-tools.md` - File operations middleware from deepagents package
+- `.clinefiles/langchain/patterns/custom-subagents.md` - Production-ready subagent delegation pattern with supervisor patterns
+- `.clinefiles/langchain/patterns/middleware-centric.md` - Middleware-centric architecture and composition
+- `.clinefiles/langchain/reference-implementations/filesystem-prompt-example.py` - Custom filesystem prompt guidance for file operations
 
 ### Agent Architecture Decision
 
@@ -586,7 +586,7 @@ Middleware is the **PRIMARY approach** for adding capabilities to agents. For ea
 **Implementation:** Automatic via runtime.store - no manual setup
 ```
 
-**Reference:** `.clinerules/langchain/core/short-term-memory.md` and `.clinerules/langchain/core/long-term-memory.md`
+**Reference:** `.clinefiles/langchain/core/short-term-memory.md` and `.clinefiles/langchain/core/long-term-memory.md`
 
 ### Additional Capabilities
 
@@ -807,7 +807,7 @@ Examples by domain:
 
 ### LangSmith Features Assessment
 
-**Reference:** `.clinerules/langchain/langsmith/next-js-integration/` folder for implementation details
+**Reference:** `.clinefiles/langchain/langsmith/next-js-integration/` folder for implementation details
 
 Beyond basic agent capabilities, LangSmith provides additional features for advanced applications:
 

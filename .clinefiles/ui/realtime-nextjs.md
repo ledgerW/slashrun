@@ -301,7 +301,7 @@ Test your implementation:
 - Ephemeral messages
 
 **Requires:**
-- Database triggers (see `.clinerules/supabase/database/realtime-broadcast-setup.md`)
+- Database triggers (see `.clinefiles/supabase/database/realtime-broadcast-setup.md`)
 - RLS policies
 - More complex setup
 
@@ -313,5 +313,5 @@ Test your implementation:
 
 - [Supabase Realtime Docs](https://supabase.com/docs/guides/realtime)
 - [Next.js Realtime Chat](https://supabase.com/ui/docs/nextjs/realtime-chat)
-- `.clinerules/supabase/database/realtime-broadcast-setup.md` - Server-side setup
-- `.clinerules/supabase/database/realtime_guide.md` - Comprehensive guide
+- `.clinefiles/supabase/database/realtime-broadcast-setup.md` - Server-side setup
+- `.clinefiles/supabase/database/realtime_guide.md` - Comprehensive guide

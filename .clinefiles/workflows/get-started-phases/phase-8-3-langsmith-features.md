@@ -10,9 +10,9 @@
 - `langgraph dev` running
 
 **Key References:**
-- `.clinerules/langchain/langsmith/next-js-integration/` folder - All Next.js integration patterns
-- `.clinerules/langchain/core/human-in-the-loop.md` - Approval workflows
-- `.clinerules/langchain/core/retrieval.md` - RAG implementation
+- `.clinefiles/langchain/langsmith/next-js-integration/` folder - All Next.js integration patterns
+- `.clinefiles/langchain/core/human-in-the-loop.md` - Approval workflows
+- `.clinefiles/langchain/core/retrieval.md` - RAG implementation
 
 ---
 
@@ -47,7 +47,7 @@ When using `thread_id`:
 - ✅ **Store (long-term memory)** - Cross-thread data automatically available
 - ❌ **NO configuration needed** - Just use `thread_id` parameter
 
-**Reference:** `.clinerules/langchain/core/short-term-memory.md` and `.clinerules/langchain/core/long-term-memory.md`
+**Reference:** `.clinefiles/langchain/core/short-term-memory.md` and `.clinefiles/langchain/core/long-term-memory.md`
 
 ### Thread Organization Strategy
 
@@ -73,7 +73,7 @@ When using `thread_id`:
 
 **Document your choice** - it will guide Phase 8.4 Next.js implementation.
 
-**Reference:** `.clinerules/langchain/langsmith/next-js-integration/threads.md`
+**Reference:** `.clinefiles/langchain/langsmith/next-js-integration/threads.md`
 
 ---
 
@@ -119,7 +119,7 @@ def tool_approval_node(state: State):
 - Sending emails/notifications
 - Any action requiring user confirmation
 
-**Reference:** `.clinerules/langchain/core/human-in-the-loop.md` and `.clinerules/langchain/langsmith/next-js-integration/human-in-the-loop.md`
+**Reference:** `.clinefiles/langchain/core/human-in-the-loop.md` and `.clinefiles/langchain/langsmith/next-js-integration/human-in-the-loop.md`
 
 ---
 
@@ -141,7 +141,7 @@ Background runs allow agents to process long-running tasks asynchronously withou
 
 Background runs are handled on the Next.js side (Phase 8.4). On agent side, no special configuration needed - just build agent normally.
 
-**Reference:** `.clinerules/langchain/langsmith/next-js-integration/background-runs.md`
+**Reference:** `.clinefiles/langchain/langsmith/next-js-integration/background-runs.md`
 
 ---
 
@@ -185,7 +185,7 @@ Update `langgraph.json` to define cron schedule:
 - `"0 */4 * * *"` - Every 4 hours
 - `"0 0 * * 0"` - Weekly on Sunday midnight
 
-**Reference:** `.clinerules/langchain/langsmith/next-js-integration/cron-jobs.md`
+**Reference:** `.clinefiles/langchain/langsmith/next-js-integration/cron-jobs.md`
 
 ---
 
@@ -242,7 +242,7 @@ def search_documents(query: str) -> str:
 3. Create match function for similarity search
 4. Ingest documents into vector store
 
-**Reference:** `.clinerules/langchain/core/retrieval.md`
+**Reference:** `.clinefiles/langchain/core/retrieval.md`
 
 ---
 
@@ -277,7 +277,7 @@ Update `langgraph.json`:
 
 Access different assistants via `assistant_id` parameter in API calls.
 
-**Reference:** `.clinerules/langchain/langsmith/next-js-integration/assistants.md`
+**Reference:** `.clinefiles/langchain/langsmith/next-js-integration/assistants.md`
 
 ---
 

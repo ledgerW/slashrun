@@ -214,10 +214,10 @@ Navigation components must use Next.js Link for proper routing:
 
 When working with UI components, refer to these docs:
 
-- `.clinerules/ui/shadcn-components.md` - Individual component reference
-- `.clinerules/ui/shadcn-blocks.md` - Pre-built blocks and layouts
-- `.clinerules/ui/supabase-blocks.md` - Supabase-integrated components
-- `.clinerules/ui/reactflow-patterns.md` - Node-based visualizations
+- `.clinefiles/ui/shadcn-components.md` - Individual component reference
+- `.clinefiles/ui/shadcn-blocks.md` - Pre-built blocks and layouts
+- `.clinefiles/ui/supabase-blocks.md` - Supabase-integrated components
+- `.clinefiles/ui/reactflow-patterns.md` - Node-based visualizations
 
 ## Version Information
 

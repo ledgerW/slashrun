@@ -423,5 +423,5 @@ ON your_table(user_id, id);
 
 - [Supabase Realtime Broadcast](https://supabase.com/docs/guides/realtime/broadcast)
 - [PostgreSQL Triggers](https://www.postgresql.org/docs/current/trigger-definition.html)
-- `.clinerules/supabase/database/realtime_guide.md` - Comprehensive realtime guide
-- `.clinerules/ui/realtime-nextjs.md` - Client-side implementation
+- `.clinefiles/supabase/database/realtime_guide.md` - Comprehensive realtime guide
+- `.clinefiles/ui/realtime-nextjs.md` - Client-side implementation

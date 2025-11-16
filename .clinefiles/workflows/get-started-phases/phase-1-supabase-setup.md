@@ -8,9 +8,9 @@
 - Docker Desktop running
 
 **References:**
-- `.clinerules/supabase/database/create_migrations.md`
-- `.clinerules/supabase/database/create_rls_policies.md`
-- `.clinerules/supabase/database/postgres_sql_style_guide.md`
+- `.clinefiles/supabase/database/create_migrations.md`
+- `.clinefiles/supabase/database/create_rls_policies.md`
+- `.clinefiles/supabase/database/postgres_sql_style_guide.md`
 
 ---
 
@@ -175,7 +175,7 @@ supabase migration new create_timesteps_table
 
 ### Entity Table Template
 
-**Read:** `.clinerules/supabase/database/create_migrations.md` for complete patterns
+**Read:** `.clinefiles/supabase/database/create_migrations.md` for complete patterns
 
 **Basic structure for each entity:**
 
@@ -225,7 +225,7 @@ using ((select auth.uid()) = user_id);
 
 ### Key Requirements for Each Table
 
-**Read:** `.clinerules/supabase/database/postgres_sql_style_guide.md` for style guide
+**Read:** `.clinefiles/supabase/database/postgres_sql_style_guide.md` for style guide
 
 ✅ **Must Have:**
 - Primary key (usually `id bigint generated always as identity`)
@@ -294,7 +294,7 @@ This command:
 
 **File:** `supabase_/seed.sql`
 
-**Read:** `.clinerules/supabase/database/create_migrations.md` for seed data patterns
+**Read:** `.clinefiles/supabase/database/create_migrations.md` for seed data patterns
 
 ### Create Test User
 

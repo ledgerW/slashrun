@@ -460,4 +460,4 @@ Before marking feature complete:
 - **SYSTEM_REFERENCE.md** - Current system architecture
 - **PROJECT_REQUIREMENTS.md** - Existing features and entities
 - **INTEGRATION_CHECKLIST.md** - Integration validation patterns
-- **.clinerules/guide-index.md** - Development patterns and guides
+- **.clinefiles/guide-index.md** - Development patterns and guides
