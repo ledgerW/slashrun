@@ -90,8 +90,12 @@ langgraph.db
 # Project tracking (created during development, not part of template)
 project/
 
+# But keep the project README and service-interfaces as they're part of the template
+!project/README.md
+!project/service-interfaces/README.md
+
 # Template files (keep these tracked)
 !.gitignore.template
 !README.md
-!.clinerules/
-!.clinerules/**
+!.clinefiles/
+!.clinefiles/**

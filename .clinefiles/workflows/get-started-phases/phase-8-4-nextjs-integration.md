@@ -257,6 +257,232 @@ export async function checkRunStatus(runId: string) {
 
 ---
 
+## Step 7.5: Validate Against Interface Specifications (REQUIRED)
+
+**⚠️ CRITICAL: Verify Implementation Matches Interface Contract**
+
+Before testing, you MUST validate that your implementation matches the interface specifications defined in Phase 8.2.
+
+**Reference:** `project/service-interfaces/README.md` - Validation checklist
+
+### Step 7.5.1: Validate TypeScript Types
+
+Compare your TypeScript types against the schemas documented in interface docs:
+
+**Check Agent README:**
+- Open: `langchain_/src/agents/my_agent/README.md#interface-specifications`
+- Note the Python schemas (State and Context)
+
+**Check Interface Doc:**
+- Open: `project/service-interfaces/nextjs-langchain-interface.md#my-agent`
+- Verify TypeScript types match Python schemas exactly
+
+**Example Validation:**
+
+```typescript
+// Python Schema (from agent README)
+class MyAgentState(TypedDict):
+    messages: Annotated[list[AnyMessage], add_messages]
+    current_action: str | None
+    data_field: dict[str, Any]
+
+// TypeScript Type (in your code) - MUST MATCH
+interface MyAgentState {
+  messages: Message[];
+  current_action: string | null;  // ✅ Matches Python str | None
+  data_field: Record<string, any>; // ✅ Matches Python dict[str, Any]
+}
+```
+
+**Common Mismatches to Fix:**
+- `str` → `string`
+- `int` → `number`
+- `dict` → `Record<string, any>` or object type
+- `list` → `Array<T>` or `T[]`
+- `None` → `null`
+- `Optional[T]` → `T | null`
+
+### Step 7.5.2: Validate Invocation Pattern
+
+Verify you're using the correct invocation pattern documented in interface specs:
+
+```typescript
+// From interface doc - MUST use this exact pattern
+thread.submit(
+  // Input State (matches AgentState schema)
+  {
+    messages: [{ role: "user", content: input }],
+    current_action: null,
+    data_field: {}
+  },
+  // Options with context (NOT in state, NOT in config.configurable)
+  {
+    context: {
+      user_id: userId,
+      field1: value1
+    }
+  }
+);
+```
+
+**Validation Checklist:**
+- [ ] Context passed via `options` parameter (second argument)
+- [ ] Context NOT in state object (first argument)
+- [ ] Context NOT in `config.configurable`
+- [ ] State fields match AgentState schema exactly
+- [ ] Using `useStream()` hook (not Client directly)
+
+### Step 7.5.3: Update Service Interface Documents
+
+Mark implementation as complete:
+
+#### Update nextjs-langchain-interface.md
+
+Change status from 🔵 PLANNED to 🟢 IMPLEMENTED:
+
+```markdown
+## My Agent
+
+### Status
+🟢 IMPLEMENTED
+```
+
+Verify all sections are accurate:
+- [ ] TypeScript types match Python schemas
+- [ ] Usage example matches your implementation
+- [ ] References point to correct files
+
+#### Update langchain-supabase-interface.md
+
+If agent uses database tools, mark those as implemented:
+
+```markdown
+## My Agent Tools
+
+### Status
+🟢 IMPLEMENTED
+```
+
+### Step 7.5.4: Cross-Reference Validation
+
+Ensure bidirectional references work:
+
+**From Next.js code → Interface Doc:**
+```typescript
+// In your component, add reference comment
+/**
+ * Agent integration following interface specification:
+ * @see project/service-interfaces/nextjs-langchain-interface.md#my-agent
+ */
+const thread = useStream<MyAgentState>({...});
+```
+
+**From Interface Doc → Agent README:**
+- Verify link works: Click the README link in interface doc
+- Should jump to Interface Specifications section
+
+**From Interface Doc → Supabase Doc:**
+- Verify tool operations documented match actual tool code
+
+### Step 7.5.5: Validation Checklist
+
+Before proceeding to testing, verify:
+
+**Type Validation:**
+- [ ] TypeScript State interface matches Python TypedDict exactly
+- [ ] TypeScript Context interface matches Python dataclass exactly
+- [ ] All field types converted correctly (str→string, dict→Record, etc.)
+- [ ] Optional fields use `| null` or `?` correctly
+- [ ] No extra or missing fields
+
+**Pattern Validation:**
+- [ ] Using `useStream()` hook
+- [ ] Context passed via options (second parameter)
+- [ ] State passed as first parameter
+- [ ] Thread management follows documented pattern
+- [ ] Error handling follows best practices
+
+**Documentation Validation:**
+- [ ] nextjs-langchain-interface.md updated with 🟢 IMPLEMENTED
+- [ ] langchain-supabase-interface.md updated if applicable
+- [ ] All cross-references work (clickable links)
+- [ ] Usage examples match actual implementation
+- [ ] Integration points documented
+
+**Code Quality:**
+- [ ] Added reference comments linking to interface doc
+- [ ] Component properly typed with TypeScript
+- [ ] No `any` types where specific types available
+- [ ] Followed documented error handling patterns
+
+### Why This Matters
+
+Per `project/service-interfaces/README.md`:
+
+> **If you implement without validating against interface specs:**
+> 1. ❌ Runtime errors due to type mismatches
+> 2. ❌ Integration failures between services
+> 3. ❌ Debugging nightmare (no clear contract)
+> 4. ❌ Breaking changes go unnoticed
+
+**This validation step prevents all of these issues.**
+
+### Example: Complete Validation Flow
+
+```typescript
+// 1. Check agent README for schemas
+// langchain_/src/agents/my_agent/README.md#interface-specifications
+
+// 2. Import and define matching TypeScript types
+import type { Message } from "@langchain/langgraph-sdk";
+
+// Matches Python TypedDict exactly
+interface MyAgentState {
+  messages: Message[];
+  current_action: string | null;
+  field1: string;
+}
+
+// Matches Python dataclass exactly
+interface MyAgentContext {
+  user_id: string;
+  context_field: number;
+}
+
+// 3. Use in component with correct pattern
+export function MyAgentChat({ userId, contextValue }: Props) {
+  const thread = useStream<MyAgentState>({
+    apiUrl: process.env.NEXT_PUBLIC_AGENT_API_URL!,
+    assistantId: "my-agent",
+    threadId: threadId,
+    messagesKey: "messages",
+  });
+
+  const handleSubmit = (input: string) => {
+    // Correct pattern: state + context
+    thread.submit(
+      {
+        messages: [{ role: "user", content: input }],
+        current_action: null,
+        field1: "value"
+      },
+      {
+        context: {
+          user_id: userId,
+          context_field: contextValue
+        }
+      }
+    );
+  };
+
+  // 4. Verify in interface doc
+  // project/service-interfaces/nextjs-langchain-interface.md#my-agent
+  // Types should match exactly ✅
+}
+```
+
+---
+
 ## Step 8: Test Integration
 
 ### Test 1: Basic Chat
