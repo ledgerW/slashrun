@@ -1,13 +1,33 @@
 # AI-Native Application Template
 
-A comprehensive template for building production-ready AI-native applications with an opinionated infrastructure stack and workflow-driven development.
+A comprehensive template for building production-ready AI-native applications with an opinionated infrastructure stack and AI-assisted workflow-driven development.
+
+## ⚡ Quickstart
+
+**Prerequisites:**  
+- Node.js 18+
+- uv (Python package manager)
+- Docker Desktop
+- OpenAI or Anthropic API key
+- LangSmith API key
+
+Get your AI-native application running in (tens of) minutes:
+
+1. **Use this GitHub template** - Click "Use this template" button above
+2. **Clone your new repo** - `git clone <your-repo-url>`
+3. **Open in your IDE** - Open the project with Cline installed
+4. **Run the workflow** - Type `/get-started.md` in Cline chat to begin the guided setup
+
+> **📝 Important:** After cloning, run `cp .gitignore.template .gitignore` to properly track service folders. The template uses a different `.gitignore` during development.
+
+Cline will execute each phase of the workflow and prompt you for input about your app. No need to read everything upfront - just start the workflow!
 
 ## 🎯 What Is This Template?
 
-This template provides a complete foundation for building modern AI-native applications with:
+This template provides a complete multi-phase AI-developer workflow for building modern AI-native applications with:
 
-- **Opinionated Stack:** Next.js + Supabase + LangChain - battle-tested technologies
-- **Workflow-Driven Development:** Step-by-step guides in `.clinerules/workflows/`
+- **Opinionated Stack:** LangChain/LangSmith + Supabase + Next.js + shadcn/ui
+- **Workflow-Driven Development:** Step-by-step guides in `.clinerules` and `.clinefiles`
 - **Production Patterns:** Best practices built-in from day one
 - **AI-First Architecture:** Designed for agentic and generative capabilities
 - **Comprehensive Documentation:** Detailed guides for every aspect
@@ -149,21 +169,50 @@ Powerful library for building node-based editors, workflow designers, diagrams, 
 **A key advantage of this stack:** Every technology in this template provides a complete local development environment that emulates the cloud service, enabling full-stack development entirely on your machine:
 
 - **LangSmith Deployment** → `langgraph dev` runs a local server with LangGraph Studio for testing agents
-- **Supabase** → Docker-based local instance with full PostgreSQL, Auth, Realtime, and Storage
+- **Supabase** → `supabase start` runs a local Supabase with full PostgreSQL, Auth, Realtime, Storage, an UI
 - **Next.js** → Built-in dev server with hot reload and instant updates
 - **Vercel** → Local preview mode for testing deployments before pushing
 
 This means you can build and test your entire application - database, authentication, AI agents, and frontend - completely offline, with zero cloud dependencies during development. Deploy to production only when ready.
 
+## 🌟 What Makes This Template Special
+
+### Smart Documentation Architecture
+
+This template uses a unique two-tier documentation system:
+
+- **`.clinerules/`** - Active workflow guides and rules that Cline reads automatically
+- **`.clinefiles/`** - Passive reference documentation (patterns, examples, detailed guides)
+
+**Why this matters:** Only active rules fill the context window, while detailed documentation is accessed on-demand. This means Cline starts with clear, actionable workflows without context bloat, while still having comprehensive patterns and examples available when needed.
+
+### Production-Ready LangChain Architecture
+
+Our `.clinefiles/` includes battle-tested patterns built on real production experience:
+
+- **Middleware-centric agent design** - Composable, reusable agent components instead of monolithic code
+- **Separation of concerns** - Core identity vs tool guidance (core_prompt.py vs tools_prompt.py)
+- **{tools_list} placeholder pattern** - Dynamic tool injection without regenerating entire prompts
+- **Reference implementations** - Working Python code for GuardrailsMiddleware, ToolsMiddleware, SpecialistAgentsMiddleware, and more
+
+These aren't theoretical examples - they're patterns that have been refined through real-world agent deployments.
+
 ## 🏗️ Template Structure
 
 ```
 template-repo/
-├── .clinerules/              # Workflow guides and best practices
-│   ├── workflows/           # Development workflows (get-started, new-feature)
-│   ├── langchain/          # LangChain patterns and guides
-│   ├── supabase/           # Supabase patterns and guides
-│   └── ui/                 # UI patterns and component guides
+├── .clinerules/              # Active rules (loaded in context)
+│   ├── workflows/           # Step-by-step development workflows
+│   └── guide-index.md      # Master catalog of all guides
+├── .clinefiles/             # Passive reference docs (accessed on-demand)
+│   ├── langchain/          # LangChain patterns and implementations
+│   │   ├── core/          # Core concepts (agents, memory, tools)
+│   │   ├── patterns/      # Production patterns (middleware-centric)
+│   │   ├── langsmith/     # Deployment guides
+│   │   └── reference-implementations/  # Working Python code
+│   ├── supabase/          # Supabase patterns and guides
+│   │   └── database/      # Migrations, RLS, functions
+│   └── ui/                # UI patterns and component guides
 ├── .gitignore.template     # User .gitignore (tracks service folders)
 ├── .gitignore             # Template dev .gitignore (ignores service folders)
 ├── .env.example            # Template environment variables
@@ -205,56 +254,13 @@ AI agent service featuring:
 - Automatic memory management
 - Production patterns
 
-## 🚀 Quick Start
-
-### Prerequisites
-
-**Required:**
-- Node.js 18+ and npm
-- Python 3.11+
-- Docker Desktop (for Supabase)
-- Supabase CLI
-- Git
-
-**For AI Service:**
-- uv package manager (`pip install uv`)
-- OpenAI or Anthropic API key
-- LangSmith account
-
-### Installation
-
-1. **Clone or use this template:**
-   ```bash
-   git clone <your-repo-url>
-   cd <your-repo-name>
-   ```
-
-2. **Initialize your project's .gitignore:**
-   ```bash
-   # Copy the template .gitignore for your project
-   cp .gitignore.template .gitignore
-   ```
-   
-   **Important:** The template repository uses `.gitignore` to exclude service folders during template development. When you start a new project, you need to replace it with `.gitignore.template`, which properly tracks service folders while ignoring only build artifacts and environment files.
-
-3. **Start your first workflow:**
-   ```bash
-   # Open in your preferred IDE
-   code .
-   
-   # Review the get-started workflow
-   cat .clinerules/workflows/get-started.md
-   ```
-
-3. **Follow the workflow phases:**
-   The template includes comprehensive workflows that guide you step-by-step through building your application. See "Using the Workflows" section below.
-
 ## 📖 Using the Workflows
 
-This template includes two main workflows:
+This template includes two main workflows that you can invoke with Cline's slash command feature. Simply type `/workflow-name.md` in Cline chat to start:
 
 ### Get-Started Workflow
-**Purpose:** Building a new AI-native application from scratch
+**Purpose:** Building a new AI-native application from scratch  
+**Command:** Type `/get-started.md` in Cline chat
 
 **Phases:**
 1. **Discovery** - Define your application requirements
@@ -271,7 +277,8 @@ This template includes two main workflows:
 **Start here:** `.clinerules/workflows/get-started.md`
 
 ### New-Feature Workflow
-**Purpose:** Adding features to existing applications
+**Purpose:** Adding features to existing applications  
+**Command:** Type `/new-feature.md` in Cline chat
 
 **Phases:**
 1. **Feature Discovery** - Planning and requirements
@@ -285,18 +292,24 @@ This template includes two main workflows:
 
 ## 🤖 Working with AI Coding Assistants
 
-This template is optimized for AI-powered development:
+This template is optimized for AI-powered development with Cline:
+
+### Starting Your Workflow
+Simply type `/get-started.md` or `/new-feature.md` in Cline chat to begin. The workflow system:
+- Loads active rules from `.clinerules/` automatically
+- References detailed guides from `.clinefiles/` only when needed
+- Keeps context efficient while maintaining comprehensive documentation access
 
 ### Plan Mode vs Act Mode
 - **Plan Mode:** Gather information, discuss approach, create detailed plans
 - **Act Mode:** Execute changes, write code, modify files
 
-### Workflow Integration
-1. Start in Plan Mode to review workflow phase
-2. AI assistant reads relevant guides from `.clinerules/`
-3. Switch to Act Mode for implementation
-4. AI follows step-by-step instructions
-5. Return to Plan Mode for next phase planning
+### How It Works
+1. **Invoke workflow** - Type `/get-started.md` in Cline chat
+2. **Plan Mode** - Cline reads workflow and plans approach
+3. **Toggle to Act Mode** - Switch when ready to implement
+4. **Execution** - Cline follows step-by-step instructions
+5. **Iteration** - Return to Plan Mode between phases
 
 ### Progress Tracking
 The AI assistant creates a `project/` folder during development to track:
@@ -333,17 +346,25 @@ This folder is created during development and specific to your project, not part
 
 ## 📚 Documentation Structure
 
-### Template Documentation (.clinerules/)
-**Never modify these files** - they are reusable workflow templates:
-- Workflow guides for development processes
-- Pattern guides for implementation
-- Best practices and conventions
-- Troubleshooting references
+### Active Rules (.clinerules/)
+**Workflow guides loaded automatically in Cline's context:**
+- `.clinerules/workflows/` - Step-by-step development workflows
+- `.clinerules/guide-index.md` - Master catalog linking to all guides
+
+These files define the high-level workflow structure and tell Cline which detailed guides to read from `.clinefiles/`.
+
+### Passive Reference Docs (.clinefiles/)
+**Detailed guides accessed on-demand:**
+- `.clinefiles/langchain/` - Complete LangChain patterns and reference implementations
+- `.clinefiles/supabase/` - Supabase-specific patterns and best practices
+- `.clinefiles/ui/` - UI component guides and patterns
+
+These comprehensive guides are only loaded into context when needed, keeping your workflow efficient.
 
 ### Project Documentation (project/)
 **Created by AI assistant during development:**
-- The workflow creates this folder to track progress
-- Documents your specific implementation decisions
+- The workflow creates this folder to track your specific progress
+- Documents your implementation decisions
 - Records architecture choices and service-specific notes
 - Not part of the template - unique to each project
 
@@ -510,31 +531,4 @@ langgraph push
    - Supabase: https://supabase.com/docs
    - LangChain: https://python.langchain.com/
 
-## 🤝 Contributing
 
-This template is designed to be customized for your project. However, if you discover improvements to the workflow templates:
-
-1. Document the improvement
-2. Test thoroughly
-3. Update relevant `.clinerules/` guides
-4. Share with the community
-
-## 📄 License
-
-[Your License Here]
-
-## 🎉 Getting Started
-
-Ready to build your AI-native application?
-
-1. **Read:** `.clinerules/workflows/get-started.md`
-2. **Prepare:** Install prerequisites above
-3. **Begin:** Follow Phase 0 - Application Discovery
-4. **Build:** Execute phases systematically
-5. **Deploy:** Ship your production-ready app
-
-The workflow guides you every step of the way. Happy building! 🚀
-
----
-
-**Questions?** Review `.clinerules/guide-index.md` for a complete catalog of available guides and patterns.
