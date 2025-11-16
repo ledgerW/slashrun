@@ -1,6 +1,6 @@
-# AI-Native Application Template
+# AI-Native Full Stack App Builder
 
-A comprehensive template for building production-ready AI-native applications with an opinionated infrastructure stack and AI-assisted workflow-driven development.
+AI-developer-assisted workflow for building full-stack AI-native applications with local and cloud infrastructure. This repo is a template with detailed rules and workflows files for AI coding assistants.
 
 ## ⚡ Quickstart
 
