@@ -139,6 +139,29 @@ agent = create_agent(
 - Agent sees up-to-date tool signatures
 - No manual maintenance of tool lists
 
+## ⚠️ Critical Requirements for Custom Middleware
+
+**All custom middleware MUST:**
+
+1. **Extend `AgentMiddleware` base class**
+   ```python
+   from langchain.agents.middleware import AgentMiddleware
+   
+   class MyMiddleware(AgentMiddleware):  # MUST extend
+   ```
+
+2. **Call `super().__init__()` in constructor**
+   ```python
+   def __init__(self, **config):
+       super().__init__()  # CRITICAL: Must call this
+       self.config = config
+   ```
+
+**Failure to follow these requirements will cause:**
+- `AttributeError: type object 'YourMiddleware' has no attribute 'wrap_tool_call'`
+- Middleware not being recognized by `create_agent()`
+- Agent initialization failures
+
 ## Common Middleware Stack Patterns
 
 ### Manager Agent Stack

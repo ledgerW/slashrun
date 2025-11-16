@@ -867,7 +867,193 @@ Before completing Phase 0, explicitly ask:
 
 ---
 
-## Step 6: ReactFlow and Advanced Features Assessment
+## Step 6: LLM Model Provider Selection [MANDATORY FOR AGENTS]
+
+If your application includes AI agents (determined in Step 5), you must choose an LLM provider and model.
+
+**Reference:** `.clinefiles/langchain/MODEL_UPDATE_2025.md` - Complete guide to current model options and pricing
+
+### Provider Options
+
+**OpenAI (Recommended for most applications)**
+- **Latest Models (2025):**
+  - `gpt-5.1` - Latest reasoning model with advanced capabilities (supports reasoning parameters)
+  - `gpt-5` - Latest standard generation
+  - `gpt-5-mini` - Fast and cost-effective
+  - `gpt-4.1` - Previous generation, still excellent
+- **Strengths:** Reliable, fast, great documentation, reasoning capabilities, broad capability
+- **Pricing:** Moderate to high
+- **Best for:** Production applications, complex reasoning, general purpose
+
+**Anthropic Claude (Recommended for research/analysis)**
+- **Latest Models (2025):**
+  - `claude-sonnet-4-5-20250929` - Best balance (recommended default)
+  - `claude-haiku-4-5-20251001` - Fast and cheap
+  - `claude-opus-4-1-20250805` - Premium, complex reasoning
+- **Strengths:** Excellent at analysis, great with long context, strong reasoning
+- **Pricing:** Competitive, especially Haiku for high-volume
+- **Best for:** Research tasks, document analysis, detailed reasoning
+
+**Other Providers:**
+- **Google Gemini:** Multimodal capabilities, competitive pricing
+- **AWS Bedrock:** Enterprise deployment, compliance needs
+- **Azure OpenAI:** Enterprise Microsoft integration
+- **Local (Ollama):** Privacy-first, no API costs, lower capability
+
+### Selection Questions
+
+**1. What is your budget for LLM API calls?**
+- High volume, need cost control → Claude Haiku or GPT-5-mini
+- Quality over cost → Claude Opus or GPT-5
+- Balanced → Claude Sonnet 4.5 (recommended)
+
+**2. What tasks will the LLM perform?**
+- Research and analysis → Claude Sonnet/Opus
+- General purpose agents → GPT-5 or Claude Sonnet
+- Simple Q&A → GPT-5-mini or Claude Haiku
+- Multimodal (images/audio) → GPT-5 or Gemini
+
+**3. Do you have compliance/privacy requirements?**
+- Enterprise compliance → AWS Bedrock or Azure
+- Data privacy critical → Ollama (local)
+- Standard → OpenAI or Anthropic
+
+**4. Do you need specific features?**
+- Extended thinking → Claude models (all support)
+- Prompt caching → Claude (explicit) or OpenAI (implicit)
+- Long context (>100K tokens) → Claude Sonnet 4.5 (200K)
+
+### Model Selection Template
+
+```markdown
+## LLM Model Selection
+
+### Primary Provider: [OpenAI / Anthropic / Other]
+**Rationale:** [Why this provider fits your needs]
+
+### Primary Model: [Specific model name]
+**Use Cases:** [What this model will handle]
+**Rationale:** [Why this specific model]
+
+### Secondary Model (Optional): [Model name]
+**Use Cases:** [When to use this instead]
+**Rationale:** [Cost optimization, specific capabilities, etc.]
+
+### Configuration:
+**Temperature:** [0.0-1.0, typically 0.7 for creative, 0.0 for deterministic]
+**Max Tokens:** [Response length limit]
+**Timeout:** [Request timeout in seconds]
+
+### Cost Estimates:
+**Expected Monthly Volume:** [Estimated tokens per month]
+**Estimated Cost:** [Based on provider pricing]
+**Budget Considerations:** [Any cost constraints]
+```
+
+### Recommended Defaults by Use Case
+
+**Supervisor Agents (Research/Analysis):**
+```python
+# Recommended: Claude Sonnet 4.5 - Best balance for research
+model = ChatAnthropic(
+    model="claude-sonnet-4-5-20250929",
+    temperature=0.7,
+    max_tokens=4096
+)
+
+# Alternative: GPT-5.1 with reasoning
+model = ChatOpenAI(
+    model="gpt-5.1",
+    reasoning={
+        "effort": "medium",  # low/medium/high
+        "summary": "auto"     # auto/concise/detailed
+    },
+    verbosity="medium",  # low/medium/high
+    temperature=0.7,
+    max_tokens=4096
+)
+
+# Alternative: GPT-5 for general purpose
+model = ChatOpenAI(
+    model="gpt-5",
+    temperature=0.7,
+    max_tokens=4096
+)
+```
+
+**Simple Agents (Q&A, Simple Tasks):**
+```python
+# Recommended: Claude Haiku - Fast and cheap
+model = ChatAnthropic(
+    model="claude-haiku-4-5-20251001",
+    temperature=0.5,
+    max_tokens=2048
+)
+
+# Alternative: GPT-5-mini for OpenAI users
+model = ChatOpenAI(
+    model="gpt-5-mini",
+    temperature=0.5,
+    max_tokens=2048
+)
+```
+
+**High-Volume Applications:**
+```python
+# Use mini/haiku models for cost control
+# Upgrade to full models only when needed
+```
+
+### Multi-Model Strategy (Advanced)
+
+For production applications, consider using different models for different tasks:
+
+```markdown
+### Multi-Model Strategy
+
+**Supervisor Agent (Planning):** [claude-sonnet-4-5-20250929]
+- Rationale: Complex reasoning needed for planning
+
+**Research Subagent:** [claude-sonnet-4-5-20250929]
+- Rationale: Analysis and synthesis tasks
+
+**Simple Subagents:** [claude-haiku-4-5-20251001]
+- Rationale: Fast, cheap for simple operations
+
+**Fallback Model:** [gpt-5-mini]
+- Rationale: Backup if primary provider has issues
+```
+
+### API Key Setup
+
+Document required API keys:
+
+```markdown
+### Required API Keys
+
+**Provider:** [OpenAI / Anthropic / Both]
+
+**Environment Variables:**
+```bash
+# For OpenAI
+OPENAI_API_KEY=sk-...
+
+# For Anthropic  
+ANTHROPIC_API_KEY=sk-ant-...
+
+# For both (if using multi-model)
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+**Where to get keys:**
+- OpenAI: https://platform.openai.com/api-keys
+- Anthropic: https://console.anthropic.com/settings/keys
+```
+
+---
+
+## Step 7: ReactFlow and Advanced Features Assessment
 
 Determine if the application needs node-based visualizations or other advanced features.
 

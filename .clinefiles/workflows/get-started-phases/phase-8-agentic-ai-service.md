@@ -33,7 +33,7 @@ By the end of this phase, your application will have:
 │                      Your Application                        │
 ├──────────────────┬──────────────────┬──────────────────────┤
 │   nextjs_/       │   supabase_/     │   langchain_/        │
-│   (Next.js UI)   │   (Database)    │   (LangChain)        │
+│   (Next.js UI)   │   (Database)     │   (LangChain)        │
 ├──────────────────┴──────────────────┴──────────────────────┤
 │                                                              │
 │  Next.js ←→ LangGraph Dev (port 2024) ←→ Supabase          │

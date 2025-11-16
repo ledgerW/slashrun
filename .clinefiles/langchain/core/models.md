@@ -1,5 +1,11 @@
 # Models
 
+<Note>
+**📌 Using Latest Models (2025)?** See [MODEL_UPDATE_2025.md](../MODEL_UPDATE_2025.md) for current model identifiers:
+- **OpenAI**: `gpt-5.1`, `gpt-4.1`
+- **Anthropic**: `claude-sonnet-4-5-20250929`, `claude-haiku-4-5-20251001`
+</Note>
+
 [LLMs](https://en.wikipedia.org/wiki/Large_language_model) are powerful AI tools that can interpret and generate text like humans. They're versatile enough to write content, translate languages, summarize, and answer questions without needing specialized training for each task.
 
 In addition to text generation, many models support:

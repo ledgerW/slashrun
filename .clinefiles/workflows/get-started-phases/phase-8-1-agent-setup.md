@@ -13,21 +13,21 @@
 
 ## Step 1: Create Agent Service Directory
 
-Create `agent-service/` as a peer directory to your Next.js app and Supabase:
+Create `langchain_/` as a peer directory to your Next.js app and Supabase:
 
 ```bash
 # From project root
-mkdir agent-service
-cd agent-service
+mkdir langchain_
+cd langchain_
 ```
 
 Your directory structure should now be:
 
 ```
 your-app/
-├── your-nextjs-app/     # Next.js frontend
-├── supabase/            # Database
-├── agent-service/       # NEW - LangChain agents (this phase)
+├── nextjs_/             # Next.js frontend
+├── supabase_/           # Database
+├── langchain_/          # NEW - LangChain agents (this phase)
 └── .clinefiles/         # Documentation
 ```
 
@@ -101,7 +101,7 @@ touch src/agent/prompts/__init__.py
 **Recommended structure** (following middleware-centric pattern):
 
 ```
-agent-service/
+langchain_/
 ├── pyproject.toml
 ├── .python-version
 ├── .env                 # Create in next step
@@ -132,7 +132,7 @@ agent-service/
 
 ## Step 5: Create LangGraph Configuration
 
-Create `langgraph.json` in `agent-service/` root:
+Create `langgraph.json` in `langchain_/` root:
 
 ```json
 {
@@ -155,7 +155,7 @@ Create `langgraph.json` in `agent-service/` root:
 
 ## Step 6: Create Environment File
 
-Create `.env` file in `agent-service/`:
+Create `.env` file in `langchain_/`:
 
 ```bash
 # LangSmith API Key (required for langgraph dev)
@@ -221,7 +221,7 @@ graph = builder.compile()
 
 ## Step 8: Start LangGraph Dev Server
 
-**From `agent-service/` directory, start the dev server:**
+**From `langchain_/` directory, start the dev server:**
 
 ```bash
 langgraph dev
@@ -280,7 +280,7 @@ Should return streaming response with "Agent service is running!"
 
 Before proceeding to Phase 8.2, verify:
 
-- [ ] `agent-service/` directory created as peer to Next.js app
+- [ ] `langchain_/` directory created as peer to nextjs_/ and supabase_/
 - [ ] Python 3.11+ confirmed: `python --version`
 - [ ] Project initialized with `uv init`
 - [ ] All dependencies installed via `uv add` (NOT pip)

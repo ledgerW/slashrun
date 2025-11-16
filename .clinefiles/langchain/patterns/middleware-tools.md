@@ -135,12 +135,14 @@ async def calculate_influence(
 
 Create a **generalizable** middleware that accepts a list of tools and an optional prompt explaining the tool group's purpose:
 
+**⚠️ CRITICAL:** All custom middleware MUST extend `AgentMiddleware` base class and call `super().__init__()`. Failing to do this will cause `AttributeError: type object 'ToolsMiddleware' has no attribute 'wrap_tool_call'` errors.
+
 ```python
 # middleware/tools.py
-from langgraph.prebuilt.chat_agent_executor import AgentMiddleware
+from langchain.agents.middleware import AgentMiddleware
 from typing import Callable, Optional
 
-class ToolsMiddleware(AgentMiddleware):
+class ToolsMiddleware(AgentMiddleware):  # MUST extend AgentMiddleware
     """Generalizable middleware for providing custom tools to agents.
     
     This middleware-centric approach:
@@ -158,7 +160,7 @@ class ToolsMiddleware(AgentMiddleware):
             tools: List of tool functions to provide to the agent
             prompt: Optional prompt explaining the purpose and usage of this tool group
         """
-        super().__init__()
+        super().__init__()  # CRITICAL: Must call super().__init__()
         self.tools = tools
         self.group_prompt = prompt
     
