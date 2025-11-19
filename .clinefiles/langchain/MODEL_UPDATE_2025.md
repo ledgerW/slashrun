@@ -56,28 +56,53 @@
 - **Fast/Cheap**: `gpt-5-mini` - For high-volume tasks
 - **Legacy**: `gpt-4.1` - If GPT-5 not available
 
+## ⚠️ CRITICAL: GPT-5 Parameter Changes
+
+**GPT-5 family models DO NOT support the `temperature` parameter.**
+
+All GPT-5 models (`gpt-5`, `gpt-5.1`, `gpt-5-mini`, `gpt-5-nano`, `gpt-5-chat`) use different parameters:
+
+- **`reasoning_effort`** (GPT-5.1 only): Controls reasoning depth
+  - Values: `"low"`, `"medium"`, `"high"`
+  - Used for models with advanced reasoning capabilities
+
+- **`verbosity`**: Controls response detail level (all GPT-5 models)
+  - Values: `"low"`, `"medium"`, `"high"`
+  - Use this for behavior similar to `temperature` control
+
+**GPT-4.x and Claude models still support `temperature` as normal.**
+
 ## Migration Strategy
 
 ### From GPT-4o to Current Models
 ```python
-# Old (2024)
-model = ChatOpenAI(model="gpt-4o")
+# ❌ Old (2024) - with temperature
+model = ChatOpenAI(model="gpt-4o", temperature=0.7)
 
-# New (2025) - Latest with reasoning
+# ✅ New (2025) - GPT-5.1 with reasoning (NO temperature)
 model = ChatOpenAI(
     model="gpt-5.1",
-    reasoning={
-        "effort": "medium",  # low/medium/high
-        "summary": "auto"     # auto/concise/detailed
-    },
-    verbosity="medium"  # low/medium/high
+    reasoning_effort="medium",  # low/medium/high - controls reasoning depth
+    verbosity="medium"          # low/medium/high - controls response detail
 )
 
-# New (2025) - Standard
-model = ChatOpenAI(model="gpt-5")
+# ✅ New (2025) - Standard GPT-5 (NO temperature)
+model = ChatOpenAI(
+    model="gpt-5",
+    verbosity="medium"  # Use verbosity instead of temperature
+)
 
-# New (2025) - Budget option
-model = ChatOpenAI(model="gpt-5-mini")
+# ✅ New (2025) - Budget option (NO temperature)
+model = ChatOpenAI(
+    model="gpt-5-mini",
+    verbosity="low"  # Use verbosity for response control
+)
+
+# ✅ GPT-4.1 still supports temperature
+model = ChatOpenAI(
+    model="gpt-4.1",
+    temperature=0.7  # temperature still works for GPT-4.x
+)
 ```
 
 ### From Claude 3.5 to Current Models
@@ -95,6 +120,15 @@ model = ChatAnthropic(model="claude-haiku-4-5-20251001")
 ## Provider-Specific Notes
 
 ### OpenAI
+
+**⚠️ Parameter Compatibility:**
+- **GPT-5 family** (`gpt-5`, `gpt-5.1`, `gpt-5-mini`, `gpt-5-nano`, `gpt-5-chat`):
+  - ❌ Does NOT support `temperature`
+  - ✅ Use `reasoning_effort` (GPT-5.1 only) and `verbosity` instead
+- **GPT-4 family** (`gpt-4.1`, `gpt-4.1-mini`, `gpt-4o`, `gpt-4o-mini`):
+  - ✅ Still supports `temperature` parameter
+
+**Model Features:**
 - GPT-5.1 is the latest reasoning model with enhanced capabilities
 - Supports reasoning parameters for effort control and summary formatting
 - Supports verbosity levels for controlling response detail

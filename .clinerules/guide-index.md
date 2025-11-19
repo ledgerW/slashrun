@@ -94,6 +94,11 @@ This index catalogs all available .clinerules guides (excluding workflows). Befo
 **Summary:** Model selection, configuration, provider-specific settings.  
 **Location:** `.clinefiles/langchain/core/models.md`
 
+#### state-schemas.md
+**Read this for:** Defining agent state and context schemas  
+**Summary:** **CRITICAL GUIDE** - Correct pattern: extend AgentState (NOT add_messages). Covers state vs context, using NotRequired, accessing state in tools/middleware, common errors and solutions. Essential for avoiding "dict has no attribute" errors.  
+**Location:** `.clinefiles/langchain/core/state-schemas.md`
+
 ### LangSmith Deployment (.clinefiles/langchain/langsmith/)
 
 #### local-development.md
@@ -115,6 +120,11 @@ This index catalogs all available .clinerules guides (excluding workflows). Befo
 **Read this for:** Next.js frontend patterns  
 **Summary:** Various Next.js integration guides including core setup, streaming, human-in-the-loop, threads, assistants, background runs, cron jobs, generative UI, and more.  
 **Location:** `.clinefiles/langchain/langsmith/next-js-integration/`
+
+#### next-js-integration/thread-management.md
+**Read this for:** Thread ID requirements, UUID patterns, AgentThreadManager pattern  
+**Summary:** **CRITICAL GUIDE** - Thread IDs MUST be UUIDs. Thread MUST be created before use. Complete AgentThreadManager pattern for Next.js ↔ LangChain integration. Essential for avoiding 422 "Invalid thread ID" and 404 "Thread not found" errors.  
+**Location:** `.clinefiles/langchain/langsmith/next-js-integration/thread-management.md`
 
 ### Production Patterns (.clinefiles/langchain/patterns/)
 
@@ -142,6 +152,11 @@ This index catalogs all available .clinerules guides (excluding workflows). Befo
 **Read this for:** Safety and validation middleware patterns  
 **Summary:** Generalizable middleware for content safety, PII protection, domain compliance, and output validation. Shows how to accept system prompts, rules, and structured output models as init parameters for before/after-agent hooks.  
 **Location:** `.clinefiles/langchain/patterns/guardrails-middleware.md`
+
+#### multi-thread-actor.md
+**Read this for:** Multi-context agent threads, actor-based systems, simulation vs meta-chat  
+**Summary:** **Critical pattern for actor/entity-based systems**. Enables agents to maintain separate threads for different contexts (simulation threads per scenario, meta-chat threads for interviews). Covers thread naming conventions, state/context passing, LangSmith as single source of truth, context loading between threads, and UI integration with drawer pattern. Essential for any system where agents participate in multiple scenarios or need separate conversation contexts.  
+**Location:** `.clinefiles/langchain/patterns/multi-thread-actor.md`
 
 ### Reference Implementations (.clinefiles/langchain/reference-implementations/)
 
@@ -240,6 +255,11 @@ This index catalogs all available .clinerules guides (excluding workflows). Befo
 **Summary:** React Flow patterns for building interactive node-based diagrams and visualizations.  
 **Location:** `.clinefiles/ui/reactflow-patterns.md`
 
+### ui/drawer-chat-pattern.md
+**Read this for:** Implementing collapsible chat drawers, chat UI components  
+**Summary:** **Recommended default pattern for agent chat interfaces**. Complete guide to drawer-based chat UI using shadcn Sheet. Covers component architecture, design principles, state management, mobile responsiveness, and integration patterns. Use this for any agent chat interface unless chat is the primary/sole application interface.  
+**Location:** `.clinefiles/ui/drawer-chat-pattern.md`
+
 ---
 
 
@@ -270,6 +290,22 @@ This index catalogs all available .clinerules guides (excluding workflows). Befo
 1. `ui/shadcn-components.md` - Available components
 2. `ui/shadcn-blocks.md` - Pre-built patterns
 3. `ui/ui.md` - General UI patterns
+
+### "Implement agent chat interface"
+**Read these guides:**
+1. `ui/drawer-chat-pattern.md` - Recommended drawer UI pattern (read first)
+2. `langchain/langsmith/next-js-integration/core.md` - useStream() hook basics
+3. `langchain/langsmith/next-js-integration/streaming.md` - Streaming responses
+4. `langchain/langsmith/next-js-integration/threads.md` - Thread management
+5. `langchain/patterns/multi-thread-actor.md` - If using multi-context actors
+
+### "Building actor/entity-based agent system"
+**Read these guides:**
+1. `langchain/patterns/multi-thread-actor.md` - Multi-thread management (read first)
+2. `ui/drawer-chat-pattern.md` - Drawer UI for entity selection
+3. `langchain/core/short-term-memory.md` - Thread-level state
+4. `langchain/core/long-term-memory.md` - Cross-thread persistent memory
+5. `langchain/langsmith/local-development.md` - Testing with langgraph dev
 
 ### "Create a server function"
 **Read these guides:**
@@ -381,11 +417,14 @@ These guides contain **breaking patterns** that will cause failures if not follo
 
 This index reflects the current state of .clinerules. If you notice a guide is missing or outdated, inform the user.
 
-**Last Updated:** 2025-01-11  
+**Last Updated:** 2025-01-19  
 **Recent Additions:** 
+- **Multi-Thread Actor Pattern** - Complete pattern for actor/entity-based multi-context agent systems
+- **Drawer Chat Pattern** - New recommended default UI pattern for agent interfaces
+- **Phase 8.4 Documentation Update** - Updated to recommend drawer pattern as default
 - **LangChain Documentation Section** - Complete LangChain/LangGraph guide catalog with LangSmith deployment patterns
 - **LangSmith Memory Infrastructure** - Critical updates: LangSmith handles ALL checkpointers and stores automatically
 - **Middleware-Centric Tools Pattern** - Production pattern for organizing custom tools in middleware
 - **New-Feature Workflow** - Complete feature development workflow for adding capabilities to existing apps
-- LangChain Patterns (middleware-tools, custom-subagents)
+- LangChain Patterns (middleware-tools, custom-subagents, multi-thread-actor)
 - Phase 9: System Review & Integration Validation (complete workflow validation)

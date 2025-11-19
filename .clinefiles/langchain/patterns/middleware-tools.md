@@ -135,11 +135,19 @@ async def calculate_influence(
 
 Create a **generalizable** middleware that accepts a list of tools and an optional prompt explaining the tool group's purpose:
 
-**⚠️ CRITICAL:** All custom middleware MUST extend `AgentMiddleware` base class and call `super().__init__()`. Failing to do this will cause `AttributeError: type object 'ToolsMiddleware' has no attribute 'wrap_tool_call'` errors.
+**⚠️ CRITICAL:** All custom middleware MUST:
+
+1. **Extend `AgentMiddleware` base class** and call `super().__init__()`
+   - Failing to do this causes: `AttributeError: type object 'YourMiddleware' has no attribute 'wrap_tool_call'`
+
+2. **Implement BOTH sync and async versions of wrap methods**
+   - If using `wrap_model_call`, implement both `wrap_model_call` AND `awrap_model_call`
+   - Failing to do this causes: `NotImplementedError: Asynchronous implementation of awrap_model_call is not available`
+   - This is required when Next.js uses async streaming (astream/ainvoke)
 
 ```python
 # middleware/tools.py
-from langchain.agents.middleware import AgentMiddleware
+from langchain.agents.middleware import AgentMiddleware, wrap_model_call
 from typing import Callable, Optional
 
 class ToolsMiddleware(AgentMiddleware):  # MUST extend AgentMiddleware
@@ -151,6 +159,8 @@ class ToolsMiddleware(AgentMiddleware):  # MUST extend AgentMiddleware
     - Automatically adds tool descriptions to system prompts
     - Uses standard runtime context (not "middleware context")
     - Is reusable across different agents and use cases
+    
+    CRITICAL: Implements both sync and async versions for Next.js compatibility.
     """
     
     def __init__(self, tools: list, prompt: Optional[str] = None):
@@ -161,16 +171,40 @@ class ToolsMiddleware(AgentMiddleware):  # MUST extend AgentMiddleware
             prompt: Optional prompt explaining the purpose and usage of this tool group
         """
         super().__init__()  # CRITICAL: Must call super().__init__()
-        self.tools = tools
+        self._tools = tools
         self.group_prompt = prompt
     
-    def wrap_model_call(self, request, handler: Callable) -> any:
-        """Add tool group context and descriptions to system prompt.
+    @property
+    def tools(self):
+        """Expose tools for create_agent to discover."""
+        return self._tools
+    
+    def _inject_tools_prompt(self, request) -> None:
+        """Helper to inject tools prompt into system prompt.
         
-        This is the middleware-centric pattern:
-        1. Add optional group context prompt
-        2. Add tool descriptions to system prompt
-        3. Call handler with enhanced request
+        Centralizes the prompt injection logic to avoid duplication.
+        """
+        # Build tool information section
+        tool_info = "\n\n"
+        
+        # Add group context if provided
+        if self.group_prompt:
+            tool_info += f"## Tool Group Context\n{self.group_prompt}\n\n"
+        
+        # Add tool descriptions
+        tool_info += "## Available Tools\n"
+        for tool in self.tools:
+            tool_info += f"- **{tool.name}**: {tool.description}\n"
+        
+        # Append to system prompt
+        if request.system_prompt:
+            request.system_prompt = request.system_prompt + tool_info
+        else:
+            request.system_prompt = tool_info
+    
+    @wrap_model_call
+    def wrap_model_call(self, request, handler: Callable) -> any:
+        """Add tool group context and descriptions to system prompt (sync).
         
         Args:
             request: ModelRequest with standard runtime context
@@ -179,26 +213,16 @@ class ToolsMiddleware(AgentMiddleware):  # MUST extend AgentMiddleware
         Returns:
             ModelResponse from the handler
         """
-        # Build tool information section
-        tool_info = "\n\n"
-        
-        # Add group context if provided
-        if self.group_prompt:
-            tool_info += f"## Tool Group Context\n{self.group_prompt}\n\n"
-        
-        # Add tool descriptions
-        tool_info += "## Available Tools\n"
-        for tool in self.tools:
-            tool_info += f"- **{tool.name}**: {tool.description}\n"
-        
-        # Append to system prompt
-        request.system_prompt = request.system_prompt + tool_info
-        
-        # Call handler with enhanced request
+        self._inject_tools_prompt(request)
         return handler(request)
     
+    @wrap_model_call
     async def awrap_model_call(self, request, handler: Callable) -> any:
         """Add tool group context and descriptions to system prompt (async).
+        
+        CRITICAL: This async version is required when using Next.js with
+        async streaming (astream/ainvoke). Without this, you'll get:
+        NotImplementedError: Asynchronous implementation of awrap_model_call is not available
         
         Args:
             request: ModelRequest with standard runtime context
@@ -207,24 +231,16 @@ class ToolsMiddleware(AgentMiddleware):  # MUST extend AgentMiddleware
         Returns:
             ModelResponse from the handler
         """
-        # Build tool information section
-        tool_info = "\n\n"
-        
-        # Add group context if provided
-        if self.group_prompt:
-            tool_info += f"## Tool Group Context\n{self.group_prompt}\n\n"
-        
-        # Add tool descriptions
-        tool_info += "## Available Tools\n"
-        for tool in self.tools:
-            tool_info += f"- **{tool.name}**: {tool.description}\n"
-        
-        # Append to system prompt
-        request.system_prompt = request.system_prompt + tool_info
-        
-        # Call handler with enhanced request
+        self._inject_tools_prompt(request)
         return await handler(request)
 ```
+
+**Key Implementation Notes:**
+
+1. **Helper Method Pattern**: Extract common logic into `_inject_tools_prompt()` to avoid code duplication
+2. **Property Decorator**: Expose tools via `@property` for `create_agent()` discovery
+3. **Both Decorators**: Use `@wrap_model_call` on both methods
+4. **Async Handler**: Must `await handler(request)` in async version
 
 ### Step 3: Use in Agent
 

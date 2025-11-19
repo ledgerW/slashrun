@@ -228,6 +228,16 @@ A chat model takes parameters that can be used to configure its behavior. The fu
 
 <ParamField body="temperature" type="number">
   Controls the randomness of the model's output. A higher number makes responses more creative; lower ones make them more deterministic.
+  
+  **⚠️ Not supported by GPT-5 family models** (`gpt-5`, `gpt-5.1`, `gpt-5-mini`, `gpt-5-nano`, `gpt-5-chat`). For GPT-5 models, use `verbosity` parameter instead.
+</ParamField>
+
+<ParamField body="reasoning_effort" type="string">
+  **GPT-5.1 only**: Controls the depth of reasoning for models with advanced reasoning capabilities. Values: `"low"`, `"medium"`, `"high"`.
+</ParamField>
+
+<ParamField body="verbosity" type="string">
+  **GPT-5 family only**: Controls the response detail level. Values: `"low"`, `"medium"`, `"high"`. Use this for behavior similar to `temperature` control in GPT-5 models.
 </ParamField>
 
 <ParamField body="timeout" type="number">
@@ -423,9 +433,11 @@ for response in responses:
 ```
 
 <Note>
-  This section describes a chat model method [`batch()`](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.chat_models.BaseChatModel.batch), which parallelizes model calls client-side.
+**📌 Using Latest Models (2025)?** See [MODEL_UPDATE_2025.md](../MODEL_UPDATE_2025.md) for current model identifiers:
+- **OpenAI**: `gpt-5.1`, `gpt-4.1`
+- **Anthropic**: `claude-sonnet-4-5-20250929`, `claude-haiku-4-5-20251001`
 
-  It is **distinct** from batch APIs supported by inference providers, such as [OpenAI](https://platform.openai.com/docs/guides/batch) or [Anthropic](https://docs.claude.com/en/docs/build-with-claude/batch-processing#message-batches-api).
+**⚠️ CRITICAL:** GPT-5 family models DO NOT support `temperature`. Use `reasoning_effort` and `verbosity` parameters instead. See [MODEL_UPDATE_2025.md](../MODEL_UPDATE_2025.md) for details.
 </Note>
 
 By default, [`batch()`](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.chat_models.BaseChatModel.batch) will only return the final output for the entire batch. If you want to receive the output for each individual input as it finishes generating, you can stream results with [`batch_as_completed()`](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.chat_models.BaseChatModel.batch_as_completed):

@@ -935,11 +935,20 @@ class State(TypedDict):
 
 
 # Initialize model with streaming
+# ⚠️ NOTE: GPT-5 family models (gpt-5, gpt-5.1, gpt-5-mini, etc.) do NOT support temperature
+# For GPT-5 models, use verbosity parameter instead. See MODEL_UPDATE_2025.md for details.
 model = ChatOpenAI(
-    model="gpt-4o-mini",
+    model="gpt-4o-mini",  # GPT-4.x models still support temperature
     streaming=True,
-    temperature=0.7,
+    temperature=0.7,  # Only use for GPT-4.x or Claude models
 )
+
+# Example for GPT-5 models (if using them):
+# model = ChatOpenAI(
+#     model="gpt-5-mini",
+#     streaming=True,
+#     verbosity="medium",  # Use verbosity instead of temperature for GPT-5
+# )
 
 # Add middleware if Phase 0 determined needed
 # model = middleware.wrap_model(model)

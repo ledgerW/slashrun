@@ -370,25 +370,59 @@ These comprehensive guides are only loaded into context when needed, keeping you
 
 ## 🔧 Environment Configuration
 
-Copy `.env.example` to create your environment files:
+This project uses **service-specific .env files** following framework conventions:
 
-```bash
-# For Next.js
-cp .env.example nextjs_/.env.local
+### Setup Steps
 
-# For LangChain (created in Phase 8)
-cp .env.example langchain_/.env
-```
+1. **Copy the template:**
+   ```bash
+   # For Next.js
+   cp .env.example nextjs_/.env.local
+   
+   # For LangChain (created in Phase 8)
+   cp .env.example langchain_/.env
+   ```
 
-Required variables:
-- `NEXT_PUBLIC_SUPABASE_URL` - From `supabase start`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - From `supabase start`
-- `NEXT_PUBLIC_AGENT_API_URL` - LangChain service URL
-- `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` - LLM provider
+2. **Get Supabase credentials:**
+   ```bash
+   cd supabase_
+   supabase start
+   # Copy the printed credentials (URL and ANON_KEY) to your .env files
+   ```
+
+3. **Add your API keys** to each service's .env file
+
+### Required Variables by Service
+
+**Next.js (`nextjs_/.env.local`):**
+- `NEXT_PUBLIC_SUPABASE_URL` - From `supabase start` output
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - From `supabase start` output
+- `NEXT_PUBLIC_AGENT_API_URL` - LangChain service URL (if using agents)
+
+**LangChain (`langchain_/.env`):**
+- `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` - LLM provider key
+- `LANGSMITH_API_KEY` - For LangSmith deployment
+- `SUPABASE_URL` - From `supabase start` output (if agent needs DB access)
+- `SUPABASE_KEY` - From `supabase start` output (if agent needs DB access)
+
+**Supabase (`supabase_/`):**
+- No .env needed - uses `config.toml` for configuration
+
+### Why Separate Files?
+
+Each service has its own .env file because:
+- ✅ Follows framework conventions (Next.js expects `.env.local` in its root)
+- ✅ Service isolation and portability
+- ✅ Works with deployment platforms (Vercel, LangSmith)
+- ✅ Better IDE/tooling support
+
+The `.env.example` at the project root serves as documentation, while actual `.env` files in each service provide runtime configuration.
 
 ## 🎯 Development Workflow
 
 ### Starting Development
+
+**Important:** Each service command must be run from inside its respective folder (`supabase_/`, `nextjs_/`, `langchain_/`).
 
 1. **Start Supabase:**
    ```bash
@@ -413,10 +447,11 @@ Required variables:
 
 **Supabase:**
 ```bash
-supabase start          # Start local instance
-supabase stop           # Stop local instance
-supabase db reset       # Reset and rerun migrations
-supabase db diff        # Generate migration from changes
+cd supabase_           # Navigate to supabase folder FIRST
+supabase start         # Start local instance
+supabase stop          # Stop local instance
+supabase db reset      # Reset and rerun migrations
+supabase db diff       # Generate migration from changes
 ```
 
 **Next.js:**
@@ -530,5 +565,3 @@ langgraph push
    - Next.js: https://nextjs.org/docs
    - Supabase: https://supabase.com/docs
    - LangChain: https://python.langchain.com/
-
-

@@ -13,6 +13,8 @@
 - `.clinefiles/langchain/langsmith/next-js-integration/core.md` - useStream() fundamentals
 - `.clinefiles/langchain/langsmith/next-js-integration/streaming.md` - Streaming patterns
 - `.clinefiles/langchain/langsmith/next-js-integration/threads.md` - Thread management
+- `.clinefiles/ui/drawer-chat-pattern.md` - **Recommended default UI pattern**
+- `.clinefiles/langchain/patterns/multi-thread-actor.md` - Multi-thread management (if using actors)
 
 ---
 
@@ -39,12 +41,33 @@ npm install @langchain/langgraph-sdk @langchain/core
 
 ---
 
-## Step 3: Create Agent Client Hook
+## Step 3: Choose UI Pattern
+
+**Default Recommendation: Drawer Pattern**
+
+For most applications, use the **collapsible side drawer pattern** (shadcn Sheet):
+- Non-intrusive, doesn't take over the page
+- Allows contextual chat alongside main content
+- Professional, modern UX
+- Supports entity selection (e.g., multiple actors)
+
+**Alternative: Full-Page Chat**
+
+Use full-page only if:
+- Chat is the primary/sole interface
+- No other content needs to be visible
+- Simple single-agent conversation
+
+**Reference:** `.clinefiles/ui/drawer-chat-pattern.md`
+
+---
+
+## Step 4: Create Agent Client Hook
 
 Create reusable hook following Phase 8.3 thread strategy:
 
 ```typescript
-// lib/use-agent.ts
+// hooks/use-agent.ts
 "use client";
 
 import { useStream } from "@langchain/langgraph-sdk/react";
@@ -55,14 +78,45 @@ interface AgentState {
   // Add custom state fields from Phase 8.2
 }
 
-export function useAgent(threadId?: string | null) {
-  return useStream<AgentState>({
+interface UseAgentOptions {
+  assistantId: string;
+  threadId?: string | null;
+  // Add context fields from Phase 8.2
+  userId?: string;
+  // Additional context as needed
+}
+
+export function useAgent(options: UseAgentOptions) {
+  const { assistantId, threadId, userId, ...context } = options;
+
+  const stream = useStream<AgentState>({
     apiUrl: process.env.NEXT_PUBLIC_AGENT_API_URL!,
-    assistantId: "agent",
+    assistantId,
     threadId: threadId ?? undefined,
     messagesKey: "messages",
-    reconnectOnMount: true, // Resume after page refresh
+    reconnectOnMount: true,
   });
+
+  // Helper to submit with context
+  const submitWithContext = (input: string, additionalContext?: any) => {
+    stream.submit(
+      {
+        messages: [{ role: "user", content: input }],
+      },
+      {
+        context: {
+          userId,
+          ...context,
+          ...additionalContext,
+        },
+      }
+    );
+  };
+
+  return {
+    ...stream,
+    submitWithContext,
+  };
 }
 ```
 
@@ -70,55 +124,85 @@ export function useAgent(threadId?: string | null) {
 
 ---
 
-## Step 4: Create Chat Component
+## Step 5: Implement Chat UI (Drawer Pattern - Recommended)
+
+### Step 5.1: Install shadcn Sheet Component
+
+```bash
+npx shadcn@latest add sheet
+```
+
+### Step 5.2: Create Chat Interface Component
 
 ```typescript
-// components/agent-chat.tsx
+// components/agent-chat-interface.tsx
 "use client";
 
-import { useState } from "react";
-import { useAgent } from "@/lib/use-agent";
+import { useState, useRef, useEffect } from "react";
+import { useAgent } from "@/hooks/use-agent";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-export function AgentChat({ 
-  threadId, 
-  onThreadIdChange 
-}: { 
+interface AgentChatInterfaceProps {
+  assistantId: string;
   threadId?: string | null;
-  onThreadIdChange?: (id: string) => void;
-}) {
-  const [input, setInput] = useState("");
-  const agent = useAgent(threadId);
+  userId: string;
+  // Add context fields from Phase 8.2
+}
 
-  // Notify parent when thread created
-  if (!threadId && agent.threadId && onThreadIdChange) {
-    onThreadIdChange(agent.threadId);
-  }
+export function AgentChatInterface({
+  assistantId,
+  threadId,
+  userId,
+}: AgentChatInterfaceProps) {
+  const [input, setInput] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  const agent = useAgent({
+    assistantId,
+    threadId,
+    userId,
+  });
+
+  // Auto-scroll to bottom
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [agent.messages]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    agent.submit({
-      messages: [{ role: "user", content: input }]
-    });
+    agent.submitWithContext(input);
     setInput("");
   };
 
   return (
     <div className="flex flex-col h-full">
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {agent.messages.map((msg) => (
-          <div key={msg.id} className={msg.type === "human" ? "text-right" : "text-left"}>
-            <div className="inline-block p-3 rounded-lg bg-muted">
-              {msg.content as string}
+      <ScrollArea className="flex-1 p-4">
+        <div className="space-y-4">
+          {agent.messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={msg.type === "human" ? "text-right" : "text-left"}
+            >
+              <div className="inline-block p-3 rounded-lg bg-muted max-w-[80%]">
+                {msg.content as string}
+              </div>
             </div>
-          </div>
-        ))}
-        {agent.isLoading && <div>Agent is thinking...</div>}
-      </div>
+          ))}
+          {agent.isLoading && (
+            <div className="text-left">
+              <div className="inline-block p-3 rounded-lg bg-muted">
+                Thinking...
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+      </ScrollArea>
 
       {/* Input */}
       <form onSubmit={handleSubmit} className="p-4 border-t">
@@ -139,60 +223,175 @@ export function AgentChat({
 }
 ```
 
+### Step 5.3: Create Drawer Wrapper
+
+```typescript
+// components/agent-chat-drawer.tsx
+"use client";
+
+import { useState } from "react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { MessageSquare } from "lucide-react";
+import { AgentChatInterface } from "./agent-chat-interface";
+
+interface AgentChatDrawerProps {
+  assistantId: string;
+  userId: string;
+  triggerLabel?: string;
+}
+
+export function AgentChatDrawer({
+  assistantId,
+  userId,
+  triggerLabel = "Chat with Agent",
+}: AgentChatDrawerProps) {
+  const [threadId, setThreadId] = useState<string | null>(null);
+
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="sm">
+          <MessageSquare className="h-4 w-4 mr-2" />
+          {triggerLabel}
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-[500px] sm:w-[600px] flex flex-col">
+        <SheetHeader>
+          <SheetTitle>Agent Assistant</SheetTitle>
+        </SheetHeader>
+        <div className="flex-1 overflow-hidden">
+          <AgentChatInterface
+            assistantId={assistantId}
+            threadId={threadId}
+            userId={userId}
+          />
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
+```
+
+### Step 5.4: Add to Page
+
+```typescript
+// app/dashboard/page.tsx (or any page)
+import { AgentChatDrawer } from "@/components/agent-chat-drawer";
+
+export default async function DashboardPage() {
+  const user = await getCurrentUser(); // Your auth logic
+
+  return (
+    <div>
+      {/* Your page content */}
+      
+      {/* Chat drawer in corner */}
+      <div className="fixed bottom-4 right-4">
+        <AgentChatDrawer
+          assistantId="my-agent"
+          userId={user.id}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+**Reference:** `.clinefiles/ui/drawer-chat-pattern.md`
+
 ---
 
-## Step 5: Implement Thread Management
+## Alternative: Full-Page Chat (If Needed)
 
-Based on Phase 8.3 strategy, implement thread persistence:
-
-### Option A: URL-based threads (Recommended)
+If chat is the primary interface:
 
 ```typescript
 // app/chat/page.tsx
 "use client";
 
-import { AgentChat } from "@/components/agent-chat";
-import { useSearchParams, useRouter } from "next/navigation";
+import { AgentChatInterface } from "@/components/agent-chat-interface";
+import { useSearchParams } from "next/navigation";
 
 export default function ChatPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const threadId = searchParams.get("thread");
-
-  const handleThreadChange = (newThreadId: string) => {
-    router.push(`/chat?thread=${newThreadId}`);
-  };
 
   return (
     <div className="h-screen">
-      <AgentChat 
+      <AgentChatInterface
+        assistantId="my-agent"
         threadId={threadId}
-        onThreadIdChange={handleThreadChange}
+        userId="user-123" // From auth
       />
     </div>
   );
 }
 ```
 
-### Option B: Session storage
+---
+
+## Step 6: Implement Thread Management
+
+Thread persistence strategy depends on your use case:
+
+### Strategy A: Per-Session Threads (Most Common)
+
+New thread per drawer open, persists within session:
 
 ```typescript
-// Alternative: Use session storage for threads
-const [threadId, setThreadId] = useState(() => 
-  sessionStorage.getItem("agent-thread") || null
-);
+// In AgentChatDrawer component
+const [threadId, setThreadId] = useState<string | null>(null);
 
-const handleThreadChange = (id: string) => {
-  sessionStorage.setItem("agent-thread", id);
-  setThreadId(id);
+// Thread created on first message, persists until drawer closed
+```
+
+### Strategy B: Entity-Bound Threads (For Multi-Actor/Item Systems)
+
+Thread tied to specific entity (actor, document, etc.):
+
+```typescript
+// See .clinefiles/langchain/patterns/multi-thread-actor.md for full pattern
+
+// hooks/use-agent.ts - Auto-generate thread IDs
+const threadId = useMemo(() => {
+  if (entityType === 'actor' && scenarioId) {
+    // Simulation thread
+    return `actor_${actorId}_scenario_${scenarioId}_sim`;
+  } else {
+    // Meta-chat thread
+    return `actor_${actorId}_chat_${userId}_${timestamp}`;
+  }
+}, [entityType, actorId, scenarioId, userId]);
+```
+
+### Strategy C: URL-Based Threads (For Full-Page Chat)
+
+Thread ID in URL for bookmarking/sharing:
+
+```typescript
+const searchParams = useSearchParams();
+const router = useRouter();
+const threadId = searchParams.get("thread");
+
+const handleThreadCreate = (newThreadId: string) => {
+  router.push(`/chat?thread=${newThreadId}`);
 };
 ```
 
-**Reference:** `.clinefiles/langchain/langsmith/next-js-integration/threads.md`
+**References:**
+- `.clinefiles/langchain/langsmith/next-js-integration/threads.md`
+- `.clinefiles/langchain/patterns/multi-thread-actor.md` (for entity-bound threads)
 
 ---
 
-## Step 6: Add Human-in-the-Loop UI (If Implemented)
+## Step 7: Add Human-in-the-Loop UI (If Implemented)
 
 If Phase 8.3 implemented human-in-the-loop:
 
@@ -220,7 +419,7 @@ if (agent.interrupt) {
 
 ---
 
-## Step 7: Add Background Runs (If Needed)
+## Step 8: Add Background Runs (If Needed)
 
 If Phase 0 determined background runs needed:
 
@@ -257,7 +456,7 @@ export async function checkRunStatus(runId: string) {
 
 ---
 
-## Step 7.5: Validate Against Interface Specifications (REQUIRED)
+## Step 9: Validate Against Interface Specifications (REQUIRED)
 
 **⚠️ CRITICAL: Verify Implementation Matches Interface Contract**
 
@@ -483,28 +682,54 @@ export function MyAgentChat({ userId, contextValue }: Props) {
 
 ---
 
-## Step 8: Test Integration
+## Step 10: Test Integration
 
-### Test 1: Basic Chat
+### Test 1: Basic Drawer Interaction
 
 1. Start agent service: `langgraph dev` (in agent-service/)
 2. Start Next.js: `npm run dev` (in Next.js app/)
-3. Navigate to chat page
-4. Send message, verify response streams
+3. Navigate to page with drawer
+4. Click drawer trigger button
+5. Drawer should slide in from right
+6. Send message, verify response streams
+7. Close and reopen drawer, verify thread persists (if Strategy A)
 
-### Test 2: Thread Persistence
+### Test 2: Thread Management
 
+**For Strategy A (Per-Session):**
+1. Open drawer, send messages
+2. Close drawer, reopen
+3. Verify conversation persists
+
+**For Strategy B (Entity-Bound):**
+1. Select entity (actor, etc.)
+2. Send messages
+3. Select different entity
+4. Return to first entity
+5. Verify conversation persists per entity
+
+**For Strategy C (URL-Based):**
 1. Send several messages
 2. Note thread ID in URL
 3. Refresh page
 4. Verify conversation history loads
 
-### Test 3: New Conversation
+### Test 3: Multiple Simultaneous Threads
 
-1. Clear thread ID from URL (or start new session)
-2. Send message
-3. Verify new thread created
-4. Check URL updates with new thread ID
+1. Open drawer for Entity A
+2. Send messages
+3. Switch to Entity B (or open different drawer)
+4. Send different messages
+5. Return to Entity A
+6. Verify correct thread loaded with correct history
+
+### Test 4: Mobile Responsiveness
+
+1. Open DevTools, switch to mobile view
+2. Trigger drawer
+3. Verify proper width/positioning
+4. Test scrolling in message area
+5. Verify input accessible
 
 ---
 
@@ -512,19 +737,38 @@ export function MyAgentChat({ userId, contextValue }: Props) {
 
 Before proceeding to Phase 8.5:
 
+**Environment & Dependencies:**
 - [ ] `NEXT_PUBLIC_AGENT_API_URL` added to `.env.local`
 - [ ] `@langchain/langgraph-sdk` installed
-- [ ] `useAgent` hook created
-- [ ] Chat UI component implemented
+- [ ] shadcn Sheet component installed
+
+**Core Implementation:**
+- [ ] `useAgent` hook created with context support
+- [ ] `AgentChatInterface` component implemented
+- [ ] `AgentChatDrawer` component implemented
+- [ ] Drawer integrated into relevant pages
 - [ ] Thread management strategy from Phase 8.3 implemented
-- [ ] Thread persistence working (URL or session storage)
+
+**Interface Validation (CRITICAL):**
+- [ ] TypeScript types match Python schemas exactly
+- [ ] Context passed via options parameter (not state, not config)
+- [ ] State fields match AgentState schema
+- [ ] Service interface docs updated to 🟢 IMPLEMENTED
+- [ ] Cross-references verified (clickable links work)
+
+**Feature Implementation:**
 - [ ] Human-in-the-loop UI added (if Phase 8.3 implemented it)
 - [ ] Background runs implemented (if Phase 0 determined needed)
-- [ ] Basic chat test passes
-- [ ] Thread persistence test passes
-- [ ] New conversation test passes
+- [ ] Entity selection working (if multi-entity system)
+
+**Testing:**
+- [ ] Basic drawer interaction test passes
+- [ ] Thread persistence test passes (per strategy)
+- [ ] Multiple threads test passes (if applicable)
+- [ ] Mobile responsiveness verified
 - [ ] Streaming responses display token-by-token
 - [ ] No CORS errors in browser console
+- [ ] Drawer positioning correct (doesn't obstruct content)
 
 ---
 
@@ -543,6 +787,21 @@ Before proceeding to Phase 8.5:
 - Component is client component ("use client")
 - apiUrl environment variable set correctly
 - Agent service responding (test with curl)
+
+### Issue: Drawer not opening
+
+**Check:**
+- shadcn Sheet component installed
+- SheetTrigger wrapped in asChild
+- Sheet state not controlled incorrectly
+- No z-index conflicts with other UI elements
+
+### Issue: Thread not persisting between drawer opens
+
+**Check:**
+- Thread ID stored correctly per your strategy
+- useAgent receives same thread ID on reopen
+- reconnectOnMount: true in useStream config
 
 ### Issue: Thread not persisting
 

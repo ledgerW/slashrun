@@ -877,10 +877,14 @@ If your application includes AI agents (determined in Step 5), you must choose a
 
 **OpenAI (Recommended for most applications)**
 - **Latest Models (2025):**
-  - `gpt-5.1` - Latest reasoning model with advanced capabilities (supports reasoning parameters)
+  - `gpt-5.1` - Latest reasoning model with advanced capabilities
+    - ⚠️ **Does NOT support `temperature`** - Use `reasoning_effort` and `verbosity` instead
   - `gpt-5` - Latest standard generation
+    - ⚠️ **Does NOT support `temperature`** - Use `verbosity` instead
   - `gpt-5-mini` - Fast and cost-effective
+    - ⚠️ **Does NOT support `temperature`** - Use `verbosity` instead
   - `gpt-4.1` - Previous generation, still excellent
+    - ✅ Still supports `temperature` parameter
 - **Strengths:** Reliable, fast, great documentation, reasoning capabilities, broad capability
 - **Pricing:** Moderate to high
 - **Best for:** Production applications, complex reasoning, general purpose
@@ -940,9 +944,17 @@ If your application includes AI agents (determined in Step 5), you must choose a
 **Rationale:** [Cost optimization, specific capabilities, etc.]
 
 ### Configuration:
-**Temperature:** [0.0-1.0, typically 0.7 for creative, 0.0 for deterministic]
-**Max Tokens:** [Response length limit]
-**Timeout:** [Request timeout in seconds]
+**⚠️ CRITICAL:** GPT-5 family models (`gpt-5`, `gpt-5.1`, `gpt-5-mini`, `gpt-5-nano`, `gpt-5-chat`) do NOT support `temperature`.
+- For GPT-5.1: Use `reasoning_effort` (low/medium/high) and `verbosity` (low/medium/high)
+- For other GPT-5 models: Use `verbosity` (low/medium/high) instead of temperature
+- GPT-4.x and Claude models still support `temperature` normally
+
+**Model Parameters:**
+- **Temperature** (GPT-4.x, Claude only): [0.0-1.0, typically 0.7 for creative, 0.0 for deterministic]
+- **Verbosity** (GPT-5 family only): [low/medium/high - controls response detail level]
+- **Reasoning Effort** (GPT-5.1 only): [low/medium/high - controls reasoning depth]
+- **Max Tokens:** [Response length limit]
+- **Timeout:** [Request timeout in seconds]
 
 ### Cost Estimates:
 **Expected Monthly Volume:** [Estimated tokens per month]
@@ -961,21 +973,24 @@ model = ChatAnthropic(
     max_tokens=4096
 )
 
-# Alternative: GPT-5.1 with reasoning
+# Alternative: GPT-5.1 with reasoning (NO temperature - GPT-5 family doesn't support it)
 model = ChatOpenAI(
     model="gpt-5.1",
-    reasoning={
-        "effort": "medium",  # low/medium/high
-        "summary": "auto"     # auto/concise/detailed
-    },
-    verbosity="medium",  # low/medium/high
-    temperature=0.7,
+    reasoning_effort="medium",  # low/medium/high - controls reasoning depth
+    verbosity="medium",         # low/medium/high - controls response detail
     max_tokens=4096
 )
 
-# Alternative: GPT-5 for general purpose
+# Alternative: GPT-5 for general purpose (NO temperature - GPT-5 family doesn't support it)
 model = ChatOpenAI(
     model="gpt-5",
+    verbosity="medium",  # low/medium/high - use this instead of temperature
+    max_tokens=4096
+)
+
+# GPT-4.1 still supports temperature if you need it
+model = ChatOpenAI(
+    model="gpt-4.1",
     temperature=0.7,
     max_tokens=4096
 )
@@ -990,9 +1005,16 @@ model = ChatAnthropic(
     max_tokens=2048
 )
 
-# Alternative: GPT-5-mini for OpenAI users
+# Alternative: GPT-5-mini for OpenAI users (NO temperature - GPT-5 family doesn't support it)
 model = ChatOpenAI(
     model="gpt-5-mini",
+    verbosity="low",  # low/medium/high - use this instead of temperature
+    max_tokens=2048
+)
+
+# GPT-4.1-mini still supports temperature if you need it
+model = ChatOpenAI(
+    model="gpt-4.1-mini",
     temperature=0.5,
     max_tokens=2048
 )
