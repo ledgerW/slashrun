@@ -223,6 +223,15 @@ This index catalogs all available .clinerules guides (excluding workflows). Befo
 
 ---
 
+## 📁 Tavily Web Search
+
+### tavily/capabilities-and-integration.md
+**Read this for:** Adding web search, content extraction, website crawling, or real-time web data capabilities  
+**Summary:** Complete guide to Tavily's search, extract, crawl, and map APIs. Covers both MCP servers (Tavily Expert and local installation), LangChain integration with langchain-tavily package, when to use each capability, best practices, and common patterns. Essential for agents that need real-time web information.  
+**Location:** `.clinefiles/tavily/capabilities-and-integration.md`
+
+---
+
 ## 📁 UI & Components
 
 ### ui/ui.md
@@ -351,6 +360,14 @@ This index catalogs all available .clinerules guides (excluding workflows). Befo
 3. `langchain/reference-implementations/` - Working code examples
 
 **Key principles:** Separate core identity from tool guidance. Use {tools_list} placeholder. Follow manager vs worker patterns.
+
+### "Adding web search to agents"
+**Read these guides:**
+1. `tavily/capabilities-and-integration.md` - Tavily capabilities and setup (read first)
+2. `langchain/core/tools.md` - Tool creation patterns
+3. `langchain/patterns/middleware-tools.md` - Tool organization in middleware
+
+**Key principles:** Use `langchain-tavily` package (NOT langchain_community). Both Tavily MCP servers available. Choose basic vs advanced depth based on needs.
 
 ---
 

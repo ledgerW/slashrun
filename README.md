@@ -5,11 +5,24 @@ AI-developer-assisted workflow for building full-stack AI-native applications wi
 ## ⚡ Quickstart
 
 **Prerequisites:**  
+- [Cline](https://cline.bot/) installed in VS Code/Cursor (recommended AI coding assistant)
 - Node.js 18+
 - uv (Python package manager)
 - Docker Desktop
 - OpenAI or Anthropic API key
 - LangSmith API key
+- [Tavily API key](https://app.tavily.com/home) (free tier: 1,000 credits/month, no credit card required)
+
+**Tavily MCP Server Setup:**
+
+This template uses **two Tavily MCP servers** for web search capabilities:
+
+1. **Tavily Expert** (hosted) - Pre-configured SSE server with documentation  
+2. **github.com/tavily-ai/tavily-mcp** (local) - Direct API access
+
+> **Tavily MCP Configuration**  
+> [Tavily Expert MCP](https://tavily.tadata.com/docs)  
+> [Tavily MCP](https://docs.tavily.com/documentation/mcp)
 
 Get your AI-native application running in (tens of) minutes:
 
@@ -152,10 +165,27 @@ Powerful library for building node-based editors, workflow designers, diagrams, 
 </tr>
 </table>
 
+### AI Agent Services
+
+<table>
+<tr>
+<td width="80" align="center">
+<a href="https://tavily.com/" target="_blank">
+<img src="https://tavily.com/favicon.ico" alt="Tavily" width="32" height="32"/>
+</a>
+</td>
+<td>
+<strong><a href="https://tavily.com/">Tavily</a></strong> - AI-Optimized Search Engine<br/>
+Search engine built for LLMs and AI agents, providing real-time web information. Features intelligent search, content extraction, website crawling, and site mapping capabilities. Free tier includes 1,000 API credits monthly. Integrated via two MCP servers (hosted + local).
+</td>
+</tr>
+</table>
+
 ### Why These Technologies?
 
 - **Cline**: Workflow-driven development with Plan/Act modes aligns perfectly with the template's `.clinerules/` guides
 - **LangChain**: Battle-tested agent framework with extensive model integrations
+- **Tavily**: Real-time web search and data extraction optimized for AI agents
 - **LangSmith**: Production-ready deployment with enterprise features included
 - **Supabase**: Complete backend-as-a-service eliminates infrastructure complexity
 - **Next.js**: Industry-standard React framework with excellent DX and built-in optimizations
@@ -417,6 +447,58 @@ Each service has its own .env file because:
 - ✅ Better IDE/tooling support
 
 The `.env.example` at the project root serves as documentation, while actual `.env` files in each service provide runtime configuration.
+
+## 🔍 Tavily MCP Servers
+
+This template includes **two Tavily MCP servers** for AI-powered web search capabilities:
+
+### 1. Tavily Expert (SSE Server)
+**Pre-configured hosted server with documentation tools**
+
+- **Type:** Server-Sent Events (SSE)
+- **Provides:** Search, extract, crawl, map + built-in documentation and best practices
+- **Use for:** Learning Tavily, getting integration guidance, checking API patterns
+- **Setup:** [Tavily Expert MCP Documentation](https://tavily.tadata.com/docs)
+
+### 2. github.com/tavily-ai/tavily-mcp (Local Installation)
+**Locally installed server with direct API access**
+
+- **Type:** stdio (Node.js process)
+- **Provides:** Direct access to core Tavily tools
+- **Use for:** Production implementations, guaranteed availability
+
+### Setup Instructions
+
+**1. Get your Tavily API Key:**
+- Visit [app.tavily.com/home](https://app.tavily.com/home)
+- Sign up for free (no credit card required)
+- Free tier includes 1,000 API credits monthly
+
+**2. Configure MCP Servers:**
+
+**Tavily Expert (SSE Server):**
+- Follow the [Tavily Expert MCP setup guide](https://tavily.tadata.com/docs) for SSE server configuration
+
+**github.com/tavily-ai/tavily-mcp (Local Server):**
+- Follow the [official Tavily MCP installation guide](https://docs.tavily.com/documentation/mcp) for local installation
+- The guide covers: Remote MCP setup, local installation, configuration for different clients, and troubleshooting
+
+**3. Available Capabilities:**
+- **Search** - Real-time web search with filters and domain control
+- **Extract** - Content extraction from specific URLs
+- **Crawl** - Systematic website exploration
+- **Map** - Website structure discovery
+
+**4. LangChain Integration:**
+
+When building agents in Phase 8, use the official `langchain-tavily` package:
+
+```bash
+cd langchain_
+uv add langchain-tavily
+```
+
+See `.clinefiles/tavily/capabilities-and-integration.md` for complete integration patterns and examples.
 
 ## 🎯 Development Workflow
 
