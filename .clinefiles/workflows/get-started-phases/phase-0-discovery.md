@@ -710,6 +710,135 @@ Examples by domain:
 [Continue for all custom tools]
 ```
 
+### Web Search & Real-Time Data (Tavily) Assessment
+
+**Does the agent need real-time web information?**
+
+Tavily provides AI-optimized web search capabilities. Assess if your agent needs:
+
+**Reference:** `.clinefiles/tavily/capabilities-and-integration.md` - Complete integration guide
+
+#### Tavily Capabilities
+
+**1. Search** (`TavilySearch`)
+- Real-time web search with AI-powered results
+- Filter by time (day, week, month, year), domains, topics (general/news)
+- Basic (1 credit) vs Advanced (10 credits) depth
+- **Use for:** Current events, market research, technical docs, product comparisons
+
+**2. Extract** (`TavilyExtract`)
+- Extract structured content from specific URLs
+- Basic (1 credit/5 URLs) vs Advanced (2 credits/5 URLs)
+- **Use for:** Content analysis, documentation gathering, LinkedIn profiles (advanced)
+- **Best practice:** Search first, then extract from high-scoring results
+
+**3. Crawl** (via MCP if needed)
+- Systematically explore websites from base URL
+- **Use for:** Documentation sites, website audits, knowledge base building
+
+**4. Map** (via MCP if needed)
+- Create structured maps of website URLs
+- **Use for:** Site structure analysis, content discovery
+
+#### Assessment Questions
+
+**1. Does the agent need current/real-time information?**
+- News monitoring, market data, recent developments?
+- Time-sensitive information (today, this week, this month)?
+- Information that changes frequently?
+
+**Decision:** [ ] YES - Include Tavily / [ ] NO - Skip
+
+**2. Will the agent research topics or gather information?**
+- User asks "What's the latest..." questions?
+- Competitive intelligence or market research?
+- Technical documentation searches?
+- Fact-checking or verification tasks?
+
+**Decision:** [ ] YES - Include Tavily / [ ] NO - Skip
+
+**3. Does the agent need to extract content from URLs?**
+- Process search results for deeper analysis?
+- Extract data from specific web pages?
+- Gather information from multiple sources?
+
+**Decision:** [ ] YES - Include TavilyExtract / [ ] NO - Skip
+
+**4. Will the agent explore or map websites?**
+- Documentation site exploration?
+- Website content audits?
+- Building knowledge bases from websites?
+
+**Decision:** [ ] YES - Consider Crawl/Map (via MCP) / [ ] NO - Skip
+
+#### When NOT to Use Tavily
+
+❌ **Skip Tavily if:**
+- Only need historical/static data (use database or vector store)
+- Internal/private documentation (use RAG with SupabaseVectorStore)
+- High-volume operations where API costs are critical
+- No need for current web information
+
+#### Integration Approach
+
+**If Tavily is needed, document:**
+
+```markdown
+#### Web Search & Real-Time Data (Tavily)
+
+**Capabilities Needed:**
+- [ ] Search - Real-time web search
+- [ ] Extract - Content extraction from URLs  
+- [ ] Crawl - Website exploration (via MCP)
+- [ ] Map - Site structure mapping (via MCP)
+
+**Use Cases:**
+1. [Use case 1: e.g., "Monitor industry news daily"]
+   - Tool: TavilySearch
+   - Configuration: topic="news", days=1, max_results=10
+   
+2. [Use case 2: e.g., "Research competitor features"]
+   - Tool: TavilySearch + TavilyExtract
+   - Configuration: search with domain filtering, then extract
+
+3. [Use case 3: if applicable]
+   - Tool: [Specific tool]
+   - Configuration: [Settings]
+
+**Search Optimization:**
+- Depth: [basic for development/simple searches, advanced for critical research]
+- Domain filtering: [Include trusted sources: nature.com, arxiv.org, etc.]
+- Time filtering: [news topic with days parameter for current events]
+- Credit budget: [Expected monthly usage estimate]
+
+**Implementation Notes:**
+- Install: `uv add langchain-tavily`
+- Use TavilySearch and TavilyExtract tools (NOT deprecated langchain_community)
+- Two MCP servers available: Tavily Expert (guidance) + local installation
+- Refer to `.clinefiles/tavily/capabilities-and-integration.md` for detailed patterns
+```
+
+#### Credit Usage Planning
+
+**Free Tier:** 1,000 credits/month
+
+**Estimate your usage:**
+- Search basic: 1 credit per search
+- Search advanced: 10 credits per search
+- Extract basic: 1 credit per 5 URLs
+- Extract advanced: 2 credits per 5 URLs
+
+**Example calculations:**
+- 100 basic searches/day = 3,000 credits/month (need paid plan)
+- 20 advanced searches/day = 6,000 credits/month (need paid plan)
+- 10 basic searches/day = 300 credits/month (within free tier)
+
+**Optimization strategies:**
+- Use basic depth during development
+- Cache results when appropriate
+- Filter search results before extracting
+- Use domain filtering to reduce result volume
+
 ### User Interaction Patterns
 
 **How will users interact with the agent?**

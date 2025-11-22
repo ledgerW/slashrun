@@ -758,6 +758,280 @@ class ToolsMiddleware(AgentMiddleware):
 
 **Reference:** `.clinefiles/langchain/patterns/middleware-tools.md` for complete patterns
 
+### Step 4.4: Add Tavily Web Search Tools (If Phase 0 Identified Need)
+
+**Check Phase 0 Assessment:** Did your Phase 0 discovery determine the agent needs real-time web search?
+
+If YES, integrate Tavily tools per your Phase 0 specifications:
+
+**Reference:** `.clinefiles/tavily/capabilities-and-integration.md` - Complete integration guide
+
+#### Install Tavily Package
+
+```bash
+cd langchain_
+uv add langchain-tavily
+```
+
+**⚠️ CRITICAL:** Use `langchain-tavily` package, NOT deprecated `langchain_community.tools.tavily_search`
+
+#### Import Tavily Tools
+
+```python
+# src/agent/tools/web_search_tools.py
+"""
+Web search and content extraction tools using Tavily.
+Reference: .clinefiles/tavily/capabilities-and-integration.md
+"""
+from langchain_tavily import TavilySearch, TavilyExtract
+
+# Configure based on Phase 0 assessment
+tavily_search = TavilySearch(
+    max_results=5,  # Adjust based on needs
+    topic="general",  # or "news" for current events
+    search_depth="basic",  # or "advanced" for critical research
+    include_answer=True,  # Get AI-generated answer
+    include_raw_content=False,  # Set True for deeper analysis
+    include_images=False,  # Set True if images needed
+)
+
+tavily_extract = TavilyExtract(
+    extract_depth="basic",  # or "advanced" for LinkedIn/complex pages
+    include_images=False,
+)
+```
+
+#### Create Web Search Prompts
+
+```python
+# src/agent/prompts/web_search_prompts.py
+"""
+System prompts for Tavily web search tools.
+"""
+
+WEB_SEARCH_TOOLS_PROMPT = """
+## Web Search & Content Extraction
+
+You have access to real-time web search capabilities via Tavily.
+
+Available tools:
+- tavily_search: Search the web for current information
+  - Use for: news, market data, recent developments, documentation
+  - Supports: time filters, domain filtering, basic vs advanced depth
+  
+- tavily_extract: Extract content from specific URLs
+  - Use for: detailed content from known URLs, follow-up on search results
+  - Best practice: Search first, then extract from high-scoring results
+
+When to use web search:
+1. User asks "What's the latest..." or time-sensitive questions
+2. Need current events, news, or recent information
+3. Research tasks requiring external sources
+4. Finding documentation or technical resources
+5. Fact-checking or verification
+
+Search optimization tips:
+- Be specific in your queries (not generic)
+- Use domain filtering for trusted sources when needed
+- Use "basic" depth for general searches (1 credit)
+- Use "advanced" depth only for critical research (10 credits)
+- For news, use time filtering (last day/week/month)
+
+Content extraction workflow:
+1. Search for relevant sources
+2. Review results and select high-scoring URLs (score > 0.5)
+3. Extract detailed content from selected URLs only
+4. Synthesize findings into comprehensive answer
+
+Example workflow:
+User: "What are the latest developments in quantum computing?"
+1. tavily_search(query="quantum computing developments 2025", topic="news", days=7)
+2. Review results, identify top 2-3 relevant URLs
+3. tavily_extract(urls=[url1, url2]) for detailed content
+4. Synthesize findings with citations
+"""
+```
+
+#### Add to Tools Middleware
+
+```python
+# src/agent/middleware/tools.py
+from langchain_tavily import TavilySearch, TavilyExtract
+from .prompts.web_search_prompts import WEB_SEARCH_TOOLS_PROMPT
+
+# Configure Tavily tools based on Phase 0 specs
+tavily_search = TavilySearch(
+    max_results=5,
+    topic="general",
+    search_depth="basic",
+)
+
+tavily_extract = TavilyExtract(
+    extract_depth="basic",
+)
+
+# Create web search middleware
+web_search_middleware = ToolsMiddleware(
+    tools=[tavily_search, tavily_extract],
+    prompt=WEB_SEARCH_TOOLS_PROMPT
+)
+```
+
+#### Configuration Based on Phase 0 Use Cases
+
+Match your Tavily configuration to Phase 0 decisions:
+
+**For News Monitoring:**
+```python
+tavily_search = TavilySearch(
+    topic="news",  # Focus on news sources
+    days=1,  # Last 24 hours
+    max_results=10,
+    search_depth="basic",
+)
+```
+
+**For Research with Domain Filtering:**
+```python
+tavily_search = TavilySearch(
+    topic="general",
+    include_domains=["nature.com", "arxiv.org", "ieee.org"],  # Trusted sources
+    max_results=5,
+    search_depth="advanced",  # Deeper research
+)
+```
+
+**For Competitor Intelligence:**
+```python
+tavily_search = TavilySearch(
+    topic="news",
+    days=7,
+    exclude_domains=["pinterest.com", "quora.com"],  # Filter noise
+    max_results=10,
+)
+```
+
+**For LinkedIn/Complex Pages:**
+```python
+tavily_extract = TavilyExtract(
+    extract_depth="advanced",  # Required for LinkedIn, complex content
+    include_images=True,  # If visual content needed
+)
+```
+
+#### Integration Example
+
+Complete integration with your agent:
+
+```python
+# src/agent/graph.py
+from langchain_openai import ChatOpenAI
+from langgraph.prebuilt import create_react_agent
+from langchain_tavily import TavilySearch, TavilyExtract
+
+# Import your other tools
+from .tools.database_tools import query_database, call_external_api
+
+# Configure Tavily (based on Phase 0 assessment)
+tavily_search = TavilySearch(max_results=5, topic="general", search_depth="basic")
+tavily_extract = TavilyExtract(extract_depth="basic")
+
+# Combine all tools
+tools = [
+    # Your domain-specific tools
+    query_database,
+    call_external_api,
+    
+    # Tavily web search tools
+    tavily_search,
+    tavily_extract,
+]
+
+# Create agent with all tools
+model = ChatOpenAI(model="gpt-4o-mini", streaming=True)
+graph = create_react_agent(model, tools=tools, state_schema=State)
+```
+
+#### Testing Tavily Integration
+
+**Test web search:**
+```bash
+curl -X POST http://localhost:2024/runs/stream \
+  -H "Content-Type: application/json" \
+  -d '{
+    "assistant_id": "agent",
+    "input": {
+      "messages": [{"role": "user", "content": "What are the latest AI developments this week?"}]
+    }
+  }'
+```
+
+Should see agent use `tavily_search` to find current information.
+
+**Test content extraction:**
+```bash
+curl -X POST http://localhost:2024/runs/stream \
+  -H "Content-Type: application/json" \
+  -d '{
+    "assistant_id": "agent",
+    "input": {
+      "messages": [{"role": "user", "content": "Extract the main points from https://example.com/article"}]
+    }
+  }'
+```
+
+Should see agent use `tavily_extract` to process the URL.
+
+#### Credit Management
+
+**Monitor your usage:**
+- Free tier: 1,000 credits/month
+- Basic search: 1 credit
+- Advanced search: 10 credits
+- Extract basic: 1 credit per 5 URLs
+- Extract advanced: 2 credits per 5 URLs
+
+**Optimization strategies:**
+- Use `basic` depth during development
+- Cache frequently accessed results
+- Filter search results before extracting
+- Use domain filtering to reduce irrelevant results
+
+#### Common Patterns
+
+**Pattern 1: Two-Step Research**
+```python
+# 1. Search for sources
+search_results = tavily_search.invoke({"query": "Python asyncio best practices"})
+
+# 2. Filter by relevance score
+high_score_urls = [r['url'] for r in search_results if r['score'] > 0.5]
+
+# 3. Extract detailed content
+content = tavily_extract.invoke({"urls": high_score_urls[:3]})
+```
+
+**Pattern 2: News Monitoring**
+```python
+# Daily news check
+tavily_search = TavilySearch(
+    topic="news",
+    days=1,
+    max_results=10,
+)
+```
+
+**Pattern 3: Documentation Aggregation**
+```python
+# Search with domain filtering
+tavily_search = TavilySearch(
+    include_domains=["docs.python.org", "realpython.com"],
+    max_results=5,
+)
+```
+
+**Reference:** `.clinefiles/tavily/capabilities-and-integration.md` for complete patterns and best practices
+
 ---
 
 ## Step 5: Add Middleware (If Using)

@@ -599,6 +599,15 @@ This prepares the app architecture for seamless Phase 8 integration.
 - [ ] Streaming configured (model initialization with streaming=True by default)
 - [ ] Agent tested in LangGraph Studio with sample inputs
 
+**Tavily Integration (If Phase 0 Identified Need):**
+- [ ] `langchain-tavily` package installed via `uv add` (NOT langchain_community)
+- [ ] Tavily tools configured per Phase 0 specifications (search, extract)
+- [ ] Web search prompts created explaining when/how to use Tavily
+- [ ] Tavily tools tested with web search queries
+- [ ] Content extraction tested with URL processing
+- [ ] Configuration matches Phase 0 use cases (news monitoring, research, etc.)
+- [ ] Credit usage optimized (basic vs advanced depth based on Phase 0)
+
 **Phase 8.3: LangSmith Features**
 - [ ] Thread management works (thread_id persistence verified)
 - [ ] Memory automatic (confirmed NO manual PostgresSaver/PostgresStore configuration)
