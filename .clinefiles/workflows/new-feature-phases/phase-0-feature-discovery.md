@@ -155,6 +155,7 @@ Reuse:
 
 **Agent Service (if applicable):**
 - [ ] New tools needed? (List them)
+- [ ] Web search/data extraction needed? → See `.clinefiles/tavily/capabilities-and-integration.md`
 - [ ] Updated prompts? (Describe them)
 - [ ] New middleware? (Describe them)
 - [ ] Memory changes? (Describe them)

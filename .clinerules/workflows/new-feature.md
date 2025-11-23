@@ -155,8 +155,14 @@ Before writing code:
 ### Phase 3: Agent Service Integration [IF NEEDED]
 **📄 [Full Guide: phase-3-agent-integration.md](.clinefiles/workflows/new-feature-phases/phase-3-agent-integration.md)**
 
+**Critical References:**
+- `.clinefiles/langchain/patterns/middleware-centric.md` - **REQUIRED** - Middleware composition pattern
+- `.clinefiles/langchain/patterns/middleware-tools.md` - Tools organization
+- `.clinefiles/tavily/capabilities-and-integration.md` - Web search integration (if needed)
+
 **Execute if feature requires:**
 - New agent tools
+- Web search/data extraction capabilities
 - Updated prompts/system messages
 - New middleware capabilities
 - Memory/state changes
@@ -165,10 +171,12 @@ Before writing code:
 **Skip if:** Feature doesn't involve AI
 
 **Key Tasks:**
-- Add tools using @tool decorator
-- Update agent configuration
+- Create tools using @tool decorator
+- Add via ToolsMiddleware (middleware-centric pattern)
+- Update tool guidance (tools_prompt.py) with {tools_list} placeholder
+- Add Tavily integration if web search needed
 - Test in LangGraph Studio
-- Implement streaming (if needed)
+- Integrate with frontend
 - Update agent documentation
 
 ---
