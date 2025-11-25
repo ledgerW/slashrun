@@ -353,6 +353,7 @@ This prepares the app architecture for seamless Phase 8 integration.
 - `.clinefiles/supabase/database/realtime_guide.md`
 - `.clinefiles/ui/realtime-nextjs.md` (Client-side implementation patterns, critical JWT auth)
 - `.clinefiles/supabase/database/realtime-broadcast-setup.md` (Server-side triggers and RLS)
+- `.clinefiles/stripe/stripe-integration.md` (Complete Stripe billing integration)
 
 **Purpose:** Implement advanced features based on application needs
 
@@ -361,6 +362,7 @@ This prepares the app architecture for seamless Phase 8 integration.
 - **Real-time Features [IF APPLICABLE]** - Live updates and collaboration
 - **File Uploads [IF APPLICABLE]** - Document/image handling
 - **Analytics [IF APPLICABLE]** - Charts and dashboards
+- **Stripe Billing [IF APPLICABLE]** - Subscription payments and feature gating
 
 **All applicable features must be fully implemented.**
 
@@ -558,6 +560,24 @@ This prepares the app architecture for seamless Phase 8 integration.
 - [ ] Analytics dashboard displays relevant metrics
 - [ ] Charts and visualizations render correctly
 - [ ] Data filtering and date range selection works
+
+**For Apps with Stripe Billing:**
+- [ ] Stripe account created and test keys obtained
+- [ ] Products and prices created in Stripe Dashboard
+- [ ] Environment variables configured (test mode)
+- [ ] Database migration added stripe columns to profiles
+- [ ] Stripe SDK installed (stripe, @stripe/stripe-js)
+- [ ] Checkout Session API route created and working
+- [ ] Webhook handler created and signature verification working
+- [ ] Webhook endpoint configured in Stripe Dashboard
+- [ ] Customer Portal API route created
+- [ ] Billing page created with plan display and upgrade buttons
+- [ ] Subscribe buttons redirect to Stripe Checkout successfully
+- [ ] Manage Billing button opens Customer Portal
+- [ ] Feature gating implemented (requirePlan function)
+- [ ] Test payment flow completed with test card successfully
+- [ ] Webhook updates user plan in database after payment
+- [ ] Plan display updates in UI after subscription change
 
 **Verification:** Test each applicable advanced feature according to Phase 0 requirements.
 

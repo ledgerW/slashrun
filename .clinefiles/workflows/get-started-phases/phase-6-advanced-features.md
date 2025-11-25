@@ -313,6 +313,164 @@ npx shadcn@latest add chart
 
 ---
 
+## Billing & Payments (Stripe) [IF APPLICABLE]
+
+**If application requires subscription billing or payment processing:**
+
+### Decision Criteria
+
+Stripe integration is needed if your application:
+- ✅ Requires subscription billing (monthly/annual plans)
+- ✅ Sells one-time products or services
+- ✅ Needs tiered pricing (Free/Pro/Enterprise)
+- ✅ Requires feature gating based on subscription level
+- ✅ Needs customer self-service billing portal
+
+### Implementation Steps
+
+**See: `.clinefiles/stripe/stripe-integration.md` for complete guide**
+
+#### Step 1: Stripe Account Setup
+
+1. Create Stripe account at https://stripe.com
+2. Get test API keys from Dashboard → Developers → API keys
+3. Add to `.env.local`:
+   ```bash
+   STRIPE_SECRET_KEY=sk_test_...
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+   STRIPE_WEBHOOK_SECRET=whsec_...
+   STRIPE_PRICE_ID_PRO=price_...
+   STRIPE_CHECKOUT_SUCCESS_URL=http://localhost:3000/dashboard/billing/success
+   STRIPE_CHECKOUT_CANCEL_URL=http://localhost:3000/dashboard/billing/cancel
+   STRIPE_CUSTOMER_PORTAL_RETURN_URL=http://localhost:3000/dashboard/billing
+   ```
+
+**Reference:** https://docs.stripe.com/keys
+
+#### Step 2: Create Products in Stripe Dashboard
+
+1. Navigate to Dashboard → Product catalog (test mode)
+2. Create products and pricing plans
+3. Copy Price IDs to environment variables
+
+**Reference:** https://docs.stripe.com/payments/checkout/build-subscriptions
+
+#### Step 3: Database Schema Updates
+
+Create migration to add billing columns to profiles:
+
+```sql
+-- supabase/migrations/[timestamp]_add_stripe_to_profiles.sql
+alter table public.profiles
+add column if not exists plan text default 'free' check (plan in ('free', 'pro', 'team')),
+add column if not exists stripe_customer_id text unique,
+add column if not exists stripe_subscription_id text,
+add column if not exists stripe_subscription_status text;
+
+create index if not exists idx_profiles_stripe_customer_id 
+on public.profiles(stripe_customer_id);
+```
+
+#### Step 4: Install Stripe SDK
+
+```bash
+npm install stripe @stripe/stripe-js
+```
+
+#### Step 5: Create API Routes
+
+**`app/api/billing/create-checkout-session/route.ts`:**
+- Authenticates user
+- Creates or retrieves Stripe customer
+- Creates Checkout Session
+- Returns URL for redirect
+
+**`app/api/stripe/webhook/route.ts`:**
+- Verifies webhook signature
+- Handles subscription events:
+  - `checkout.session.completed`
+  - `customer.subscription.created`
+  - `customer.subscription.updated`
+  - `customer.subscription.deleted`
+- Updates user plan in database
+
+**`app/api/billing/customer-portal/route.ts`:**
+- Creates Customer Portal session
+- Returns URL for redirect
+
+**See complete code examples in:** `.clinefiles/stripe/stripe-integration.md`
+
+#### Step 6: Configure Webhooks
+
+1. Dashboard → Developers → Webhooks (test mode)
+2. Add endpoint: `http://localhost:3000/api/stripe/webhook`
+3. Select events to listen for
+4. Copy signing secret to `.env.local`
+
+**For local testing:**
+```bash
+stripe listen --forward-to localhost:3000/api/stripe/webhook
+```
+
+**Reference:** https://docs.stripe.com/webhooks
+
+#### Step 7: Frontend Components
+
+Create billing page at `app/dashboard/billing/page.tsx`:
+- Display current plan
+- Show available plans with pricing
+- Subscribe buttons for upgrades
+- Manage Billing button (Customer Portal link)
+
+**Components needed:**
+- `components/subscribe-button.tsx` - Initiates Checkout
+- `components/manage-billing-button.tsx` - Opens Customer Portal
+
+**See complete component code in:** `.clinefiles/stripe/stripe-integration.md`
+
+#### Step 8: Feature Gating
+
+Implement plan-based access control:
+
+```typescript
+// lib/subscription.ts
+export async function requirePlan(plan: 'pro' | 'team') {
+  const userPlan = await getUserPlan();
+  const planHierarchy = { free: 0, pro: 1, team: 2 };
+  return planHierarchy[userPlan] >= planHierarchy[plan];
+}
+```
+
+Use in API routes and components to restrict features.
+
+#### Step 9: Testing
+
+**Test cards:** https://docs.stripe.com/testing
+```
+Success: 4242 4242 4242 4242
+Decline: 4000 0000 0000 0002
+```
+
+**Test checklist:**
+- [ ] User can create checkout session
+- [ ] Checkout redirects to Stripe
+- [ ] Successful payment creates subscription
+- [ ] Webhook updates user plan
+- [ ] Customer Portal opens correctly
+- [ ] Feature gating works
+
+### Production Deployment
+
+1. Switch to live API keys in production
+2. Create live products and prices
+3. Configure live webhook endpoint
+4. Update environment variables
+5. Test end-to-end with real payment
+
+**Reference:** `.clinefiles/stripe/stripe-integration.md` (Section 12)
+
+---
+
 ## Phase 6 Completion Checklist
 
 **ReactFlow (if applicable):**
@@ -335,6 +493,24 @@ npx shadcn@latest add chart
 **Analytics (if applicable):**
 - [ ] Charts components installed
 - [ ] Data visualization working
+
+**Stripe Billing (if applicable):**
+- [ ] Stripe account created and test keys obtained
+- [ ] Products and prices created in Stripe Dashboard
+- [ ] Environment variables configured (test mode)
+- [ ] Database migration added stripe columns to profiles
+- [ ] Stripe SDK installed (stripe, @stripe/stripe-js)
+- [ ] Checkout Session API route created and working
+- [ ] Webhook handler created and signature verification working
+- [ ] Webhook endpoint configured in Stripe Dashboard
+- [ ] Customer Portal API route created
+- [ ] Billing page created with plan display
+- [ ] Subscribe buttons redirect to Stripe Checkout
+- [ ] Manage Billing button opens Customer Portal
+- [ ] Feature gating implemented (requirePlan function)
+- [ ] Test payment flow completed successfully
+- [ ] Webhook updates user plan in database
+- [ ] Plan display updates after subscription change
 
 ---
 

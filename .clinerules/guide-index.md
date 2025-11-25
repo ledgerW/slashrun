@@ -223,6 +223,23 @@ This index catalogs all available .clinerules guides (excluding workflows). Befo
 
 ---
 
+## 📁 Stripe Payments
+
+### stripe/stripe-integration.md
+**Read this for:** Adding subscription billing, payment processing, subscription management  
+**Summary:** Complete guide for integrating Stripe into Next.js + Supabase applications. Covers Stripe Checkout for subscriptions, webhook implementation for payment events, Customer Portal for self-service billing, feature gating based on plan, test vs production setup, and security best practices. Includes database schema updates, API routes, frontend components, and comprehensive troubleshooting.  
+**Location:** `.clinefiles/stripe/stripe-integration.md`
+
+**Official Stripe Docs:**
+- Get Started: https://docs.stripe.com/get-started
+- Checkout: https://docs.stripe.com/checkout/quickstart
+- Subscriptions: https://docs.stripe.com/billing/subscriptions/overview
+- Webhooks: https://docs.stripe.com/webhooks
+- Customer Portal: https://docs.stripe.com/customer-management/integrate-customer-portal
+- Testing: https://docs.stripe.com/testing
+
+---
+
 ## 📁 Tavily Web Search
 
 ### tavily/capabilities-and-integration.md
@@ -369,6 +386,21 @@ This index catalogs all available .clinerules guides (excluding workflows). Befo
 
 **Key principles:** Use `langchain-tavily` package (NOT langchain_community). Both Tavily MCP servers available. Choose basic vs advanced depth based on needs.
 
+### "Adding payment/billing to the app"
+**Read these guides:**
+1. `stripe/stripe-integration.md` - Complete Stripe integration (read first)
+2. `database/create_migrations.md` - Add billing columns to profiles
+3. `database/create_rls_policies.md` - Secure plan data access
+4. `supabase/auth-for-nextjs.md` - Authentication requirements for billing
+
+**Key steps:**
+- Add plan, stripe_customer_id columns to profiles table
+- Create Checkout Session and Customer Portal API routes
+- Implement webhook handler for subscription events
+- Build billing UI with plan comparison
+- Implement feature gating based on user plan
+- Test with Stripe test mode and test cards
+
 ---
 
 ## ⚠️ Critical Reading Required
@@ -434,8 +466,9 @@ These guides contain **breaking patterns** that will cause failures if not follo
 
 This index reflects the current state of .clinerules. If you notice a guide is missing or outdated, inform the user.
 
-**Last Updated:** 2025-01-19  
+**Last Updated:** 2025-01-25  
 **Recent Additions:** 
+- **Stripe Integration Guide** - Complete payment and subscription billing integration for Next.js + Supabase
 - **Multi-Thread Actor Pattern** - Complete pattern for actor/entity-based multi-context agent systems
 - **Drawer Chat Pattern** - New recommended default UI pattern for agent interfaces
 - **Phase 8.4 Documentation Update** - Updated to recommend drawer pattern as default
